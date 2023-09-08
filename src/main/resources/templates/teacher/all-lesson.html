@@ -1,0 +1,360 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+	
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Edumin - Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+    <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+	
+	<!-- Pick date -->
+    <link rel="stylesheet" href="/vendor/pickadate/themes/default.css">
+    <link rel="stylesheet" href="/vendor/pickadate/themes/default.date.css">
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="index.html" class="brand-logo">
+                <img class="logo-abbr" src="/images/logo-white.png" alt="">
+                <img class="logo-compact" src="/images/logo-text-white.png" alt="">
+                <img class="brand-title" src="/images/logo-text-white.png" alt="">
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                        </div>
+
+                        <ul class="navbar-nav header-right">
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="javascript:void(0);" role="button" data-toggle="dropdown">
+                                    <img th:src="@{${img != null ? '/api/admin/rest/viewImage/' + img : '/images/profile/education/pic-6.jpg'}}" width="20" alt="">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="javascript:void(0);" class="dropdown-item ai-icon">
+                                        <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        <span class="ml-2">Profile </span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item ai-icon">
+                                        <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                        <span class="ml-2">Chiqish </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="dlabnav">
+            <div class="dlabnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Bosh Menu</li>
+                    <li>
+                        <a class="ai-icon" th:href="@{/api/teacher/dashboard}" aria-expanded="false">
+                            <i class="la la-home"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                            <i class="la la-graduation-cap"></i>
+                            <span class="nav-text">Darslar</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a th:href="@{/api/teacher/all/lesson}">Barcha darslar</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+		
+		
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <!-- row -->
+            <div class="container-fluid">
+				    
+                <div class="row page-titles mx-0">
+                    <div class="col-sm-6 p-md-0">
+                        <div class="welcome-text">
+                            <h4>Barcha darslar</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/api/teacher/dashboard}">Dashboard</a></li>
+                            <li class="breadcrumb-item active"><a th:href="@{/api/teacher/all/lesson}">Darslar</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Barcha darslar</a></li>
+                        </ol>
+                    </div>
+                </div>
+				
+				<div class="row">                    
+                    <style>
+                        .col-lg-12{
+                            padding-top: 1rem;
+                            background-color: white;
+                            box-shadow: -2px -2px 2px rgba(0, 0, 0, .1), 2px 2px 2px rgba(0, 0, 0, .1);
+                            row-gap: 1rem;
+                            margin-bottom: 1rem;
+                        }
+                        .box{
+                            border-radius: .5rem;
+                            position: relative;
+                            padding: 0;
+                        }
+                        .box1{
+                            border-radius: .5rem;
+                            padding: 0;
+                            width: 100%;
+                        }
+                        .box1 .la-plus-circle{
+                            width: 100%;
+                            height: 15rem;
+                            border-radius: .5rem;
+                            background-color: rgba(0,0,0, 0.2);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 10rem;
+                            font-weight: 900;
+                            color: #fff;
+                        }
+                        .box .lesson-order-number{
+                            position: absolute;
+                            margin-top: 10px;
+                            left: .5rem;
+                            padding: .3rem 1rem;
+                            border-radius: .5rem;
+                            background-color: rgba(0,0,0,.3);
+                            letter-spacing: 1px;
+                            font-size: 1.2rem;
+                            color: #fff;
+                            /* display: none; */
+                        }
+                        .box .lesson-type{
+                            position: absolute;
+                            margin-top: 10px;
+                            right: .5rem;
+                            padding: .3rem 1rem;
+                            border-radius: .5rem;
+                            background-color: rgba(0,0,0,.3);
+                            letter-spacing: 1px;
+                            font-size: 1.2rem;
+                            color: #fff;
+                            text-transform: lowercase;
+                            /* display: none; */
+                        }
+                        .box i{
+                            position: absolute;
+                            width: 100%;
+                            height: 15rem;
+                            border-radius: .5rem;
+                            background-color: rgba(0,0,0,.3);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 5rem;
+                            color: #fff;
+                        }
+                        .box .la-play{
+                            display: none;
+                        }
+                        
+                        .box:hover .la-play{
+                            display: flex;
+                        }
+
+                        .box img{
+                            width: 100%;
+                            height: 15rem;
+                            object-fit: cover;
+                            border-radius: .5rem;
+                        }
+
+                        .box h3{
+                            margin-top: .5rem;
+                            font-size: 1rem;
+                            /*color: var(--black);*/
+                        }
+
+                        .box:hover h3{
+                            /*color: var(--main-color);*/
+                        }
+                    </style>
+					<div th:if="${gradeStatus == 'all' || gradeStatus == '2'}" class="col-lg-12 mb-3 d-flex flex-wrap rounded">
+                        <div class="card-header col-lg-12">
+                            <h4 class="card-title" th:text="'2-sinf darslari >> Darslar soni : ' + ${#lists.size(grade2)} + ' ta'"></h4>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-1">
+                            <a class="box1" th:href="@{/api/teacher/add/lesson/2}">
+                                <i class="la la-plus-circle"></i>
+                            </a>
+                        </div>
+                        <div th:each = "grade : ${grade2}" class="col-lg-3 col-md-6 col-sm-12">
+                            <a class="box" th:href="@{'/api/teacher/lesson/info/' + ${grade.id}}">
+                                <span class="lesson-type text-lowercase" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
+                                <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
+                                <i class="la la-play"></i>
+                                <img src="/images/thumb-1.png" alt="">
+                                <h3 th:text="${grade.title}"></h3>
+                            </a>
+                        </div>
+					</div>
+
+                    <div th:if="${gradeStatus == 'all' || gradeStatus == '3'}" class="col-lg-12 d-flex flex-wrap rounded">
+                        <div class="card-header col-lg-12">
+                            <h4 class="card-title" th:text="'3-sinf darslari >> Darslar soni : ' + ${#lists.size(grade3)} + ' ta'"></h4>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-1">
+                            <a class="box1" th:href="@{/api/teacher/add/lesson/3}">
+                                <i class="la la-plus-circle"></i>
+                            </a>
+                        </div>
+                        <div th:each = "grade : ${grade3}" class="col-lg-3 col-md-6 col-sm-12">
+                            <a class="box" th:href="@{'/api/teacher/lesson/info/' + grade.id}">
+                                <span class="lesson-type" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
+                                <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
+                                <i class="la la-play"></i>
+                                <img src="/images/thumb-1.png" alt="">
+                                <h3 th:text="${grade.title}"></h3>
+                            </a>
+                        </div>
+					</div>
+
+                    <div th:if="${gradeStatus == 'all' || gradeStatus == '4'}" class="col-lg-12 d-flex flex-wrap rounded">
+                        <div class="card-header col-lg-12">
+                            <h4 class="card-title" th:text="'4-sinf darslari >> Darslar soni : ' + ${#lists.size(grade4)} + ' ta'"></h4>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-1">
+                            <a class="box1" th:href="@{/api/teacher/add/lesson/4}">
+                                <i class="la la-plus-circle"></i>
+                            </a>
+                        </div>
+                        <div th:each = "grade : ${grade4}" class="col-lg-3 col-md-6 col-sm-12">
+                            <a class="box" th:href="@{'/api/teacher/lesson/info/' + grade.id}">
+                                <span class="lesson-type" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
+                                <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
+                                <i class="la la-play"></i>
+                                <img src="/images/thumb-1.png" alt="">
+                                <h3 th:text="${grade.title}"></h3>
+                            </a>
+                        </div>
+					</div>
+				</div>
+				
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+		<!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="/vendor/global/global.min.js"></script>
+	<script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="/js/custom.min.js"></script>
+	<script src="/js/dlabnav-init.js"></script>
+
+	<!-- Svganimation scripts -->
+    <script src="/vendor/svganimation/vivus.min.js"></script>
+    <script src="/vendor/svganimation/svg.animation.js"></script>
+    <script src="/js/styleSwitcher.js"></script>
+	
+	<!-- pickdate -->
+    <script src="/vendor/pickadate/picker.js"></script>
+    <script src="/vendor/pickadate/picker.time.js"></script>
+    <script src="/vendor/pickadate/picker.date.js"></script>
+	
+	<!-- Pickdate -->
+    <script src="/js/plugins-init/pickadate-init.js"></script>
+<!--	<script src="/js/teacher/add-lesson.js"></script>-->
+</body>
+</html>

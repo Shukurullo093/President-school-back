@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Ro'yhatdan o'tish</title>
+
+   <!-- font awesome cdn link  -->
+<!--   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">-->
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/user/css/style.css">
+
+</head>
+<body>
+
+<header class="header">
+   
+   <section class="flex">
+
+      <a th:href="@{/api/home}" class="logo">President school</a>
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+       <div class="profile">
+         <div class="flex-btn">
+            <a href="login.html" class="option-btn">Kirish</a>
+            <a th:href="@{/api/user/register}" class="option-btn">Ro'yhatdan o'tish</a>
+         </div>
+      </div> 
+
+   </section>
+
+</header>   
+
+<div class="side-bar"></div>
+
+<section class="form-container">
+
+   <form method="post" enctype="multipart/form-data">
+      <h3>Ro'yhatdan o'tish</h3>
+      <p>ism-familiya kiriting <span>*</span></p>
+      <input type="text" name="name" placeholder="fio..." required maxlength="50" class="box">
+      <p>telefon raqam kiriting <span>*</span></p>
+      <input type="tel" name="email" placeholder="telefon raqam..." required maxlength="50" class="box">
+      <p>jinsni tanlang <span>*</span></p>
+      <select name="gender" class="box" required>
+         <option value="boy">o'g'il</option>
+         <option value="girl">qiz</option>
+      </select>
+      <p>sinfni tanlang <span>*</span></p>
+      <select name="class" class="box" required>
+         <option value="2">2</option>
+         <option value="3">3</option>
+         <option value="4">4</option>
+      </select>
+      <p>parol kiriting <span>*</span></p>
+      <input type="password" name="pass" placeholder="parol..." required maxlength="20" class="box">
+      <p>parolni qaytadan kiriting <span>*</span></p>
+      <input type="password" name="c_pass" placeholder="parol..." required maxlength="20" class="box">
+      <p>profile uchun rasm <span>*</span></p>
+      <input type="file" accept="image/*" required class="box">
+      <input type="submit" value="ro'yhatdan o'tish" name="submit" class="btn">
+   </form>
+</section>
+
+<!-- <footer class="footer">
+   &copy; copyright @ 2022 by <span></span> | all rights reserved!
+</footer> -->
+
+<!-- custom js file link  -->
+<script src="/user/js/register.js"></script>
+</body>
+</html>

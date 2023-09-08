@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>test</title>
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/user/css/test.css">
+   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+</head>
+<body>
+
+<header class="header">
+   
+   <section class="flex">
+
+      <a href="home.html" class="logo">President school</a>
+
+      <!-- <form action="search.html" method="post" class="search-form">
+         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
+         <button type="submit" class="fas fa-search"></button>
+      </form> -->
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <!-- <div id="search-btn" class="fas fa-search"></div> -->
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+         <img src="/user/images/pic-1.jpg" class="image" alt="">
+         <h3 class="name">john doe</h3>
+         <!-- <p class="role">studen</p> -->
+         <a href="update.html" class="btn">profile</a>
+         <div class="flex-btn">
+            <a href="login.html" class="option-btn">chiqish</a>
+            <!-- <a href="register.html" class="option-btn">sign up</a> -->
+         </div>
+      </div>
+   </section>
+</header>   
+
+<div class="side-bar">
+
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+      <img src="/user/images/pic-1.jpg" class="image" alt="">
+      <h3 class="name">john doe</h3>
+      <p class="role"><i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i> 1220 / 1</p>
+      <!-- <a href="profile.html" class="btn">view profile</a> -->
+   </div>
+
+   <nav class="navbar">
+      <a href="home.html"><i class="fas fa-home"></i><span>dashboard</span></a>
+      <!-- <a href="about.html"><i class="fas fa-question"></i><span>about</span></a> -->
+      <a href="dashboard.html"><i class="fas fa-graduation-cap"></i><span>kurslar</span></a>
+      <a href="top-students.html"><i class="fas fa-chalkboard-user"></i><span>reyting</span></a>
+      <!-- <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a> -->
+   </nav>
+</div>
+
+<section class="watch-video">
+   <h1 class="heading">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h1>
+   <div class="video-container" id="div">
+      <div class="begin" id="begin">
+         <span>Test ishlashga tayyor bo'lsangiz quyidagi tugmani bosing.</span><br>
+         <button type="button" class="inline-btn" onclick="begin()">Boshlash</button>
+      </div>
+      <ul id="ul">
+         <li>
+            <form id="form">
+               <h4 class="question-text">{#1} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, accusamus.</h4>
+               <img src="/user/images/post-1-1.png" alt="question-img">
+               <div class="flex">
+                  <div class="input-group">
+                     <input type="radio" name="check" id="var1">
+                     <label for="var1">Lorem, ipsum dolor.</label>
+                  </div>
+                  <div class="input-group">
+                     <input type="radio" name="check" id="var2">
+                     <label for="var2">Lorem, ipsum dolor.</label>
+                  </div>
+                  <div class="input-group">
+                     <input type="radio" name="check" id="var3">
+                     <label for="var3">Lorem, ipsum dolor.</label>
+                  </div>
+               </div>
+               <div class="flex-btn">
+                  <button type="button" class="option-btn" onclick="next(1)">keyingisi</button>
+                  <button type="button" class="inline-btn" onclick="answer(1)">saqlash</button>
+               </div>
+            </form>
+         </li>
+         <li>
+            <form id="form">
+               <h4 class="question-text">{#2} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, accusamus.</h4>
+               <img src="/user/images/post-1-1.png" alt="question-img">
+               <div class="flex">
+                  <div class="input-group">
+                     <input type="radio" name="check" id="var1">
+                     <label for="var1">Lorem, ipsum dolor.</label>
+                  </div>
+                  <div class="input-group">
+                     <input type="radio" name="check" id="var2">
+                     <label for="var2">Lorem, ipsum dolor.</label>
+                  </div>
+                  <div class="input-group">
+                     <input type="radio" name="check" id="var3">
+                     <label for="var3">Lorem, ipsum dolor.</label>
+                  </div>
+               </div>
+               <div class="flex-btn">
+                  <button type="button" class="option-btn" onclick="next(2)">keyingisi</button>
+                  <button type="button" class="inline-btn" onclick="answer(2)">saqlash</button>
+               </div>
+            </form>
+         </li>
+         <li>
+            <form id="form">
+               <h4 class="question-text">{#3} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, accusamus.</h4>
+               <img src="/user/images/post-1-1.png" alt="question-img">
+               <div class="flex">
+                  <div class="input-group">
+                     <input type="radio" name="check" id="var1">
+                     <label for="var1">Lorem, ipsum dolor.</label>
+                  </div>
+                  <div class="input-group">
+                     <input type="radio" name="check" id="var2">
+                     <label for="var2">Lorem, ipsum dolor.</label>
+                  </div>
+                  <div class="input-group">
+                     <input type="radio" name="check" id="var3">
+                     <label for="var3">Lorem, ipsum dolor.</label>
+                  </div>
+               </div>
+               <div class="flex-btn">
+                  <button type="button" class="option-btn" onclick="next(3)">keyingisi</button>
+                  <button type="button" class="inline-btn" onclick="answer(3)">saqlash</button>
+               </div>
+            </form>
+         </li>
+      </ul>
+      <div class="finish" id="finish">
+         <span>Test yakunlandi. <br>Natijani quyidagi tugma orqali bilib olishingiz mumkin.</span><br>
+         <button type="button" class="inline-btn">Natija</button>
+      </div>
+   </div> 
+</section>
+
+<footer class="footer">
+   &copy; copyright @ 2023 by <span></span> | all rights reserved!
+</footer>
+
+   <!-- custom js file link  -->
+   <script src="/user/js/watch-video.js"></script>
+   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script> -->
+
+   <script>
+      let ans = [];
+      function begin(){
+         document.getElementById("begin").style.display = "none";
+         document.getElementById("ul").style.display = "block";
+      }
+
+      function next(order){
+         const li = document.getElementsByTagName("li");
+         order == li.length ? li[0].style.display = "block" : li[order].style.display = "block";
+         li[order - 1].style.display = "none";
+      }
+
+      function answer(order){
+         const form = document.getElementsByTagName("form");
+         
+         for(let i = 0; i < form[order-1].getElementsByTagName("input").length; i++){
+            if(form[order-1].getElementsByTagName("input")[i].checked){
+               ans[order-1]=i;
+            }           
+         }
+
+         let count = 0;
+         for(let i=0; i<ans.length; i++){
+            if(ans[i]!=null){
+               count++;
+            }
+         }
+         
+         if(count == form.length){
+            document.getElementById("ul").style.display = "none";
+            document.getElementById("finish").style.display = "block";
+         }
+         else{
+            const li = document.getElementsByTagName("li");
+            order == li.length ? li[0].style.display = "block" : li[order].style.display = "block";
+            li[order - 1].style.display = "none";
+         }         
+      }
+   </script>
+</body>
+</html>
+

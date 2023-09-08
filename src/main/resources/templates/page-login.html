@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+    <link href="/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="h-100">
+    <div class="authincation h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <h4 class="text-center mb-4">Kirish</h4>
+                                    <form id="form">
+                                        <div class="form-group">
+                                            <label><strong>Telefon</strong></label>
+                                            <input type="tel" name="username" class="form-control" value="+998901234567" placeholder="+998901234567">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Parol</strong></label>
+                                            <input type="password" name="password" value="1111" class="form-control" placeholder="parol">
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+                                            <span class="text-dark" id="error-alert"></span>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-primary btn-block fs-3" onclick="login()">Kirish</button>
+                                        </div>
+                                    </form>
+                                    <style>
+                                        .btn-block{
+                                            font-size: 20px;
+                                            letter-spacing: 1px;
+                                        }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="/js/teacher/teacher.js"></script>
+
+    <!-- Required vendors -->
+    <script src="/vendor/global/global.min.js"></script>
+	<script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<!--    <script src="/js/custom.min.js"></script>-->
+<!--    <script src="/js/dlabnav-init.js"></script>-->
+</body>
+</html>
