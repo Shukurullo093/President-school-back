@@ -1,5 +1,16 @@
 # Online_Education_System
 
+<h3>path of html login page</h3>
+/resources/public/page-login.html
+
+<h3>path of js login page</h3>
+/resources/static/js/teacher/teacher.js
+
+<h3>path of auth controller</h3>
+/controller/AuthController.java => /service/EmployeeServiceImpl.java => <mark>login()</mark>
+
+
+
 <h1>API of admin</h1>
 <ul>
   <li><a href="http://localhost:8080/api/admin/dashboard">dashboard</a></li>

@@ -2,7 +2,7 @@ package com.example.president_school.controller;
 
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.LoginDto;
-import com.example.president_school.service.AuthService;
+//import com.example.president_school.service.AuthService;
 import com.example.president_school.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthService authService;
+//    private final AuthService authService;
     private final EmployeeService employeeService;
 
     @PostMapping("/login")

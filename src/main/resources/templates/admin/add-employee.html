@@ -123,7 +123,7 @@
 							<span class="nav-text">O'quvchilar</span>
 						</a>
                         <ul aria-expanded="false">
-                            <li><a href="all-students.html">Barcha o'quvchilar</a></li>
+                            <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
                         </ul>
                     </li>
 					<li>
@@ -256,6 +256,7 @@
                                             <div class="form-group">
                                                 <label class="form-label">Sinf</label>
                                                 <select name="class" class="form-control">
+                                                    <option value="Hammasi">Hammasi</option>
                                                     <option value="2">2</option>
                                                     <option value="3">3</option>
                                                     <option value="4">4</option>

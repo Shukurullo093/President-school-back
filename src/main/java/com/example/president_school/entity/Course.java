@@ -27,6 +27,7 @@ public class Course {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
+    @Column(updatable = false)
     @CreationTimestamp
     private Date createdDate;
 

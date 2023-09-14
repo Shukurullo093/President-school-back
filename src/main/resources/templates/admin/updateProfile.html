@@ -106,17 +106,7 @@
                         <i class="la la-home"></i>
                         <span class="nav-text">Dashboard</span>
                     </a>
-                        <!-- <ul aria-expanded="false">
-                            <li><a href="index.html">Dashboard 1</a></li>
-                            <li><a href="index-2.html">Dashboard 2</a></li>
-                            <li><a href="index-3.html">Dashboard 3</a></li>
-                        </ul> -->
                     </li>
-                    <!-- <li><a class="ai-icon" href="event-management.html" aria-expanded="false">
-                            <i class="la la-calendar"></i>
-                            <span class="nav-text">Event Management</span>
-                        </a>
-                    </li> -->
                     <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
                         <i class="la la-user"></i>
                         <span class="nav-text">Hodimlar</span>
@@ -124,8 +114,6 @@
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/list/employee}">Barcha hodimlar</a></li>
                             <li><a th:href="@{/api/admin/add/employee}">Yangi hodim</a></li>
-                            <!-- <li><a href="edit-professor.html">Edit Professor</a></li> -->
-                            <!-- <li><a href="professor-profile.html">Hodim haqida</a></li> -->
                         </ul>
                     </li>
                     <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -133,10 +121,7 @@
                         <span class="nav-text">O'quvchilar</span>
                     </a>
                         <ul aria-expanded="false">
-                            <li><a href="all-students.html">Barcha o'quvchilar</a></li>
-                            <!-- <li><a href="add-student.html">Add Students</a></li> -->
-                            <!-- <li><a href="edit-student.html">Edit Students</a></li> -->
-                            <!-- <li><a href="about-student.html">O'quvchi haqida</a></li> -->
+                            <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
                         </ul>
                     </li>
                     <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">

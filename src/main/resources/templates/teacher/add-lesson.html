@@ -72,7 +72,7 @@
                         <ul class="navbar-nav header-right">
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="javascript:void(0);" role="button" data-toggle="dropdown">
-                                    <img th:src="@{${img != null ? '/api/admin/rest/viewImage/' + img : '/images/profile/education/pic-6.jpg'}}" width="20" alt="">
+                                    <img th:src="${img}" width="20" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a th:href="@{/api/admin/profile}" class="dropdown-item ai-icon">
@@ -171,7 +171,7 @@
                                         <div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">No.</label>
-												<input type="text" th:value="${'#' + gradeCount}" readonly class="form-control">
+												<input name="lessonCount" type="text" th:value="${'#' + lessonCount}" readonly class="form-control">
 											</div>
 										</div>
                                         <div class="col-lg-3 col-md-6 col-sm-12">
@@ -189,7 +189,7 @@
                                         <div class="col-lg-3 col-md-6 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label">Dars turi:</label>
-                                                <input type="text" name="lessonType" th:value="${lessonType == 'Video' ? 'VIDEO' : 'TEST'}" readonly class="form-control">
+                                                <input type="text" name="lessonType" th:value="${lessonType}" readonly class="form-control">
                                             </div>
                                         </div>
 
@@ -205,30 +205,18 @@
 												<textarea name="description" class="form-control" rows="5"></textarea>
 											</div>
 										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12" th:style="${lessonType == 'Video' ? 'display : block' : 'display : none'}">
+										<div class="col-lg-6 col-md-6 col-sm-12" id="v1">
 											<div class="form-group">
 												<label class="form-label">Dars videosi:</label>
 												<input type="file" name="source" accept="video/*" class="form-control">
 											</div>
 										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12" th:style="${lessonType == 'Video' ? 'display : block' : 'display : none'}">
+                                        <div class="col-lg-6 col-md-6 col-sm-12" id="t1">
 											<div class="form-group">
 												<label class="form-label">Topshiriq(Faqat pdf fayl):</label>
 												<input type="file" name="task" accept="application/pdf" class="form-control">
 											</div>
 										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12" th:style="${lessonType == 'Test' ? 'display : block' : 'display : none'}">
-											<div class="form-group">
-												<label class="form-label">Test manbasi(Faqat pdf fayl):</label>
-												<input type="file" name="test" accept="applicatiion/pdf" class="form-control">
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12" th:style="${lessonType == 'Test' ? 'display : block' : 'display : none'}">
-                                            <div class="form-group">
-                                                <label class="form-label">Test javoblari:</label><span class="ml-5" id="answer">1-javobni kiriting</span>
-                                                <input type="text" id="testAnswer" name="testAnswer" class="form-control">
-                                            </div>
-                                        </div>
                                         <div class="col-lg-11 col-md-11 col-sm-11 alert alert-danger alert-dismissible fade show mx-2" role="alert">
                                             <span class="text-dark" id="error-alert"></span>
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

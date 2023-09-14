@@ -122,8 +122,6 @@
         <!--**********************************
             Sidebar end
         ***********************************-->
-
-		
 		
         <!--**********************************
             Content body start
@@ -170,7 +168,7 @@
                                                 font-size: 24px;
                                             }
                                         </style>
-                                        <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div th:if="${grade == 'Hammasi' || grade == '2'}" class="col-lg-4 col-md-6 col-sm-12">
 											<div class="form-group card">
                                                 <img src="/images/second.png" class="img-card" alt="">
                                                 <div class="btn-group">
@@ -179,16 +177,16 @@
                                                 </div>
 											</div>
 										</div>
-                                        <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div th:if="${grade == 'Hammasi' || grade == '3'}" class="col-lg-4 col-md-6 col-sm-12">
 											<div class="form-group card">
-                                                <img src="/images/third.png" class="img-card" alt="">
+                                                <img src="/images/third.png" class="img-card">
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-primary"><a th:href="${'/api/teacher/add/lesson/3'}"><i class="la la-plus"></i> Yangi</a></button>
                                                     <button type="button" class="btn btn-success"><a th:href="${'/api/teacher/list/lesson/3'}"><i class="la la-list"></i> Ro'yhat <span class="badge badge-light text-success fs-5" th:text="${grade3Count}"></span></a></button>
                                                 </div>
 											</div>
 										</div>
-                                        <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div th:if="${grade == 'Hammasi' || grade == '4'}" class="col-lg-4 col-md-6 col-sm-12">
 											<div class="form-group card">
                                                 <img src="/images/f44.png" class="img-card" alt="">
                                                 <div class="btn-group">
@@ -217,7 +215,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2020</p>
+                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
             </div>
         </div>
         <!--**********************************
@@ -260,5 +258,8 @@
 	<!-- Pickdate -->
     <script src="/js/plugins-init/pickadate-init.js"></script>
 	<script src="/js/teacher/add-lesson.js"></script>
+
 </body>
 </html>
+
+

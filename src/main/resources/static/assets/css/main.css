@@ -1804,6 +1804,23 @@ section {
   padding: 60px 0 0 0;
 }
 
+.hero #exampleModalCenter{
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  padding: 0;
+}
+.hero #exampleModalCenter .modal-bg{
+  width: 1400px;
+}
+.mt-sm-1{
+  margin-top: 1rem;
+}
+
 @media (min-width: 1365px) {
   .hero {
     background-attachment: fixed;

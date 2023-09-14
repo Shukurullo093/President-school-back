@@ -37,9 +37,9 @@
          <img src="/user/images/pic-1.jpg" class="image" alt="">
          <h3 class="name">john doe</h3>
          <!-- <p class="role">studen</p> -->
-         <a href="update.html" class="btn">profile</a>
+         <a th:href="@{/api/user/update/profile}" class="btn">Profile</a>
          <div class="flex-btn">
-            <a href="login.html" class="option-btn">chiqish</a>
+            <a th:href="@{/api/user/login}" class="option-btn">chiqish</a>
             <!-- <a href="register.html" class="option-btn">sign up</a> -->
          </div>
       </div>
@@ -68,85 +68,94 @@
    </nav>
 </div>
 
-<section class="watch-video">
+<section class="watch-video" th:if="${lesson != null}">
    <div class="video-container">
       <div class="video">
-         <video src="/user/images/vid-1.mp4" controls poster="/user/images/post-1-1.png" id="video"></video>
+         <video th:src="${lesson.videoLink}" controls poster="/user/images/post-1-1.png" id="video"></video>
       </div>
-      <h3 class="title">complete HTML tutorial (part 01)</h3>
-      <!-- <div class="info">
-         <p class="date"><i class="fas fa-calendar"></i><span>22-10-2022</span></p>
-         <p class="date"><i class="fas fa-heart"></i><span>44 likes</span></p>
-      </div>
-      <div class="tutor">
-         <img src="images/pic-2.jpg" alt="">
-         <div>
-            <h3>john deo</h3>
-            <span>developer</span>
-         </div>
-      </div> -->
+      <h3 class="title" th:text="${lesson.title}"></h3>
       <form method="post" class="flex">
-         <a href="lesson-tasks.html" class="inline-btn">topshiriq</a>
-         <!-- <button><i class="far fa-heart"></i><span>like</span></button> -->
+         <a th:href="${lesson.taskLink}" class="inline-btn">topshiriq</a>
       </form>
-      <p class="description">
-         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque labore ratione, hic exercitationem mollitia obcaecati culpa dolor placeat provident porro.
-         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid iure autem non fugit sint. A, sequi rerum architecto dolor fugiat illo, iure velit nihil laboriosam cupiditate voluptatum facere cumque nemo!
-      </p>
+      <p class="description" th:text="${lesson.description}"></p>
    </div>
 
 </section>
 
-<section class="comments">
+<section class="comments" th:if="${lesson != null}">
 
-   <h1 class="heading">Savollar</h1>
+   <h1 class="heading">Chat</h1>
 
    <form class="add-comment">
-      <!-- <h3>add comments</h3> -->
-      <textarea name="comment_box" placeholder="savolingizni yozing..." required maxlength="1000" cols="30" rows="10"></textarea>
-      <input type="submit" value="jo'natish" class="inline-btn" name="add_comment">
+      <div class="btn-group">
+         <button type="button" class="btn btn-success">
+            <a href="javascript:void(0);">
+               <i class="fas fa-list"></i>
+               <span class="badge badge-light text-success"><i class="fas fa-star"></i> </span>
+            </a>
+         </button>
+         <button type="button" class="btn btn-success">
+            <a href="javascript:void(0);">Ro'yhat
+               <span class="badge badge-light text-success"><i class="fas fa-star"></i> </span>
+            </a>
+         </button>
+         <button type="button" class="btn btn-success">
+            <a href="javascript:void(0);">Ro'yhat
+               <span class="badge badge-light text-success"><i class="fas fa-star"></i> </span>
+            </a>
+         </button>
+         <button type="button" class="btn btn-success">
+            <a href="javascript:void(0);">Ro'yhat
+               <span class="badge badge-light text-success"><i class="fas fa-star"></i> </span>
+            </a>
+         </button>
+         <button type="button" class="btn btn-success">
+            <a href="javascript:void(0);">Ro'yhat
+               <span class="badge badge-light text-success"><i class="fas fa-star"></i> </span>
+            </a>
+         </button>
+      </div>
+      <div class="chat">
+         <ul style="list-style: none;">
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+            <li>dfsdfsdf sdfsdf sd f sd f sf</li>
+         </ul>
+         <div class="send-message">
+            <label for="image" class="fas fa-image"></label>
+            <input id="image" type="file" accept="image/*" style="display: none;">
+            <input type="text" class="form-control">
+            <i class="fas fa-paper-plane"></i>
+         </div>
+      </div>
    </form>
 
-   <h1 class="heading">chat</h1>
-
-   <div class="box-container">
-
-      <div class="box">
-         <div class="user">
-            <img src="/user/images/pic-1.jpg" alt="">
-            <div>
-               <h3>john doe</h3>
-               <span>22-10-2022</span>
-            </div>
-         </div>
-         <div class="comment-box">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing.</p>
-            <i class="fa-solid fa-trash-can"></i>
-         </div>
-         <!-- <form action="" class="flex-btn">
-            <input type="submit" value="edit comment" name="edit_comment" class="inline-option-btn">
-            <input type="submit" value="delete comment" name="delete_comment" class="inline-delete-btn">
-         </form> -->
-      </div>
-
-      <div class="box">
-         <div class="user">
-            <img src="/user/images/pic-2.jpg" alt="">
-            <div>
-               <h3>assistant</h3>
-               <span>22-10-2022</span>
-            </div>
-         </div>
-         <div class="comment-box">awesome tutorial!
-            keep going!</div>
-      </div>
-
-   </div>
-
 </section>
-<footer class="footer">
-   &copy; copyright @ 2023 by <span></span> | all rights reserved!
-</footer>
+
+<!--<footer class="footer">-->
+<!--   &copy; copyright @ 2023 by <span></span> | all rights reserved!-->
+<!--</footer>-->
 
 <!-- custom js file link  -->
 <script src="/user/js/watch-video.js"></script>

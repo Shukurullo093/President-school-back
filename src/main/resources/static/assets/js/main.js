@@ -1,7 +1,13 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   "use strict";
-
+  document.addEventListener('scroll', function (){
+    if (window.scrollY > 50){
+      document.getElementById("exampleModalCenter").style.display = "none";
+    }
+    if (window.scrollY === 0){
+      document.getElementById("exampleModalCenter").style.display = "flex";
+    }
+  });
   /**
    * Preloader
    */
@@ -67,11 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.mobile-nav-toggle').forEach(el => {
     el.addEventListener('click', function(event) {
       event.preventDefault();
-      mobileNavToogle();
+      mobileNavToggle();
     })
   });
 
-  function mobileNavToogle() {
+  function mobileNavToggle() {
     document.querySelector('body').classList.toggle('mobile-nav-active');
     mobileNavShow.classList.toggle('d-none');
     mobileNavHide.classList.toggle('d-none');
@@ -117,9 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Initiate glightbox
    */
-  const glightbox = GLightbox({
-    selector: '.glightbox'
-  });
+  // const glightbox = GLightbox({
+  //   selector: '.glightbox'
+  // });
 
   /**
    * Scroll top button

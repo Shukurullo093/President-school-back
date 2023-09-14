@@ -147,158 +147,271 @@
                     </div>
                 </div>
 				
-				<div class="row">                    
-                    <style>
-                        .col-lg-12{
-                            padding-top: 1rem;
-                            background-color: white;
-                            box-shadow: -2px -2px 2px rgba(0, 0, 0, .1), 2px 2px 2px rgba(0, 0, 0, .1);
-                            row-gap: 1rem;
-                            margin-bottom: 1rem;
-                        }
-                        .box{
-                            border-radius: .5rem;
-                            position: relative;
-                            padding: 0;
-                        }
-                        .box1{
-                            border-radius: .5rem;
-                            padding: 0;
-                            width: 100%;
-                        }
-                        .box1 .la-plus-circle{
-                            width: 100%;
-                            height: 15rem;
-                            border-radius: .5rem;
-                            background-color: rgba(0,0,0, 0.2);
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 10rem;
-                            font-weight: 900;
-                            color: #fff;
-                        }
-                        .box .lesson-order-number{
-                            position: absolute;
-                            margin-top: 10px;
-                            left: .5rem;
-                            padding: .3rem 1rem;
-                            border-radius: .5rem;
-                            background-color: rgba(0,0,0,.3);
-                            letter-spacing: 1px;
-                            font-size: 1.2rem;
-                            color: #fff;
-                            /* display: none; */
-                        }
-                        .box .lesson-type{
-                            position: absolute;
-                            margin-top: 10px;
-                            right: .5rem;
-                            padding: .3rem 1rem;
-                            border-radius: .5rem;
-                            background-color: rgba(0,0,0,.3);
-                            letter-spacing: 1px;
-                            font-size: 1.2rem;
-                            color: #fff;
-                            text-transform: lowercase;
-                            /* display: none; */
-                        }
-                        .box i{
-                            position: absolute;
-                            width: 100%;
-                            height: 15rem;
-                            border-radius: .5rem;
-                            background-color: rgba(0,0,0,.3);
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 5rem;
-                            color: #fff;
-                        }
-                        .box .la-play{
-                            display: none;
-                        }
-                        
-                        .box:hover .la-play{
-                            display: flex;
-                        }
+				<div class="row">
+                    <div class="col-lg-12">
+                        <ul class="nav nav-pills mb-3">
+                            <li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link btn-primary mr-1 show active">Qator</a></li>
+                            <li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link btn-primary">Jadval</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row tab-content">
+                            <div id="list-view" class="tab-pane fade active show col-lg-12">
+                                <div class="card">
+                                    <div class="card-header" th:if="${gradeStatus == 'all' || gradeStatus == '2'}">
+                                        <h4 class="card-title">2-sinf uchun darslar</h4>
+                                        <a th:href="@{/api/teacher/add/lesson/2}" class="btn btn-primary">+ Yangi</a>
+                                    </div>
+                                    <div class="card-body" th:if="${gradeStatus == 'all' || gradeStatus == '2'}">
+                                        <div class="table-responsive">
+                                            <table class="display w-100 table-striped text-center" style="min-width: 845px;">
+                                                <thead>
+                                                <tr class="text-center">
+                                                    <th>No.</th>
+                                                    <th>Rasm</th>
+                                                    <th>Mavzu</th>
+                                                    <th>Izoh</th>
+                                                    <th>Tur</th>
+                                                    <th><i class="la la-eye"></i> </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each = "grade : ${grade2}" class="my-1 py-1 border-bottom">
+                                                        <td th:text="'#' + ${grade.orderNumber}" class="my-1"></td>
+                                                        <td class="text-center"><img class="rounded" width="100" src="/images/thumb-1.png"></td>
+                                                        <td th:text="${grade.title}" class="w-25"></td>
+                                                        <td th:text="${grade.description}" class="w-55"></td>
+                                                        <td th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}" class="text-uppercase"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
 
-                        .box img{
-                            width: 100%;
-                            height: 15rem;
-                            object-fit: cover;
-                            border-radius: .5rem;
-                        }
+                                    <div class="card-header" th:if="${gradeStatus == 'all' || gradeStatus == '3'}">
+                                        <h4 class="card-title">3-sinf uchun darslar</h4>
+                                        <a th:href="@{/api/teacher/add/lesson/3}" class="btn btn-primary">+ Yangi</a>
+                                    </div>
+                                    <div class="card-body" th:if="${gradeStatus == 'all' || gradeStatus == '3'}">
+                                        <div class="table-responsive">
+                                            <table class="display w-100" style="min-width: 845px">
+                                                <thead>
+                                                <tr class="text-center">
+                                                    <th>No.</th>
+                                                    <th>Rasm</th>
+                                                    <th>Mavzu</th>
+                                                    <th>Izoh</th>
+                                                    <th>Tur</th>
+                                                    <th><i class="la la-eye"></i> </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each = "grade : ${grade3}" class="my-1 py-1 border-bottom">
+                                                    <a th:href="@{'/api/teacher/lesson/info/' + ${grade.id}}">
+                                                        <td th:text="'#' + ${grade.orderNumber}" class="my-1"></td>
+                                                        <td class="text-center"><img class="rounded" width="100" src="/images/thumb-1.png"></td>
+                                                        <td th:text="${grade.title}" class="w-25"></td>
+                                                        <td th:text="${grade.description}" class="w-50"></td>
+                                                        <td th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}" class="text-uppercase"></td>
 
-                        .box h3{
-                            margin-top: .5rem;
-                            font-size: 1rem;
-                            /*color: var(--black);*/
-                        }
+                                                    </a>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
 
-                        .box:hover h3{
-                            /*color: var(--main-color);*/
-                        }
-                    </style>
-					<div th:if="${gradeStatus == 'all' || gradeStatus == '2'}" class="col-lg-12 mb-3 d-flex flex-wrap rounded">
-                        <div class="card-header col-lg-12">
-                            <h4 class="card-title" th:text="'2-sinf darslari >> Darslar soni : ' + ${#lists.size(grade2)} + ' ta'"></h4>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12 mb-1">
-                            <a class="box1" th:href="@{/api/teacher/add/lesson/2}">
-                                <i class="la la-plus-circle"></i>
-                            </a>
-                        </div>
-                        <div th:each = "grade : ${grade2}" class="col-lg-3 col-md-6 col-sm-12">
-                            <a class="box" th:href="@{'/api/teacher/lesson/info/' + ${grade.id}}">
-                                <span class="lesson-type text-lowercase" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
-                                <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
-                                <i class="la la-play"></i>
-                                <img src="/images/thumb-1.png" alt="">
-                                <h3 th:text="${grade.title}"></h3>
-                            </a>
-                        </div>
-					</div>
+                                    <div class="card-header" th:if="${gradeStatus == 'all' || gradeStatus == '4'}">
+                                        <h4 class="card-title">4-sinf uchun darslar</h4>
+                                        <a th:href="@{/api/teacher/add/lesson/4}" class="btn btn-primary">+ Yangi</a>
+                                    </div>
+                                    <div class="card-body" th:if="${gradeStatus == 'all' || gradeStatus == '4'}">
+                                        <div class="table-responsive">
+                                            <table class="display w-100" style="min-width: 845px">
+                                                <thead>
+                                                <tr class="text-center">
+                                                    <th>No.</th>
+                                                    <th>Rasm</th>
+                                                    <th>Mavzu</th>
+                                                    <th>Izoh</th>
+                                                    <th>Tur</th>
+                                                    <th><i class="la la-eye"></i> </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each = "grade : ${grade4}" class="my-1 py-1 border-bottom">
+                                                    <a th:href="@{'/api/teacher/lesson/info/' + ${grade.id}}">
+                                                        <td th:text="'#' + ${grade.orderNumber}" class="my-1"></td>
+                                                        <td class="text-center"><img class="rounded" width="100" src="/images/thumb-1.png"></td>
+                                                        <td th:text="${grade.title}" class="w-25"></td>
+                                                        <td th:text="${grade.description}" class="w-50"></td>
+                                                        <td th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}" class="text-uppercase"></td>
 
-                    <div th:if="${gradeStatus == 'all' || gradeStatus == '3'}" class="col-lg-12 d-flex flex-wrap rounded">
-                        <div class="card-header col-lg-12">
-                            <h4 class="card-title" th:text="'3-sinf darslari >> Darslar soni : ' + ${#lists.size(grade3)} + ' ta'"></h4>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12 mb-1">
-                            <a class="box1" th:href="@{/api/teacher/add/lesson/3}">
-                                <i class="la la-plus-circle"></i>
-                            </a>
-                        </div>
-                        <div th:each = "grade : ${grade3}" class="col-lg-3 col-md-6 col-sm-12">
-                            <a class="box" th:href="@{'/api/teacher/lesson/info/' + grade.id}">
-                                <span class="lesson-type" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
-                                <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
-                                <i class="la la-play"></i>
-                                <img src="/images/thumb-1.png" alt="">
-                                <h3 th:text="${grade.title}"></h3>
-                            </a>
-                        </div>
-					</div>
+                                                    </a>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div >
+                            </div>
+                            <div id="grid-view" class="tab-pane fade col-lg-12">
+                                <div class="row">
+                                    <style>
+                                        .col-lg-12{
+                                            padding-top: 1rem;
+                                            background-color: white;
+                                            /*box-shadow: -2px -2px 2px rgba(0, 0, 0, .1), 2px 2px 2px rgba(0, 0, 0, .1);*/
+                                            row-gap: 1rem;
+                                            margin-bottom: 1rem;
+                                        }
+                                        .box{
+                                            border-radius: .5rem;
+                                            position: relative;
+                                            padding: 0;
+                                        }
+                                        .box1{
+                                            border-radius: .5rem;
+                                            padding: 0;
+                                            width: 100%;
+                                        }
+                                        .box1 .la-plus-circle{
+                                            width: 100%;
+                                            height: 15rem;
+                                            border-radius: .5rem;
+                                            background-color: rgba(0,0,0, 0.2);
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 10rem;
+                                            font-weight: 900;
+                                            color: #fff;
+                                        }
+                                        .box .lesson-order-number{
+                                            position: absolute;
+                                            margin-top: 10px;
+                                            left: .5rem;
+                                            padding: .3rem 1rem;
+                                            border-radius: .5rem;
+                                            background-color: rgba(0,0,0,.3);
+                                            letter-spacing: 1px;
+                                            font-size: 1.2rem;
+                                            color: #fff;
+                                            /* display: none; */
+                                        }
+                                        .box .lesson-type{
+                                            position: absolute;
+                                            margin-top: 10px;
+                                            right: .5rem;
+                                            padding: .3rem 1rem;
+                                            border-radius: .5rem;
+                                            background-color: rgba(0,0,0,.3);
+                                            letter-spacing: 1px;
+                                            font-size: 1.2rem;
+                                            color: #fff;
+                                            text-transform: lowercase;
+                                            /* display: none; */
+                                        }
+                                        .box i{
+                                            position: absolute;
+                                            width: 100%;
+                                            height: 15rem;
+                                            border-radius: .5rem;
+                                            background-color: rgba(0,0,0,.3);
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 5rem;
+                                            color: #fff;
+                                        }
+                                        .box .la-play{
+                                            display: none;
+                                        }
 
-                    <div th:if="${gradeStatus == 'all' || gradeStatus == '4'}" class="col-lg-12 d-flex flex-wrap rounded">
-                        <div class="card-header col-lg-12">
-                            <h4 class="card-title" th:text="'4-sinf darslari >> Darslar soni : ' + ${#lists.size(grade4)} + ' ta'"></h4>
+                                        .box:hover .la-play{
+                                            display: flex;
+                                        }
+
+                                        .box img{
+                                            width: 100%;
+                                            height: 15rem;
+                                            object-fit: cover;
+                                            border-radius: .5rem;
+                                        }
+
+                                        .box h3{
+                                            margin-top: .5rem;
+                                            font-size: 1rem;
+                                            /*color: var(--black);*/
+                                        }
+
+                                        .box:hover h3{
+                                            /*color: var(--main-color);*/
+                                        }
+                                    </style>
+                                    <div th:if="${gradeStatus == 'all' || gradeStatus == '2'}" class="col-lg-12 mb-3 d-flex flex-wrap rounded">
+                                        <div class="card-header col-lg-12">
+                                            <h4 class="card-title" th:text="'2-sinf darslari >> Darslar soni : ' + ${#lists.size(grade2)} + ' ta'"></h4>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12 mb-1">
+                                            <a class="box1" th:href="@{/api/teacher/add/lesson/2}">
+                                                <i class="la la-plus-circle"></i>
+                                            </a>
+                                        </div>
+                                        <div th:each = "grade : ${grade2}" class="col-lg-3 col-md-6 col-sm-12">
+                                            <a class="box" th:href="${grade.lessonInfoLink}">
+                                                <span class="lesson-type text-lowercase" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
+                                                <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
+                                                <i class="la la-play"></i>
+                                                <img src="/images/thumb-1.png" alt="">
+                                                <h3 th:text="${grade.title}"></h3>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${gradeStatus == 'all' || gradeStatus == '3'}" class="col-lg-12 d-flex flex-wrap rounded">
+                                        <div class="card-header col-lg-12">
+                                            <h4 class="card-title" th:text="'3-sinf darslari >> Darslar soni : ' + ${#lists.size(grade3)} + ' ta'"></h4>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12 mb-1">
+                                            <a class="box1" th:href="@{/api/teacher/add/lesson/3}">
+                                                <i class="la la-plus-circle"></i>
+                                            </a>
+                                        </div>
+                                        <div th:each = "grade : ${grade3}" class="col-lg-3 col-md-6 col-sm-12">
+                                            <a class="box" th:href="@{'/api/teacher/lesson/info/' + grade.id}">
+                                                <span class="lesson-type" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
+                                                <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
+                                                <i class="la la-play"></i>
+                                                <img src="/images/thumb-1.png" alt="">
+                                                <h3 th:text="${grade.title}"></h3>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${gradeStatus == 'all' || gradeStatus == '4'}" class="col-lg-12 d-flex flex-wrap rounded">
+                                        <div class="card-header col-lg-12">
+                                            <h4 class="card-title" th:text="'4-sinf darslari >> Darslar soni : ' + ${#lists.size(grade4)} + ' ta'"></h4>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12 mb-1">
+                                            <a class="box1" th:href="@{/api/teacher/add/lesson/4}">
+                                                <i class="la la-plus-circle"></i>
+                                            </a>
+                                        </div>
+                                        <div th:each = "grade : ${grade4}" class="col-lg-3 col-md-6 col-sm-12">
+                                            <a class="box" th:href="@{'/api/teacher/lesson/info/' + grade.id}">
+                                                <span class="lesson-type" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
+                                                <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
+                                                <i class="la la-play"></i>
+                                                <img src="/images/thumb-1.png" alt="">
+                                                <h3 th:text="${grade.title}"></h3>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12 mb-1">
-                            <a class="box1" th:href="@{/api/teacher/add/lesson/4}">
-                                <i class="la la-plus-circle"></i>
-                            </a>
-                        </div>
-                        <div th:each = "grade : ${grade4}" class="col-lg-3 col-md-6 col-sm-12">
-                            <a class="box" th:href="@{'/api/teacher/lesson/info/' + grade.id}">
-                                <span class="lesson-type" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
-                                <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
-                                <i class="la la-play"></i>
-                                <img src="/images/thumb-1.png" alt="">
-                                <h3 th:text="${grade.title}"></h3>
-                            </a>
-                        </div>
-					</div>
+                    </div>
 				</div>
 				
             </div>

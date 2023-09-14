@@ -25,12 +25,12 @@
       </div>
 
       <div class="profile">
-         <img src="/user/images/pic-1.jpg" class="image" alt="">
-         <h3 class="name">john doe</h3>
+         <img th:src="${profile.imageHashId}" class="image" alt="">
+         <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
          <!-- <p class="role">studen</p> -->
-         <a href="update.html" class="btn">Profile</a>
+         <a th:href="@{/api/user/update/profile}" class="btn">Profile</a>
          <div class="flex-btn">
-            <a href="login.html" class="option-btn">chiqish</a>
+            <a th:href="@{/api/user/login}" class="option-btn">chiqish</a>
             <!-- <a href="register.html" class="option-btn">sign up</a> -->
          </div>
       </div>
@@ -47,16 +47,16 @@
 
    <div class="profile">
       <!-- <a href="profile.html" class="btn">view profile</a> -->
-      <img src="/user/images/pic-1.jpg" class="image" alt="">
-      <h3 class="name">john doe</h3>
-      <p class="role"><i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i> 1220 / 36</p>      
+      <img th:src="${profile.imageHashId}" class="image" alt="">
+      <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
+<!--      <p class="role"><i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i> 1220 / 36</p>      -->
    </div>
 
    <nav class="navbar">
-      <a href="home.html"><i class="fas fa-home"></i><span>dashboard</span></a>
+      <a th:href="@{/api/user/dashboard}"><i class="fas fa-home"></i><span>dashboard</span></a>
       <!-- <a href="dashboard.html"><i class="fas fa-question"></i><span>kurslar</span></a> -->
-      <a href="dashboard.html"><i class="fas fa-graduation-cap"></i><span>kurslar</span></a>
-      <a href="top-students.html"><i class="fas fa-chalkboard-user"></i><span>reyting</span></a>
+      <a th:href="@{/api/user/my/course}"><i class="fas fa-graduation-cap"></i><span>mening kurslarim</span></a>
+      <!--      <a href="top-students.html"><i class="fas fa-chalkboard-user"></i><span>reyting</span></a>-->
       <!-- <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a> -->
    </nav>
 
@@ -68,30 +68,21 @@
 
    <div class="box-container">
 
-      <div class="box">
-         <a href="demo.html">
-            <img src="/user/images/BRO-Vector-iStock.jpg" alt="">
-            <i class="fas fa-unlock"></i>
-            <span>Matematika</span>
+      <div class="box" th:if="${accessCourse == null}">
+         <a th:href="@{/api/user/dashboard}" style="text-align: center">
+<!--            <i class="fas fa-minus-circle"></i>-->
+<!--            <img src="/user/images/pic-1.jpg" alt="">-->
+            <h2>Sizda sotib olingan kurs yo'q<br>Pastdagi tugma orqali kurslarni xarid qilishingiz mumkin.</h2>
+            <button type="button" class="btn btn-block">Xarid qilish</button>
+         </a>
+      </div>
+
+      <div class="box" th:each="course : ${accessCourse}">
+         <a th:href="${course.lessonPath}">
+            <img th:src="${course.image}">
+            <p th:text="${course.grade} + '-sinf'"></p>
+            <span th:text="${course.science}"></span>
          </a>         
-      </div>
-
-      <div class="box">
-         <img src="/user/images/How-to-Learn-English-Speaking-at-Home-960x540.jpg" alt="">
-         <i class="fas fa-unlock"></i>
-         <span>Ingliz tili</span>
-      </div>
-
-      <div class="box">
-         <img src="/user/images/why-is-critical-thinking-important.jpg" alt="">
-         <i class="fas fa-unlock"></i>
-         <span>Tanqidiy fikrlash</span>
-      </div>
-
-      <div class="box">
-         <img src="/user/images/problem-solving-concept-technique.jpg" alt="">
-         <i class="fas fa-unlock"></i>
-         <span>Muammoni yechish</span>
       </div>
 
    </div>

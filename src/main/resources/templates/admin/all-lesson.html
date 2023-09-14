@@ -122,7 +122,7 @@
                             <span class="nav-text">O'quvchilar</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="all-students.html">Barcha o'quvchilar</a></li>
+                            <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
                         </ul>
                     </li>
                     <li>
@@ -265,7 +265,7 @@
 <!--                        </div>-->
                         <div th:each = "grade : ${all}" class="col-lg-3 col-md-6 col-sm-12">
                             <a class="box" th:href="@{'/api/admin/lesson/' + ${grade.id}}">
-                                <span class="lesson-type text-lowercase" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
+                                <span class="lesson-type text-lowercase" th:text="${grade.type}"></span>
                                 <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
                                 <i class="la la-play"></i>
                                 <img src="/images/thumb-1.png" alt="">

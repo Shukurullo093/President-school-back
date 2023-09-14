@@ -201,14 +201,14 @@
 							<div class="card-body">
                                 <div class="video-container">
                                     <div class="video">
-                                       <video th:src="@{${'/api/teacher/rest/viewVideo/' + lessonInfo.lessonVideoSource}}" controls poster="/images/thumb-1.png" id="video"></video>
+                                       <video th:src="${lessonInfo.videoLink}" controls poster="/images/thumb-1.png" id="video"></video>
                                     </div>
                                     <h3 th:text="${lessonInfo.title}"></h3>
                                     <!-- <span class="date">10-10-2023</span> -->
                                     <form method="post" class="flex">
-                                       <a href="lesson-tasks.html" class="btn btn-warning"><i class="la la-tasks"></i> Topshiriq</a>
+                                       <a th:href="${lessonInfo.taskLink}" class="btn btn-warning"><i class="la la-tasks"></i> Topshiriq</a>
                                        <a th:href="@{'/api/teacher/edit/lesson/' + ${lessonInfo.id}}" class="btn btn-primary"><i class="la la-edit"></i> Tahrirlash</a>
-                                       <a href="lesson-tasks.html" class="btn btn-danger"><i class="la la-trash"></i> O'chirish</a>
+                                       <a href="javascript:void(0);" class="btn btn-danger"><i class="la la-trash"></i> O'chirish</a>
                                     </form>
                                     <p class="description" th:text="${lessonInfo.description}"></p>
                                  </div>
@@ -229,7 +229,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2020</p>
+                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
             </div>
         </div>
         <!--**********************************

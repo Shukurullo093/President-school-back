@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+	
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Edumin - Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+    <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+	
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="index.html" class="brand-logo">
+                <img class="logo-abbr" src="/images/logo-white.png" alt="">
+                <img class="logo-compact" src="/images/logo-text-white.png" alt="">
+                <img class="brand-title" src="/images/logo-text-white.png" alt="">
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                        </div>
+
+                        <ul class="navbar-nav header-right">
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                    <img th:src="${img}" width="20" alt="">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a th:href="@{/api/admin/profile}" class="dropdown-item ai-icon">
+                                        <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        <span class="ml-2">Profile </span>
+                                    </a>
+                                    <a href="page-login.html" class="dropdown-item ai-icon">
+                                        <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                        <span class="ml-2">Logout </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="dlabnav">
+            <div class="dlabnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Bosh Menu</li>
+                    <li>
+                        <a class="ai-icon" th:href="@{/api/teacher/dashboard}" aria-expanded="false">
+                            <i class="la la-home"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                            <i class="la la-graduation-cap"></i>
+                            <span class="nav-text">Darslar</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a th:href="@{/api/teacher/all/lesson}">Barcha darslar</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+		
+		
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <!-- row -->
+            <div class="container-fluid">
+
+                <div class="row page-titles mx-0">
+                    <div class="col-sm-6 p-md-0">
+                        <div class="welcome-text">
+                            <h4>Yangi dars</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/api/teacher/dashboard}">Dashboard</a></li>
+                            <li class="breadcrumb-item active"><a th:href="@{/api/teacher/all/lesson}">Darslar</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Yangi dars</a></li>
+                        </ol>
+                    </div>
+                </div>
+				
+				<div class="row">					
+					<div class="col-xl-12 col-xxl-12 col-lg-12">
+						<div class="card">
+                            <div class="card-body">
+                                <div class="profile-tab">
+                                    <div class="custom-tab-1">
+                                        <div class="tab-content">
+											<div id="my-posts" class="tab-pane fade active show">
+                                                <div class="my-post-content pt-3">
+                                                    <form id="form">
+                                                        <div class="row">
+                                                            <div class="alert alert-success alert-dismissible fade show mx-2" role="alert">
+                                                                <span class="text-dark"></span>
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <style>
+                                                                .alert-success,
+                                                                .alert-danger{
+                                                                    display: none;
+                                                                }
+                                                            </style>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
+                                                                <label class="form-label">Test mavzusi</label>
+                                                                <input type="text" th:value="${title}" class="form-control" readonly>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                                                <label class="form-label">Test savoli</label>
+                                                                <textarea name="questionTxt" class="form-control" style="resize: none;" rows="5"></textarea>
+                                                                <input type="file" name="questionImg" class="form-control mt-2" accept="image/*">
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                                                <label class="form-label">Variant(#1)[To'g'ri javob]</label>
+                                                                <textarea name="v1" class="form-control" style="resize: none;" rows="5"></textarea>
+                                                                <input type="file" name="v1img" class="form-control mt-2" accept="image/*">
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                                                <label class="form-label">Variant(#2)</label>
+                                                                <textarea name="v2" class="form-control" style="resize: none;" rows="5"></textarea>
+                                                                <input type="file" name="v2img" class="form-control mt-2" accept="image/*">
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-6 col-sm-12">
+                                                                <label class="form-label">Variant(#3)</label>
+                                                                <textarea name="v3" class="form-control" style="resize: none;" rows="5"></textarea>
+                                                                <input type="file" name="v3img" class="form-control mt-2" accept="image/*">
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 alert alert-danger alert-dismissible fade show mx-2" role="alert">
+                                                                <span class="text-dark" id="error-alert"></span>
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 text-end mt-3">
+                                                                <button type="button" onclick="addTest(this)" th:data-id="${lessonId}" class="btn btn-primary">Saqlash</button>
+                                                                <button type="reset" class="btn btn-light">Bekor qilish</button>
+                                                            </div>                                                            
+                                                        </div>
+                                                    </form>
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 mt-5" style="width: 100%; overflow-x: scroll;">
+                                                        <table class="table table-bordered table-striped rounded">
+                                                            <thead>
+                                                                <tr class="text-capitalize text-center">
+                                                                    <th>No.</th>
+                                                                    <th>Savol</th>
+                                                                    <th>Variant(#1)</th>
+                                                                    <th>Variant(#2)</th>
+                                                                    <th>Variant(#3)</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr th:each = "test : ${testList}" class="text-center" style="word-break: break-word">
+                                                                    <td th:text="${test.order}" style="width: 4%;"></td>
+                                                                    <td style="width: 23%;">
+                                                                        <img th:if="${test.questionImgUrl != null}" th:src="${test.questionImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
+                                                                        <span th:text="${test.question}"></span>
+                                                                    </td>
+                                                                    <td style="width: 23%;">
+                                                                        <img th:if="${test.answer1ImgUrl != null}" th:src="${test.answer1ImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
+                                                                        <span th:text="${test.answer1}"></span>
+                                                                    </td>
+                                                                    <td style="width: 23%;">
+                                                                        <img th:if="${test.answer2ImgUrl != null}" th:src="${test.answer2ImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
+                                                                        <span th:text="${test.answer2}"></span>
+                                                                    </td>
+                                                                    <td style="width: 23%;">
+                                                                        <img th:if="${test.answer3ImgUrl != null}" th:src="${test.answer3ImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
+                                                                        <span th:text="${test.answer3}"></span>
+                                                                    </td>
+                                                                    <td style="width: 4%; font-size: 18px; font-weight: 600;">
+                                                                        <i class="la la-edit bg-primary btn text-light py-1 px-2 rounded"></i>
+                                                                        <i class="la la-trash bg-danger btn text-light py-1 px-2 rounded mt-2"></i>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+					</div>
+				</div>
+				
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+		<!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="/vendor/global/global.min.js"></script>
+	<script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="/js/custom.min.js"></script>
+    <script src="/js/dlabnav-init.js"></script>
+	
+	<!-- Svganimation scripts -->
+    <script src="/vendor/svganimation/vivus.min.js"></script>
+    <script src="/vendor/svganimation/svg.animation.js"></script>
+    <script src="/js/styleSwitcher.js"></script>
+
+    <script src="/js/teacher/teacher.js"></script>
+	<script>
+        function scaleImg(th){
+            if ($(th).css("height") === "200px"){
+                $(th).css("height", '300px');
+            }
+            else {
+                $(th).css("height", '200px');
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -2,7 +2,7 @@ package com.example.president_school.entity.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import static com.example.president_school.entity.enums.RolesPermissions.*;
 
@@ -48,14 +48,14 @@ public enum Role {
     @Getter
     private final Set<RolesPermissions> permissions;
 
-    public List<SimpleGrantedAuthority> getAuthorities(){
-        var authorities = getPermissions()
-                .stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermissions()))
-                .collect(Collectors.toList());
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-        return authorities;
-    }
+//    public List<SimpleGrantedAuthority> getAuthorities(){
+//        var authorities = getPermissions()
+//                .stream()
+//                .map(permission -> new SimpleGrantedAuthority(permission.getPermissions()))
+//                .collect(Collectors.toList());
+//        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+//        return authorities;
+//    }
 
     @Override
     public String toString() {

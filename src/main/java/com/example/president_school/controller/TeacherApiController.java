@@ -1,13 +1,13 @@
 package com.example.president_school.controller;
 
-import com.example.president_school.entity.Employee;
-import com.example.president_school.entity.Lesson;
+import com.example.president_school.entity.*;
 import com.example.president_school.entity.enums.LessonType;
 import com.example.president_school.payload.EmployeeDto;
 import com.example.president_school.payload.LessonDto;
-import com.example.president_school.repository.EmployeeRepository;
-import com.example.president_school.repository.LessonRepository;
+import com.example.president_school.payload.TestDto;
+import com.example.president_school.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/api/teacher")
@@ -27,6 +24,13 @@ import java.util.Optional;
 public class TeacherApiController {
     private final EmployeeRepository employeeRepository;
     private final LessonRepository lessonRepository;
+    private final TestRepository testRepository;
+    private final VideoSourceRepository videoSourceRepository;
+    private final TaskSourceRepository taskSourceRepository;
+
+
+    @Value("${default.person.image.path}")
+    private String defaultPersonImgPath;
 
     @GetMapping("/dashboard")
     public String getDashboard(Model map){
@@ -37,15 +41,22 @@ public class TeacherApiController {
         else {
             map.addAttribute("img", null);
         }
+        map.addAttribute("grade", employeeOptional.get().getGrade());
+        if (employeeOptional.get().getGrade().equals("Hammasi")){
+            List<Lesson> lessonList2 = lessonRepository.findAllByCourseGradeAndCourseEmployee(2, employeeOptional.get());
+            map.addAttribute("grade2Count", lessonList2.size());
 
-        List<Lesson> lessonList2 = lessonRepository.findAllByCourseGradeAndCourseEmployee(2, employeeOptional.get());
-        map.addAttribute("grade2Count", lessonList2.size());
+            List<Lesson> lessonList3 = lessonRepository.findAllByCourseGradeAndCourseEmployee(3, employeeOptional.get());
+            map.addAttribute("grade3Count", lessonList3.size());
 
-        List<Lesson> lessonList3 = lessonRepository.findAllByCourseGradeAndCourseEmployee(3, employeeOptional.get());
-        map.addAttribute("grade3Count", lessonList3.size());
+            List<Lesson> lessonList4 = lessonRepository.findAllByCourseGradeAndCourseEmployee(4, employeeOptional.get());
+            map.addAttribute("grade4Count", lessonList4.size());
+        } else {
+            List<Lesson> lessonList2 = lessonRepository
+                    .findAllByCourseGradeAndCourseEmployee(Integer.parseInt(employeeOptional.get().getGrade()), employeeOptional.get());
+            map.addAttribute("grade" + employeeOptional.get().getGrade() + "Count", lessonList2.size());
+        }
 
-        List<Lesson> lessonList4 = lessonRepository.findAllByCourseGradeAndCourseEmployee(4, employeeOptional.get());
-        map.addAttribute("grade4Count", lessonList4.size());
         return "teacher/teacher-dashboard";
     }
 
@@ -53,23 +64,65 @@ public class TeacherApiController {
     public String addLesson(@PathVariable String grade, Model map){
         Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998930024547");
         if (employeeOptional.get().getImage() != null){
-            map.addAttribute("img", employeeOptional.get().getImage().getHashId());
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
         }
         else {
-            map.addAttribute("img", null);
+            map.addAttribute("img", defaultPersonImgPath);
         }
         List<Lesson> lessonListByGrade = lessonRepository.findAllByCourseGradeAndCourseEmployee(Integer.valueOf(grade), employeeOptional.get());
-        map.addAttribute("gradeCount", lessonListByGrade.size() + 1);
+        map.addAttribute("lessonCount", lessonListByGrade.size() + 1);
         map.addAttribute("science", employeeOptional.get().getScience().toString());
         map.addAttribute("grade", grade);
-        if ((lessonListByGrade.size() + 1) % 7 == 0){
+        if (lessonListByGrade.size() + 1 <= 2){
+            map.addAttribute("lessonType", "Demo");
+        } else if ((lessonListByGrade.size() + 1) % 7 == 0){
             map.addAttribute("lessonType", "Test");
-        }
-        else {
+        } else {
             map.addAttribute("lessonType", "Video");
         }
-
         return "teacher/add-lesson";
+    }
+
+    @GetMapping("/add/test/{lessonId}")
+    public String addTest(@PathVariable String lessonId, Model map){
+        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998930024547");
+        if (employeeOptional.get().getImage() != null){
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
+        }
+        else {
+            map.addAttribute("img", defaultPersonImgPath);
+        }
+
+        List<Test> testList = testRepository.findAllByLesson(lessonRepository.findById(UUID.fromString(lessonId)).get());
+        map.addAttribute("title", lessonRepository.findById(UUID.fromString(lessonId)).get().getTitle());
+        map.addAttribute("lessonId", lessonId);
+        List<TestDto> testDtoList = new ArrayList<>();
+        int i = 1;
+        for(Test test : testList){
+            TestDto testDto = new TestDto();
+            testDto.setId(test.getId());
+            testDto.setOrder(i);
+            testDto.setQuestion(test.getQuestionTxt());
+            testDto.setAnswer1(test.getAnswer1());
+            testDto.setAnswer2(test.getAnswer2());
+            testDto.setAnswer3(test.getAnswer3());
+            if (test.getQuestionImg() != null){
+                testDto.setQuestionImgUrl("/api/teacher/rest/viewImage/" + test.getQuestionImg().getHashId());
+            }
+            if (test.getAnswer1Img() != null){
+                testDto.setAnswer1ImgUrl("/api/teacher/rest/viewImage/" + test.getAnswer1Img().getHashId());
+            }
+            if (test.getAnswer2Img() != null){
+                testDto.setAnswer2ImgUrl("/api/teacher/rest/viewImage/" + test.getAnswer2Img().getHashId());
+            }
+            if (test.getAnswer3Img() != null){
+                testDto.setAnswer3ImgUrl("/api/teacher/rest/viewImage/" + test.getAnswer3Img().getHashId());
+            }
+            testDtoList.add(testDto);
+            i++;
+        }
+        map.addAttribute("testList", testDtoList);
+        return "teacher/add-test";
     }
 
     @GetMapping("/all/lesson")
@@ -89,16 +142,21 @@ public class TeacherApiController {
 
         int i2=1, i3=1, i4=1;
         for (Lesson lesson : lessonList) {
+            String lessonPath = !lesson.getLessonType().equals(LessonType.TEST) ? "/api/teacher/lesson/info/" + lesson.getId() :
+                    "/api/teacher/add/test/" + lesson.getId();
             if (lesson.getCourse().getGrade() == 2){
-                lessonDtoList2.add(new LessonDto(lesson.getId(), i2, lesson.getTitle(), lesson.getLessonType().toString()));
+                lessonDtoList2.add(new LessonDto(lesson.getId(), i2, lesson.getTitle(),
+                        lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath));
                 i2++;
             }
             else if (lesson.getCourse().getGrade() == 3){
-                lessonDtoList3.add(new LessonDto(lesson.getId(), i3, lesson.getTitle(), lesson.getLessonType().toString()));
+                lessonDtoList3.add(new LessonDto(lesson.getId(), i3, lesson.getTitle(),
+                        lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath));
                 i3++;
             }
             else {
-                lessonDtoList3.add(new LessonDto(lesson.getId(), i4, lesson.getTitle(), lesson.getLessonType().toString()));
+                lessonDtoList3.add(new LessonDto(lesson.getId(), i4, lesson.getTitle(),
+                        lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath));
                 i4++;
             }
         }
@@ -125,7 +183,7 @@ public class TeacherApiController {
 
         int i=1;
         for (Lesson lesson : lessonList) {
-            lessonDtoList.add(new LessonDto(lesson.getId(), i, lesson.getTitle(), lesson.getLessonType().toString()));
+            lessonDtoList.add(new LessonDto(lesson.getId(), i, lesson.getTitle(), lesson.getLessonType().toString(), "true"));
             i++;
         }
         map.addAttribute("gradeStatus", grade);
@@ -143,8 +201,18 @@ public class TeacherApiController {
         else {
             map.addAttribute("img", null);
         }
-        Optional<Lesson> lessonOptional = lessonRepository.findById(Integer.valueOf(id));
-        map.addAttribute("lessonInfo", lessonOptional.get());
+        Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(id));
+        Lesson lesson = lessonOptional.get();
+        Optional<VideoSource> video = videoSourceRepository.findByLesson(lesson);
+        Optional<TaskSource> task = taskSourceRepository.findByLesson(lesson);
+        LessonDto lessonDto = new LessonDto();
+        lessonDto.setId(lesson.getId());
+        lessonDto.setTitle(lesson.getTitle());
+        lessonDto.setDescription(lesson.getDescription());
+        lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + video.get().getHashId());
+        lessonDto.setTaskLink("/api/teacher/rest/task/" + task.get().getHashId());
+
+        map.addAttribute("lessonInfo", lessonDto);
         return "teacher/lesson-info";
     }
 
@@ -158,14 +226,9 @@ public class TeacherApiController {
             map.addAttribute("img", null);
         }
 
-        Optional<Lesson> lessonOptional = lessonRepository.findById(Integer.valueOf(id));
+        Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(id));
         Lesson lesson = lessonOptional.get();
         map.addAttribute("lesson", lesson);
-        if (lesson.getLessonType() == LessonType.TEST){
-            map.addAttribute("lessonType", "Test");
-        } else {
-            map.addAttribute("lessonType", "Video");
-        }
         return "teacher/edit-lesson";
     }
 
@@ -174,10 +237,10 @@ public class TeacherApiController {
         Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998930024547");
         Employee employee = employeeOptional.get();
         if (employee.getImage() != null){
-            map.addAttribute("img", employeeOptional.get().getImage().getHashId());
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
         }
         else {
-            map.addAttribute("img", null);
+            map.addAttribute("img", defaultPersonImgPath);
         }
 
         EmployeeDto employeeDto = new EmployeeDto();
@@ -195,37 +258,40 @@ public class TeacherApiController {
         }
         employeeDto.setRole(employee.getRole().toString());
         employeeDto.setGrade(employee.getGrade());
-        employeeDto.setImageHashId(employee.getImage().getHashId());
+        if (employee.getImage() == null){
+            employeeDto.setImageHashId(defaultPersonImgPath);}
+        else {
+        employeeDto.setImageHashId("/api/admin/rest/viewImage/" + employee.getImage().getHashId());}
 
         map.addAttribute("employee", employeeDto);
         return "teacher/profile";
     }
 
-    @GetMapping("/update/profile")
-    public String updateProfile(Model map){
-        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998930024547");
-        Employee employee1 = employeeOptional.get();
-        if (employee1.getImage() != null){
-            map.addAttribute("img", employeeOptional.get().getImage().getHashId());
-        }
-        else {
-            map.addAttribute("img", null);
-        }
-
-        EmployeeDto employee= new EmployeeDto();
-        employee.setId(employee1.getId());
-        employee.setFullName(employee1.getLastName() + ' ' + employee1.getFirstName());
-        employee.setScience(employee1.getScience().toString());
-        employee.setEmail(employee1.getEmail());
-        employee.setPhone(employee1.getPhone());
-        employee.setGender(employee1.getGender());
-        employee.setGrade(employee1.getGrade());
-        employee.setRole(String.valueOf(employee1.getRole()));
-        employee.setBirthDate(getDateFormat(employee1.getBirthDate()));
-        employee.setJoiningDate(getDateFormat(employee1.getJoiningDate()));
-        map.addAttribute("employee", employee);
-        return "teacher/updateProfile";
-    }
+//    @GetMapping("/update/profile")
+//    public String updateProfile(Model map){
+//        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998930024547");
+//        Employee employee1 = employeeOptional.get();
+//        if (employee1.getImage() != null){
+//            map.addAttribute("img", employeeOptional.get().getImage().getHashId());
+//        }
+//        else {
+//            map.addAttribute("img", null);
+//        }
+//
+//        EmployeeDto employee= new EmployeeDto();
+//        employee.setId(employee1.getId());
+//        employee.setFullName(employee1.getLastName() + ' ' + employee1.getFirstName());
+//        employee.setScience(employee1.getScience().toString());
+//        employee.setEmail(employee1.getEmail());
+//        employee.setPhone(employee1.getPhone());
+//        employee.setGender(employee1.getGender());
+//        employee.setGrade(employee1.getGrade());
+//        employee.setRole(String.valueOf(employee1.getRole()));
+//        employee.setBirthDate(getDateFormat(employee1.getBirthDate()));
+//        employee.setJoiningDate(getDateFormat(employee1.getJoiningDate()));
+//        map.addAttribute("employee", employee);
+//        return "teacher/updateProfile";
+//    }
 
     private String getDate(Date date){
         return date.toString().substring(0, date.toString().indexOf(" "));

@@ -47,46 +47,81 @@ function login(){
     })
 }
 
-function test(){
-    $.ajax({
-        type: 'GET',
-        url: '/api/admin/dashboard',
-        beforeSend: function(xhr) {
-            if (localStorage.token) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
-            }
-        },
-        success: function(data) {
-            alert('Hello ' + data.name + '! You have successfully accessed to /api/profile.');
-        },
-        error: function() {
-            alert("Sorry, you are not logged in.");
-        }
-    });
-};
-
 function createLesson(){
     let form = $('#form')[0];
-    let data = new FormData(form);
+    let dataForm = new FormData(form);
 
     $.ajax({
         url: baseUrl + "/api/teacher/rest/add/lesson",
         type: 'POST',
         enctype: 'multipart/form-data',
-        data: data,
+        data: dataForm,
         processData: false,
         contentType: false,
         cache: false,
         success: function (data) {
-            if(data['statusCode']===200){
+            if(data['statusCode'] === 200){
                 $(".alert-success").css('display', 'block');
                 $(".alert-success .text-dark").text(data['message']);
                 setTimeout(function(){
                     $(".alert-success").css('display', 'none');
                     $(".alert-success .text-dark").text('');
-                    // form.reset();
-                    window.location = "/api/teacher/add/lesson";
+                    let num = parseInt(dataForm.get("lessonCount").substring(1)) + 1;
+                    form.reset();
+                    $('input[name="lessonCount"]').val("#" + num);
+                    if (num <= 2){
+                        $('input[name="lessonType"]').val("Demo");
+                        $('#v1').css("display", "block");
+                        $('#t1').css("display", "block");
+                    } else if (num % 7 === 0){
+                        $('input[name="lessonType"]').val("Test");
+                        $('#v1').css("display", "none");
+                        $('#t1').css("display", "none");
+                    } else {
+                        $('input[name="lessonType"]').val("Video");
+                        $('#v1').css("display", "block");
+                        $('#t1').css("display", "block");
+                    }
+                    // if (num % 7 === 0)
+                    //     window.location = "/api/teacher/add/lesson/" + dataForm.get('class');
+                }, 3000);
+            }
+            else {
+                $(".alert-danger").css('display', 'block');
+                $("#error-alert").text(data['message']);
+                setTimeout(function(){
+                    $(".alert-danger").css('display', 'none');
+                    $("#error-alert").text("");
                 }, 4000);
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    })
+}
+
+function addTest(th){
+    let form = $('#form')[0];
+    let dataForm = new FormData(form);
+
+    $.ajax({
+        url: baseUrl + "/api/teacher/rest/add/test/" + $(th).attr('data-id'),
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        data: dataForm,
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (data) {
+            if(data['statusCode'] === 200){
+                $(".alert-success").css('display', 'block');
+                $(".alert-success .text-dark").text(data['message']);
+                setTimeout(function(){
+                    $(".alert-success").css('display', 'none');
+                    $(".alert-success .text-dark").text('');
+                    form.reset();
+                }, 3000);
             }
             else {
                 $(".alert-danger").css('display', 'block');
@@ -139,22 +174,3 @@ function updateLesson(id){
         }
     })
 }
-
-// (() => {
-//     const counter = (() => {
-//         const input = document.getElementById('testAnswer'),
-//         display = document.getElementById('answer'),
-//         changeEvent = (evt) => display.innerHTML = evt.target.value.length + 1 + '-javobni kiriting',
-//         getInput = () => input.value,
-//         countEvent = () => input.addEventListener('keyup', changeEvent),
-//         init = () => countEvent();
-//
-//         return {
-//             init: init
-//         }
-//
-//     })();
-//
-//     counter.init();
-//
-// })();

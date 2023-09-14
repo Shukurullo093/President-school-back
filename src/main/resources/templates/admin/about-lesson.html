@@ -119,7 +119,7 @@
                             <span class="nav-text">O'quvchilar</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="all-students.html">Barcha o'quvchilar</a></li>
+                            <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
                         </ul>
                     </li>
                     <li>
@@ -155,7 +155,7 @@
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/api/admin/dashboard}">Dashboard</a></li>
                             <li class="breadcrumb-item active"><a th:href="@{/api/admin/all/lesson}">Darslar</a></li>
                             <li class="breadcrumb-item active"><a href="javascript:void(0);">Dars ma'lumotlari</a></li>
                         </ol>

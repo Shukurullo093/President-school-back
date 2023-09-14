@@ -34,8 +34,8 @@
       </div>
 
       <div class="profile">
-         <img src="/user/images/pic-1.jpg" class="image" alt="">
-         <h3 class="name">john doe</h3>
+         <img th:src="${profile.imageHashId}" class="image" alt="">
+         <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
          <!-- <p class="role">studen</p> -->
          <a href="update.html" class="btn">profile</a>
          <div class="flex-btn">
@@ -55,9 +55,9 @@
    </div>
 
    <div class="profile">
-      <img src="/user/images/pic-1.jpg" class="image" alt="">
-      <h3 class="name">john doe</h3>
-      <p class="role"><i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i> 1220 / 36</p>
+      <img th:src="${profile.imageHashId}" class="image" alt="">
+      <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
+<!--      <p class="role"><i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i> 1220 / 36</p>-->
       <!-- <a href="profile.html" class="btn">view profile</a> -->
    </div>
 
@@ -84,11 +84,11 @@
             <a href="#"><i class="fa-solid fa-eye"></i><span>ko'rilgan darslar</span> <span>100</span></a>
             <a href="#"><i class="fa-solid fa-list-check"></i><span>jami topshiriq</span> <span>500</span></a>
             <a href="#"><i class="fa-regular fa-circle-check"></i><span>bajarilgan topshiriq</span> <span>400</span></a>
-            <a href="#"><i class="fas fa-chart-line"></i><span>ball</span> <span>400</span></a>
-            <a href="#"><i class="fa-solid fa-coins"></i><span>sarflangan summa</span> <span>200 000</span></a>
-            <a href="#"><i class="fa-solid fa-xmark"></i><span>jarima ball</span> <span>100</span></a>
-            <a href="#"><i class="fa-solid fa-sack-xmark"></i><span>jarima summa</span> <span>40 000</span></a>
-            <a href="#"><i class="fa-solid fa-sack-dollar"></i><span>jami</span> <span>250 000</span></a>
+<!--            <a href="#"><i class="fas fa-chart-line"></i><span>ball</span> <span>400</span></a>-->
+<!--            <a href="#"><i class="fa-solid fa-coins"></i><span>sarflangan summa</span> <span>200 000</span></a>-->
+<!--            <a href="#"><i class="fa-solid fa-xmark"></i><span>jarima ball</span> <span>100</span></a>-->
+<!--            <a href="#"><i class="fa-solid fa-sack-xmark"></i><span>jarima summa</span> <span>40 000</span></a>-->
+<!--            <a href="#"><i class="fa-solid fa-sack-dollar"></i><span>jami</span> <span>250 000</span></a>-->
          </div>
       </div>
 

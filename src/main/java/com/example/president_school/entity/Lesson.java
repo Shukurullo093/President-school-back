@@ -5,18 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Entity
+@Table(name = "lesson")
 public class Lesson {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(generator = "uuid2")
+    @Type(type = "org.hibernate.type.PostgresUUIDType")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
 
     private String title;
 
@@ -26,24 +32,11 @@ public class Lesson {
     @Enumerated(EnumType.STRING)
     private LessonType lessonType;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "lesson_video_source_id")
-    private LessonSource lessonVideoSource;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "lesson_test_source_id")
-    private LessonSource lessonTestSource;
-
-    private String testAnswer;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "lesson_task_source_id")
-    private LessonSource lessonTaskSource;
-
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
 
+    @Column(updatable = false)
     @CreationTimestamp
     private Date createdDate;
 }

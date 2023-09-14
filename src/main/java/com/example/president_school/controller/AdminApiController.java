@@ -1,15 +1,15 @@
 package com.example.president_school.controller;
 
-import com.example.president_school.entity.Employee;
-import com.example.president_school.entity.Lesson;
+import com.example.president_school.entity.*;
 import com.example.president_school.entity.enums.Role;
 import com.example.president_school.entity.enums.Science;
 import com.example.president_school.payload.EmployeeDto;
 import com.example.president_school.payload.LessonDto;
-import com.example.president_school.repository.EmployeeRepository;
-import com.example.president_school.repository.LessonRepository;
-import com.example.president_school.security.CurrentUser;
+import com.example.president_school.payload.StudentDto;
+import com.example.president_school.repository.*;
+import com.example.president_school.service.GeneralService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/api/admin")
@@ -29,11 +26,24 @@ import java.util.Optional;
 public class AdminApiController {
     private final EmployeeRepository employeeRepository;
     private final LessonRepository lessonRepository;
+    private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
+    private final VideoSourceRepository videoSourceRepository;
+    private final TaskSourceRepository taskSourceRepository;
+    private final GeneralService generalService;
+
+    @Value("${default.person.image.path}")
+    private String defaultPersonImgPath;
+    String path = String.valueOf(this.getClass().getProtectionDomain().getCodeSource().getLocation()).substring("file:/".length());
 
     @GetMapping("/dashboard")
-    public String getDashboard(Model map, @CurrentUser Employee employee){
-        System.out.println("current user " + employee);
-        Optional<Employee> employeeOptional1 = employeeRepository.findByPhone(employee.getPhone());
+    public String getDashboard(Model map){
+//        System.out.println(path);
+//        path = path.replace("%20", " ");
+//        final int target = path.indexOf("target");
+//        System.out.println(path.substring(0, target));
+
+        Optional<Employee> employeeOptional1 = employeeRepository.findByPhone("+998901234567");
         Employee employee12 = employeeOptional1.get();
         if (employee12.getImage() != null){
             map.addAttribute("img", employeeOptional1.get().getImage().getHashId());
@@ -41,6 +51,21 @@ public class AdminApiController {
         else {
             map.addAttribute("img", null);
         }
+
+        final List<Student> studentList = studentRepository.findAll();
+        map.addAttribute("totalSize", studentList.size());
+
+        final List<Student> newStudents = new ArrayList<>();
+        studentList.forEach(student -> {
+            if (student.getCreatedDate().getMonth() == new Date().getMonth() && student.getCreatedDate().getYear() == new Date().getYear()){
+                newStudents.add(student);
+            }
+        });
+        map.addAttribute("newStudentList", newStudents);
+        map.addAttribute("newStudentSize", newStudents.size());
+
+        final List<Course> courseList = courseRepository.findAll();
+        map.addAttribute("courseSize", courseList.size());
         return "admin/dashboard";
     }
 
@@ -134,11 +159,34 @@ public class AdminApiController {
         return "admin/editEmployee";
     }
 
-    private String getDateFormat(Date date) {
-        DateFormat monthFormat;
-        monthFormat = new SimpleDateFormat("dd MMMM, yyyy");
-        return monthFormat.format(date);
-    }
+   @GetMapping("/all/student")
+   public String getAllStudent(Model map){
+       Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");
+       Employee employee = employeeOptional.get();
+       if (employee.getImage() != null){
+           map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
+       }
+       else {
+           map.addAttribute("img", defaultPersonImgPath);
+       }
+
+       final List<Student> all = studentRepository.findAll();
+       List<StudentDto> studentDtoList = new ArrayList<>();
+        for(Student student : all){
+            StudentDto studentDto = new StudentDto();
+            studentDto.setFullName(student.getFullName());
+            studentDto.setPhone(student.getPhone());
+            studentDto.setGender(student.getGender().equals("male") ? "O'g'il" : "Qiz");
+            studentDto.setGrade(String.valueOf(student.getGrade()));
+            studentDto.setImagePath(student.getImage() != null ? generalService.getProfile(student.getPhone()).getImageHashId() : defaultPersonImgPath);
+            DateFormat monthFormat;
+            monthFormat = new SimpleDateFormat("yyyy/MM/dd");
+            studentDto.setCreatedDate(monthFormat.format(student.getCreatedDate()));
+            studentDtoList.add(studentDto);
+        }
+        map.addAttribute("studentList", studentDtoList);
+       return "admin/all-student";
+   }
 
     @GetMapping("/about/employee/{id}")
     public String getEmployeeInfo(@PathVariable String id, Model map){
@@ -168,7 +216,9 @@ public class AdminApiController {
             }
             employeeDto.setRole(employee.getRole().toString());
             employeeDto.setGrade(employee.getGrade());
-            employeeDto.setImageHashId(employee.getImage().getHashId());
+            if(employee.getImage() != null)
+                employeeDto.setImageHashId(employee.getImage().getHashId());
+            else employeeDto.setImageHashId(null);
         }
 
         map.addAttribute("employee", employeeDto);
@@ -190,7 +240,7 @@ public class AdminApiController {
         List<LessonDto> lessonDtoList = new ArrayList<>();
         int i=1;
         for (Lesson lesson : all) {
-            lessonDtoList.add(new LessonDto(lesson.getId(), i, lesson.getTitle(), lesson.getLessonType().toString()));
+            lessonDtoList.add(new LessonDto(lesson.getId(), i, lesson.getTitle(), lesson.getLessonType().toString(), "true"));
             i++;
         }
         map.addAttribute("all", lessonDtoList);
@@ -208,13 +258,16 @@ public class AdminApiController {
             map.addAttribute("img", null);
         }
 
-        Optional<Lesson> lessonOptional = lessonRepository.findById(Integer.valueOf(id));
+        Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(id));
         Lesson lesson = lessonOptional.get();
         Optional<Employee> employeeOptional = employeeRepository.findById(lesson.getCourse().getEmployee().getId());
         Employee employee = employeeOptional.get();
-        map.addAttribute("lessonOwner", new EmployeeDto(employee.getId(), employee.getLastName() + ' ' + employee.getFirstName(),
-                null, null, null, null, employee.getScience().toString(), null,
-                "/api/admin/rest/viewImage/" + employee.getImage().getHashId(), employee.getRole().toString(), employee.getGrade()));
+        map.addAttribute("lessonOwner", new EmployeeDto(employee.getId(),
+                employee.getLastName() + ' ' + employee.getFirstName(),
+                null, null, null, null,
+                employee.getScience().toString(), null,
+                "/api/admin/rest/viewImage/" + employee.getImage().getHashId(),
+                employee.getRole().toString(), employee.getGrade()));
 
         LessonDto lessonDto = new LessonDto();
 
@@ -225,25 +278,16 @@ public class AdminApiController {
         DateFormat monthFormat;
         monthFormat = new SimpleDateFormat("dd-MM-yyyy");
         lessonDto.setCreatedDate(monthFormat.format(lesson.getCreatedDate()));
-
-        if (lessonDto.getType().equals("TEST")){
-            lessonDto.setTestAnswer(lesson.getTestAnswer());
-            lessonDto.setVideoLink("javascript:void(0);");
-            lessonDto.setTaskLink("javascript:void(0);");
-            lessonDto.setTestLink("/api/admin/rest/pdf/" + lesson.getLessonTestSource().getHashId());
-            lessonDto.setLessonName(lesson.getLessonTestSource().getName());
-            lessonDto.setContentType(lesson.getLessonTestSource().getContentType());
-            long fileSize = lesson.getLessonTestSource().getFileSize() / (1024 * 1024);
-            lessonDto.setSize(Long.toString(fileSize));
-        }else {
-            lessonDto.setLessonName(lesson.getLessonVideoSource().getName());
-            lessonDto.setContentType(lesson.getLessonVideoSource().getContentType());
-            long fileSize = lesson.getLessonVideoSource().getFileSize() / (1024 * 1024);
-            lessonDto.setSize(Long.toString(fileSize));
-            lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + lesson.getLessonVideoSource().getId());
-            lessonDto.setTaskLink("/api/admin/rest/pdf/" + lesson.getLessonTaskSource().getHashId());
-            lessonDto.setTestLink("javascript:void(0);");
-        }
+        final Optional<VideoSource> videoSource = videoSourceRepository.findByLessonId(UUID.fromString(id));
+        final VideoSource video = videoSource.get();
+        lessonDto.setLessonName(video.getName());
+        lessonDto.setContentType(video.getContentType());
+        long fileSize = video.getFileSize() / (1024 * 1024);
+        lessonDto.setSize(Long.toString(fileSize));
+        lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + video.getHashId());
+        final TaskSource taskSource = taskSourceRepository.findByLessonId(UUID.fromString(id)).get();
+        lessonDto.setTaskLink("/api/admin/rest/pdf/" + taskSource.getHashId());
+        lessonDto.setTestLink("javascript:void(0);");
 
         map.addAttribute("lessonInfo", lessonDto);
         return "admin/about-lesson";
@@ -318,6 +362,10 @@ public class AdminApiController {
         map.addAttribute("employee", employee);
         return "admin/updateProfile";
     }
-}
 
-// how to redirect another page after token based spring login with jquery
+    private String getDateFormat(Date date) {
+        DateFormat monthFormat;
+        monthFormat = new SimpleDateFormat("dd MMMM, yyyy");
+        return monthFormat.format(date);
+    }
+}

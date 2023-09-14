@@ -24,9 +24,9 @@ public interface EmployeeService {
                                    String pass,
                                    MultipartFile image,
                                    String role,
-                                   Integer grade);
+                                   String grade);
 
-    ControllerResponse updateEmployee(String employeeId, String name, String surname, String email, String phone, String science, String role, Integer grade, Date birthdate, String gender, Date joiningDate, String pass, MultipartFile image);
+    ControllerResponse updateEmployee(String employeeId, String name, String surname, String email, String phone, String science, String role, String grade, Date birthdate, String gender, Date joiningDate, String pass, MultipartFile image);
 
     ControllerResponse deleteEmployee(String id);
 

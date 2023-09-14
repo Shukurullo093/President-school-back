@@ -71,7 +71,7 @@
 
                         <ul class="navbar-nav header-right">
                             <li class="nav-item dropdown header-profile">
-                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                <a class="nav-link" href="javascript:void(0);" role="button" data-toggle="dropdown">
                                     <img th:src="@{${img != null ? '/api/admin/rest/viewImage/' + img : '/images/profile/education/pic-6.jpg'}}" width="20" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
@@ -105,17 +105,7 @@
                         <i class="la la-home"></i>
                         <span class="nav-text">Dashboard</span>
                     </a>
-                        <!-- <ul aria-expanded="false">
-                            <li><a href="index.html">Dashboard 1</a></li>
-                            <li><a href="index-2.html">Dashboard 2</a></li>
-                            <li><a href="index-3.html">Dashboard 3</a></li>
-                        </ul> -->
                     </li>
-                    <!-- <li><a class="ai-icon" href="event-management.html" aria-expanded="false">
-                            <i class="la la-calendar"></i>
-                            <span class="nav-text">Event Management</span>
-                        </a>
-                    </li> -->
                     <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
                         <i class="la la-user"></i>
                         <span class="nav-text">Hodimlar</span>
@@ -123,8 +113,6 @@
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/list/employee}">Barcha hodimlar</a></li>
                             <li><a th:href="@{/api/admin/add/employee}">Yangi hodim</a></li>
-                            <!-- <li><a href="edit-professor.html">Edit Professor</a></li> -->
-                            <!-- <li><a href="professor-profile.html">Hodim haqida</a></li> -->
                         </ul>
                     </li>
                     <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -132,10 +120,7 @@
                         <span class="nav-text">O'quvchilar</span>
                     </a>
                         <ul aria-expanded="false">
-                            <li><a href="all-students.html">Barcha o'quvchilar</a></li>
-                            <!-- <li><a href="add-student.html">Add Students</a></li> -->
-                            <!-- <li><a href="edit-student.html">Edit Students</a></li> -->
-                            <!-- <li><a href="about-student.html">O'quvchi haqida</a></li> -->
+                            <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
                         </ul>
                     </li>
                     <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -169,8 +154,8 @@
 										<i class="la la-users"></i>
 									</span>
 									<div class="media-body text-white">
-										<p class="mb-1">Total Students</p>
-										<h3 class="text-white">3280</h3>
+										<p class="mb-1">Barcha o'quvchilar</p>
+										<h3 class="text-white" th:text="${totalSize}"></h3>
 										<div class="progress mb-2 bg-white">
                                             <div class="progress-bar progress-animated bg-light" style=" width: 80%"></div>
                                         </div>
@@ -188,8 +173,8 @@
 										<i class="la la-user"></i>
 									</span>
 									<div class="media-body text-white">
-										<p class="mb-1">New Students</p>
-										<h3 class="text-white">245</h3>
+										<p class="mb-1">Yangi o'quvchilar</p>
+										<h3 class="text-white" th:text="${newStudentSize}"></h3>
 										<div class="progress mb-2 bg-white">
                                             <div class="progress-bar progress-animated bg-light" style="width: 50%"></div>
                                         </div>
@@ -207,7 +192,7 @@
 										<i class="la la-graduation-cap"></i>
 									</span>
 									<div class="media-body text-white">
-										<p class="mb-1">Total Course</p>
+										<p class="mb-1">Barcha kurslar</p>
 										<h3 class="text-white">28</h3>
 										<div class="progress mb-2 bg-white">
                                             <div class="progress-bar progress-animated bg-light" style="width: 76%"></div>
@@ -424,88 +409,38 @@
 					<div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">New Student List</h4>
+                                <h4 class="card-title">Yangi o'quvchilar ro'yhati</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive recentOrderTable">
                                     <table class="table verticle-middle table-responsive-md">
                                         <thead>
                                             <tr>
-                                                <th scope="col">No.</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Assigned Professor</th>
-                                                <th scope="col">Date Of Admit</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">Subject</th>
-                                                <th scope="col">Fees</th>
-                                                <th scope="col">Edit</th>
+<!--                                                <th scope="col">No.</th>-->
+                                                <th scope="col">Fio</th>
+                                                <th scope="col">Telefon</th>
+                                                <th scope="col">Vaqt</th>
+                                                <th scope="col">Jins</th>
+                                                <th scope="col">Sinf</th>
+<!--                                                <th scope="col">Fees</th>-->
+<!--                                                <th scope="col">Edit</th>-->
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>01</td>
-												<td>Jack Ronan</td>
-                                                <td>Airi Satou</td>
-                                                <td>01 August 2020</td>
-                                                <td><span class="badge badge-rounded badge-primary">Checkin</span></td>
-                                                <td>Commerce</td>
-                                                <td>120$</td>
+                                            <tr th:each="student : ${newStudentList}">
+<!--                                                <td>01</td>-->
+												<td th:text="${student.fullName}" style="text-transform: capitalize;"></td>
+                                                <td th:text="${student.phone}"></td>
+                                                <td th:text="${student.createdDate.toString().split(' ')[0]}"></td>
                                                 <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
+                                                    <span class="badge badge-rounded badge-primary" th:text="${student.gender} == 'male' ? 'o`g`il' : 'qiz'">Checkin</span>
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td>02 </td>
-                                                <td>Jimmy Morris</td>
-                                                <td>Angelica Ramos</td>
-												<td>31 July 2020</td>
-                                                <td><span class="badge badge-rounded badge-warning">Panding</span></td>
-                                                <td>Mechanical</td>
-                                                <td>120$</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>03 </td>
-                                                <td>Nashid Martines</td>
-                                                <td>Ashton Cox</td>
-												<td>30 July 2020</td>
-                                                <td><span class="badge badge-rounded badge-danger">Canceled</span></td>
-                                                <td>Science</td>
-                                                <td>520$</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>04</td>
-                                                <td>Roman Aurora</td>
-                                                <td>Cara Stevens</td>
-												<td>29 July 2020</td>
-                                                <td><span class="badge badge-rounded badge-success">Checkin</span></td>
-                                                <td>Arts</td>
-                                                <td>220$</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>05</td>
-                                                <td>Samantha</td>
-                                                <td>Bruno Nash </td>
-												<td>28 July 2020</td>
-                                                <td><span class="badge badge-rounded badge-success">Checkin</span></td>
-                                                <td>Maths</td>
-                                                <td>130$</td>
-                                                <td>
-                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
+                                                <td th:text="${student.grade}"></td>
+<!--                                                <td>120$</td>-->
+<!--                                                <td>-->
+<!--                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>-->
+<!--                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>-->
+<!--                                                </td>-->
                                             </tr>
                                         </tbody>
                                     </table>

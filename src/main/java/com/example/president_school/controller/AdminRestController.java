@@ -1,9 +1,11 @@
 package com.example.president_school.controller;
 
-import com.example.president_school.entity.LessonSource;
 import com.example.president_school.entity.PersonImage;
+import com.example.president_school.entity.TaskSource;
+import com.example.president_school.entity.VideoSource;
 import com.example.president_school.payload.ControllerResponse;
-import com.example.president_school.repository.LessonSourceRepository;
+import com.example.president_school.repository.TaskSourceRepository;
+import com.example.president_school.repository.VideoSourceRepository;
 import com.example.president_school.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +25,9 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class AdminRestController {
     private final EmployeeService employeeService;
-    private final LessonSourceRepository lessonSourceRepository;
+    private final VideoSourceRepository videoSourceRepository;
+    private final TaskSourceRepository taskSourceRepository;
+
     @Value("${upload.folder}")
     private String uploadFolder;
 
@@ -37,7 +41,7 @@ public class AdminRestController {
                                                           @RequestParam("gender") String gender,
                                                           @RequestParam("joiningDate") Date joiningDate,
                                                           @RequestParam("role") String role,
-                                                          @RequestParam("class") Integer grade,
+                                                          @RequestParam("class") String grade,
                                                           @RequestParam("pass") String pass,
                                                           @RequestParam("image")MultipartFile image){
         return ResponseEntity.ok(employeeService.addEmployee(name, surname, email, phone, science, birthdate,
@@ -46,7 +50,7 @@ public class AdminRestController {
 
     @PostMapping(value = "/update/employee/{employeeId}", produces = "application/json")
     public ResponseEntity<ControllerResponse> updateEmployee(@PathVariable String employeeId,
-                                                            @RequestParam("name") String name,
+                                                             @RequestParam("name") String name,
                                                               @RequestParam("surname") String surname,
                                                               @RequestParam("email") String email,
                                                               @RequestParam("phone") String phone,
@@ -54,12 +58,12 @@ public class AdminRestController {
                                                               @RequestParam("birthDate") Date birthdate,
                                                               @RequestParam("gender") String gender,
                                                               @RequestParam("joiningDate") Date joiningDate,
-                                                             @RequestParam("role") String role,
-                                                             @RequestParam("grade") String grade,
+                                                              @RequestParam("role") String role,
+                                                              @RequestParam("grade") String grade,
                                                               @RequestParam("pass") String pass,
                                                               @RequestParam("image")MultipartFile image){
         return ResponseEntity.ok(employeeService.updateEmployee(employeeId, name, surname, email, phone, science,
-               role, Integer.valueOf(grade), birthdate, gender, joiningDate, pass, image));
+               role, grade, birthdate, gender, joiningDate, pass, image));
     }
 
     @PostMapping(value = "/update/admin")
@@ -86,7 +90,7 @@ public class AdminRestController {
 
     @GetMapping("/pdf/{hashId}")
     public ResponseEntity<?> viewPdf(@PathVariable String hashId) throws IOException {
-        LessonSource lessonSource = lessonSourceRepository.findByHashId(hashId).get();
+        TaskSource lessonSource = taskSourceRepository.findByHashId(hashId).get();
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + URLEncoder.encode(lessonSource.getName()))
                 .contentType(MediaType.parseMediaType(lessonSource.getContentType()))

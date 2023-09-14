@@ -18,5 +18,5 @@ public class EmployeeDto {
     private String joiningDate;
     private String imageHashId;
     private String role;
-    private int grade;
+    private String grade;
 }
