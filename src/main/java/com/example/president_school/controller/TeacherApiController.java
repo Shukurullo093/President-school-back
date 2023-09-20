@@ -43,17 +43,17 @@ public class TeacherApiController {
         }
         map.addAttribute("grade", employeeOptional.get().getGrade());
         if (employeeOptional.get().getGrade().equals("Hammasi")){
-            List<Lesson> lessonList2 = lessonRepository.findAllByCourseGradeAndCourseEmployee(2, employeeOptional.get());
+            List<Lesson> lessonList2 = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(2, employeeOptional.get());
             map.addAttribute("grade2Count", lessonList2.size());
 
-            List<Lesson> lessonList3 = lessonRepository.findAllByCourseGradeAndCourseEmployee(3, employeeOptional.get());
+            List<Lesson> lessonList3 = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(3, employeeOptional.get());
             map.addAttribute("grade3Count", lessonList3.size());
 
-            List<Lesson> lessonList4 = lessonRepository.findAllByCourseGradeAndCourseEmployee(4, employeeOptional.get());
+            List<Lesson> lessonList4 = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(4, employeeOptional.get());
             map.addAttribute("grade4Count", lessonList4.size());
         } else {
             List<Lesson> lessonList2 = lessonRepository
-                    .findAllByCourseGradeAndCourseEmployee(Integer.parseInt(employeeOptional.get().getGrade()), employeeOptional.get());
+                    .findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer.parseInt(employeeOptional.get().getGrade()), employeeOptional.get());
             map.addAttribute("grade" + employeeOptional.get().getGrade() + "Count", lessonList2.size());
         }
 
@@ -69,7 +69,7 @@ public class TeacherApiController {
         else {
             map.addAttribute("img", defaultPersonImgPath);
         }
-        List<Lesson> lessonListByGrade = lessonRepository.findAllByCourseGradeAndCourseEmployee(Integer.valueOf(grade), employeeOptional.get());
+        List<Lesson> lessonListByGrade = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer.valueOf(grade), employeeOptional.get());
         map.addAttribute("lessonCount", lessonListByGrade.size() + 1);
         map.addAttribute("science", employeeOptional.get().getScience().toString());
         map.addAttribute("grade", grade);
@@ -178,16 +178,19 @@ public class TeacherApiController {
             map.addAttribute("img", null);
         }
 
-        List<Lesson> lessonList = lessonRepository.findAllByCourseGradeAndCourseEmployee(Integer.valueOf(grade), employeeOptional.get());
+        List<Lesson> lessonList = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer.valueOf(grade), employeeOptional.get());
         List<LessonDto> lessonDtoList = new ArrayList<>();
 
-        int i=1;
+        int i = 1;
         for (Lesson lesson : lessonList) {
-            lessonDtoList.add(new LessonDto(lesson.getId(), i, lesson.getTitle(), lesson.getLessonType().toString(), "true"));
+            String lessonPath = !lesson.getLessonType().equals(LessonType.TEST) ? "/api/teacher/lesson/info/" + lesson.getId() :
+                    "/api/teacher/add/test/" + lesson.getId();
+            lessonDtoList.add(new LessonDto(lesson.getId(), i, lesson.getTitle(),
+                    lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath));
             i++;
         }
         map.addAttribute("gradeStatus", grade);
-        map.addAttribute("grade"+grade, lessonDtoList);
+        map.addAttribute("grade" + grade, lessonDtoList);
 
         return "teacher/all-lesson";
     }
@@ -266,32 +269,6 @@ public class TeacherApiController {
         map.addAttribute("employee", employeeDto);
         return "teacher/profile";
     }
-
-//    @GetMapping("/update/profile")
-//    public String updateProfile(Model map){
-//        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998930024547");
-//        Employee employee1 = employeeOptional.get();
-//        if (employee1.getImage() != null){
-//            map.addAttribute("img", employeeOptional.get().getImage().getHashId());
-//        }
-//        else {
-//            map.addAttribute("img", null);
-//        }
-//
-//        EmployeeDto employee= new EmployeeDto();
-//        employee.setId(employee1.getId());
-//        employee.setFullName(employee1.getLastName() + ' ' + employee1.getFirstName());
-//        employee.setScience(employee1.getScience().toString());
-//        employee.setEmail(employee1.getEmail());
-//        employee.setPhone(employee1.getPhone());
-//        employee.setGender(employee1.getGender());
-//        employee.setGrade(employee1.getGrade());
-//        employee.setRole(String.valueOf(employee1.getRole()));
-//        employee.setBirthDate(getDateFormat(employee1.getBirthDate()));
-//        employee.setJoiningDate(getDateFormat(employee1.getJoiningDate()));
-//        map.addAttribute("employee", employee);
-//        return "teacher/updateProfile";
-//    }
 
     private String getDate(Date date){
         return date.toString().substring(0, date.toString().indexOf(" "));

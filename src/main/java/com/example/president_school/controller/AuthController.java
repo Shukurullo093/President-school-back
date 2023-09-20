@@ -3,7 +3,7 @@ package com.example.president_school.controller;
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.LoginDto;
 //import com.example.president_school.service.AuthService;
-import com.example.president_school.service.EmployeeService;
+import com.example.president_school.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 public class AuthController {
 //    private final AuthService authService;
-    private final EmployeeService employeeService;
+    private final AdminService employeeService;
 
     @PostMapping("/login")
     public ResponseEntity<ControllerResponse> signIn(@RequestParam("username")String phone,

@@ -6,15 +6,12 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Bootstrap Admin Dashboard </title>
+    <title>News</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="/css/style.css">
 	
-	<!-- Pick date -->
-    <link rel="stylesheet" href="/vendor/pickadate/themes/default.css">
-    <link rel="stylesheet" href="/vendor/pickadate/themes/default.date.css">
 
 </head>
 
@@ -67,22 +64,21 @@
                 <nav class="navbar navbar-expand">
                     <div class="collapse navbar-collapse justify-content-between">
                         <div class="header-left">
-
                         </div>
 
                         <ul class="navbar-nav header-right">
                             <li class="nav-item dropdown header-profile">
-                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-                                    <img th:src="@{${img != null ? '/api/admin/rest/viewImage/' + img : '/images/profile/education/pic-6.jpg'}}" width="20" alt="">
+                                <a class="nav-link" href="javascript:void(0);" role="button" data-toggle="dropdown">
+                                    <img th:src="${img}" width="20">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a th:href="@{/api/admin/profile}" class="dropdown-item ai-icon">
+                                    <a href="app-profile.html" class="dropdown-item ai-icon">
                                         <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span class="ml-2">Profile </span>
                                     </a>
                                     <a href="javascript:void(0);" class="dropdown-item ai-icon">
                                         <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                                        <span class="ml-2">Chiqish </span>
+                                        <span class="ml-2">Logout </span>
                                     </a>
                                 </div>
                             </li>
@@ -132,11 +128,10 @@
                             <li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
-                            <i class="la la-newspaper-o"></i>
-                            <span class="nav-text">Postlar</span>
-                        </a>
+                    <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+                        <i class="la la-newspaper-o"></i>
+                        <span class="nav-text">Postlar</span>
+                    </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/all/news}">Barcha postlar</a></li>
                             <li><a th:href="@{/api/admin/add/news}">Yangi post</a></li>
@@ -148,6 +143,7 @@
         <!--**********************************
             Sidebar end
         ***********************************-->
+
 		
 		
         <!--**********************************
@@ -160,113 +156,78 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4>Profile tahrirlash</h4>
+                            <h4>Postni tahrirlash</h4>
                         </div>
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a th:href="@{/api/admin/dashboard}">Dashboard</a></li>
-                                <li class="breadcrumb-item active"><a th:href="@{/api/admin/profile}">Profile</a></li>
-                                <li class="breadcrumb-item active"><a th:href="@{/api/admin/update/profile}">Profile tahrirlash</a></li>
-                            </ol>
-                        </div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/api/admin/dashboard}">Dashboard</a></li>
+                            <li class="breadcrumb-item active"><a th:href="@{/api/admin/all/news}">Postlar</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Tahrirlash</a></li>
+                        </ol>
                     </div>
                 </div>
 				
 				<div class="row">
-					<div class="col-xl-12 col-xxl-12 col-sm-12">
-                        <div class="card">
-                            <div class="card-header">
-								<h5 class="card-title">Profile tahrirlash</h5>
-							</div>
-                            <div class="alert alert-success alert-dismissible fade show mx-2" role="alert">
-                                <span class="text-dark"></span>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+					<div class="col-xl-12 col-xxl-12 col-lg-12">
+						<div class="card">
+                            <div class="card-body">
+<!--                                <div class="profile-tab">-->
+<!--                                    <div class="custom-tab-1">-->
+<!--                                        <div class="tab-content">-->
+											<div id="my-posts" class="tab-pane fade active show">
+                                                <div class="my-post-content pt-3">
+                                                    <div class="alert alert-success alert-dismissible fade show mx-2" role="alert">
+                                                        <span class="text-dark"></span>
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <style>
+                                                        .alert-success,
+                                                        .alert-danger{
+                                                            display: none;
+                                                        }
+                                                    </style>
+                                                    <form class="form" id="form">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Post mavzusi</label>
+                                                            <input type="text" th:value="${post.title}" name="title" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">Post turi</label>
+                                                            <select name="type" th:field="${post.type}" class="form-control">
+                                                                <option value="Rule">Qonun</option>
+                                                                <option value="News">Yangilik</option>
+                                                            </select>                                                         
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">Post uchun rasm</label>
+                                                            <input type="file" name="photo" accept="image/*" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">Post matni</label>
+                                                            <textarea name="description" th:text="${post.description}" class="form-control" rows="8" style="resize: none;"></textarea>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 alert alert-danger alert-dismissible fade show mx-2" role="alert">
+                                                            <span class="text-dark" id="error-alert"></span>
+                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <button type="button" th:data-id="${post.id}" id="editBtn" class="btn btn-primary">Tahrirlash</button>
+                                                            <button type="reset" class="btn btn-light">Bekor qilish</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                             </div>
-							<div class="card-body">
-                                <style>
-                                    .alert-success,
-                                    .alert-danger{
-                                        display: none;
-                                    }
-                                </style>
-                                <form id="form">
-									<div class="row">
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Ism</label>
-												<input type="text" th:value="${employee.fullName.split(' ')[1]}" name="name" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Familiya</label>
-												<input type="text" th:value="${employee.fullName.split(' ')[0]}" name="surname" class="form-control">
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Tug'ilgan kun</label>
-												<input name="birthDate" th:value="${employee.birthDate}" class="datepicker-default form-control" id="datepicker1">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Email</label>
-												<input type="text" th:value="${employee.email}" name="email" class="form-control">
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Telefon raqam</label>
-												<input type="text" th:value="${employee.phone}" name="phone" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Jins</label>
-												<select name="gender" th:value="${employee.gender}" class="form-control">
-													<option value="Male">Erkak</option>
-													<option value="Female">Ayol</option>
-												</select>
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Parol</label>
-												<input type="password" name="pass" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Parolni tasdiqlash</label>
-												<input type="password" name="repass" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-12 col-md-12 col-sm-12">
-											<div class="form-group fallback w-100">
-                                                <label class="form-label">Surat</label>
-												<input type="file" accept="image/*" name="image" class="dropify" data-default-file="">
-											</div>
-										</div>
-                                        <div class="col-lg-11 col-md-11 col-sm-11 alert alert-danger alert-dismissible fade show mx-2" role="alert">
-                                            <span class="text-dark" id="error-alert">warning alert</span>
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-										<div class="col-lg-12 col-md-12 col-sm-12">
-											<button type="button" id="editAdminBtn" class="btn btn-primary">Tahrirlash</button>
-											<button type="reset" class="btn btn-light">Bekor qilish</button>
-										</div>
-									</div>
-								</form>
-                            </div>
-                        </div>
-                    </div>
+						</div>
+					</div>                    
 				</div>
             </div>
         </div>
@@ -280,7 +241,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <!-- <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">Elite center</a> 2023</p> -->
+                <p>Copyright © Designed &amp; Developed by <a href="../index.html" target="_blank"></a> 2023</p>
             </div>
         </div>
         <!--**********************************
@@ -308,21 +269,13 @@
     <script src="/vendor/global/global.min.js"></script>
 	<script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/js/custom.min.js"></script>
-	<script src="/js/dlabnav-init.js"></script>
-
+    <script src="/js/dlabnav-init.js"></script>
+	
 	<!-- Svganimation scripts -->
     <script src="/vendor/svganimation/vivus.min.js"></script>
     <script src="/vendor/svganimation/svg.animation.js"></script>
     <script src="/js/styleSwitcher.js"></script>
-	
-	<!-- pickdate -->
-    <script src="/vendor/pickadate/picker.js"></script>
-    <script src="/vendor/pickadate/picker.time.js"></script>
-    <script src="/vendor/pickadate/picker.date.js"></script>
-	
-	<!-- Pickdate -->
-    <script src="/js/plugins-init/pickadate-init.js"></script>
 
-    <script src="/js/admin/admin.js"></script>
+    <script src="/js/admin/news.js"></script>
 </body>
 </html>

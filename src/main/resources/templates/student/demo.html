@@ -88,10 +88,10 @@
       <div class="column">
 
          <div class="details">
-            <h3 style="font-size: 30px;" th:text="${science}">Matematika</h3>
-            <p>Darslar soni: <span th:text="${lessonSize}">300</span> ta</p>
-            <p>Topshiriqlar soni: <span th:text="${tasksSize}">100</span> ta</p>
-            <p>Testlar soni: <span th:text="${testSize}">420</span> ta</p>
+            <h3 style="font-size: 30px;" th:text="${science}"></h3>
+            <p>Darslar soni: <span th:text="${lessonSize}"></span> ta</p>
+            <p>Topshiriqlar soni: <span th:text="${tasksSize}"></span> ta</p>
+            <p>Testlar soni: <span th:text="${testSize}"></span> ta</p>
             <a href="javascript:void(0);" th:data-id="${courseId}" th:if="${lesson1 != null}" id="shop" class="inline-btn">Xarid qilish</a>
          </div>
       </div>
@@ -134,8 +134,8 @@
          <img src="/user/images/post-1-1.png" alt="">
          <h3 th:text="${lesson2.title}"></h3>
       </a>
-
-      <a th:if="${lesson1 == null}" class="box" th:each="lesson : ${lessonList}" th:href="'/api/user/watch/' + ${lesson.id}">
+<!--'/api/user/watch/' + ${lesson.id}-->
+      <a th:if="${lesson1 == null}" class="box" th:each="lesson : ${lessonList}" th:href="${lesson.type} == 'test' ? '/api/user/test/' + ${lesson.id} : '/api/user/watch/' + ${lesson.id}">
          <span class="lesson-type" th:text="${lesson.type}"></span>
          <span class="lesson-order-number" th:text="${'#' + lesson.orderNumber}"></span>
 <!--         <span class="score" th:if="${lesson.access}">-->

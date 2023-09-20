@@ -16,4 +16,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     boolean existsByScience(Science valueOf);
     List<Course> findAllByGrade(Integer grade);
     Optional<Course> findByScienceAndGrade(Science science, int grade);
+    List<Course> findAllByScience(Science science);
 }

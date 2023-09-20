@@ -288,4 +288,27 @@ public class TeacherServiceImpl implements TeacherService {
 
         return new ControllerResponse("Dars tahrirlandi", 200);
     }
+
+    @Override
+    public void deleteTest(String id) {
+        final Optional<Test> testOptional = testRepository.findById(Integer.valueOf(id));
+        final Test test = testOptional.get();
+        if (test.getQuestionImg() != null){
+            File file = new File(uploadFolder + "/" + test.getQuestionImg().getUploadPath());
+            file.delete();
+        }
+        if (test.getAnswer1Img() != null){
+            File file = new File(uploadFolder + "/" + test.getAnswer1Img().getUploadPath());
+            file.delete();
+        }
+        if (test.getAnswer2Img() != null){
+            File file = new File(uploadFolder + "/" + test.getAnswer2Img().getUploadPath());
+            file.delete();
+        }
+        if (test.getAnswer3Img() != null){
+            File file = new File(uploadFolder + "/" + test.getAnswer3Img().getUploadPath());
+            file.delete();
+        }
+        testRepository.deleteById(Integer.valueOf(id));
+    }
 }

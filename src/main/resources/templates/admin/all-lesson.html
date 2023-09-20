@@ -106,32 +106,39 @@
                         <span class="nav-text">Dashboard</span>
                     </a>
                     </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                            <i class="la la-user"></i>
-                            <span class="nav-text">Hodimlar</span>
-                        </a>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-user"></i>
+                        <span class="nav-text">Hodimlar</span>
+                    </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/list/employee}">Barcha hodimlar</a></li>
                             <li><a th:href="@{/api/admin/add/employee}">Yangi hodim</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                            <i class="la la-users"></i>
-                            <span class="nav-text">O'quvchilar</span>
-                        </a>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-users"></i>
+                        <span class="nav-text">O'quvchilar</span>
+                    </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
                         </ul>
                     </li>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-graduation-cap"></i>
+                        <span class="nav-text">Kurslar</span>
+                    </a>
+                        <ul aria-expanded="false">
+                            <li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
+                        </ul>
+                    </li>
                     <li>
-                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                            <i class="la la-graduation-cap"></i>
-                            <span class="nav-text">Kurslar</span>
+                        <a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+                            <i class="la la-newspaper-o"></i>
+                            <span class="nav-text">Postlar</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a th:href="@{/api/admin/all/lesson}">Barcha kurslar</a></li>
+                            <li><a th:href="@{/api/admin/all/news}">Barcha postlar</a></li>
+                            <li><a th:href="@{/api/admin/add/news}">Yangi post</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -159,7 +166,7 @@
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a th:href="@{/api/admin/dashboard}">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Darslar</a></li>
+                            <li class="breadcrumb-item active"><a th:href="@{/api/admin/courses}">Darslar</a></li>
                             <li class="breadcrumb-item active"><a th:href="@{/api/admin/all/lesson}">Barcha darslar</a></li>
                         </ol>
                     </div>
@@ -256,13 +263,8 @@
                     </style>
 					<div class="col-lg-12 mb-3 d-flex flex-wrap rounded">
                         <div class="card-header col-lg-12">
-                            <h4 class="card-title">2-sinf darslari</h4>
+                            <h4 class="card-title" th:text="${science}"></h4>
                         </div>
-<!--                        <div class="col-lg-3 col-md-6 col-sm-12">-->
-<!--                            <a class="box1" href="add-lesson.html">-->
-<!--                                <i class="la la-plus-circle"></i>-->
-<!--                            </a>-->
-<!--                        </div>-->
                         <div th:each = "grade : ${all}" class="col-lg-3 col-md-6 col-sm-12">
                             <a class="box" th:href="@{'/api/admin/lesson/' + ${grade.id}}">
                                 <span class="lesson-type text-lowercase" th:text="${grade.type}"></span>
@@ -272,42 +274,6 @@
                                 <h3 th:text="${grade.title}"></h3>
                             </a>
                         </div>
-<!--                        <div class="col-lg-3 col-md-6 col-sm-12">-->
-<!--                            <a class="box" href="watch-video.html">-->
-<!--                                <span class="lesson-type">demo</span>-->
-<!--                                <span class="lesson-order-number">#1</span>-->
-<!--                                <i class="la la-play"></i>-->
-<!--                                <img src="images/thumb-1.png" alt="">-->
-<!--                                <h3>complete HTML tutorial (part 01)</h3>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 col-sm-12">-->
-<!--                            <a class="box" href="watch-video.html">-->
-<!--                                <span class="lesson-type">demo</span>-->
-<!--                                <span class="lesson-order-number">#1</span>-->
-<!--                                <i class="la la-play"></i>-->
-<!--                                <img src="images/thumb-1.png" alt="">-->
-<!--                                <h3>complete HTML tutorial (part 01)</h3>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 col-sm-12">-->
-<!--                            <a class="box" href="watch-video.html">-->
-<!--                                <span class="lesson-type">demo</span>-->
-<!--                                <span class="lesson-order-number">#1</span>-->
-<!--                                <i class="la la-play"></i>-->
-<!--                                <img src="images/thumb-1.png" alt="">-->
-<!--                                <h3>complete HTML tutorial (part 01)</h3>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 col-sm-12">-->
-<!--                            <a class="box" href="watch-video.html">-->
-<!--                                <span class="lesson-type">demo</span>-->
-<!--                                <span class="lesson-order-number">#1</span>-->
-<!--                                <i class="la la-play"></i>-->
-<!--                                <img src="images/thumb-1.png" alt="">-->
-<!--                                <h3>complete HTML tutorial (part 01)</h3>-->
-<!--                            </a>-->
-<!--                        </div>-->
 					</div>
 				</div>
 				

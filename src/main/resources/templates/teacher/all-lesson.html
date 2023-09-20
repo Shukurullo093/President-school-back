@@ -164,7 +164,7 @@
                                     </div>
                                     <div class="card-body" th:if="${gradeStatus == 'all' || gradeStatus == '2'}">
                                         <div class="table-responsive">
-                                            <table class="display w-100 table-striped text-center" style="min-width: 845px;">
+                                            <table class="display w-100 table-striped table text-center" style="min-width: 845px;">
                                                 <thead>
                                                 <tr class="text-center">
                                                     <th>No.</th>
@@ -172,16 +172,16 @@
                                                     <th>Mavzu</th>
                                                     <th>Izoh</th>
                                                     <th>Tur</th>
-                                                    <th><i class="la la-eye"></i> </th>
+<!--                                                    <th><i class="la la-eye"></i> </th>-->
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr th:each = "grade : ${grade2}" class="my-1 py-1 border-bottom">
-                                                        <td th:text="'#' + ${grade.orderNumber}" class="my-1"></td>
-                                                        <td class="text-center"><img class="rounded" width="100" src="/images/thumb-1.png"></td>
-                                                        <td th:text="${grade.title}" class="w-25"></td>
-                                                        <td th:text="${grade.description}" class="w-55"></td>
-                                                        <td th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}" class="text-uppercase"></td>
+                                                        <td th:text="'#' + ${grade.orderNumber}" class="my-1 px-1"></td>
+                                                        <td class="text-center px-1 py-2"><img class="rounded" width="100" src="/images/thumb-1.png"></td>
+                                                        <td th:text="${grade.title}" class="w-25 px-1"></td>
+                                                        <td th:text="${grade.description.length() > 200 ? grade.description.substring(0, 200) + '...' : grade.description}" class="w-55 text-justify px-1"></td>
+                                                        <td th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}" class="text-uppercase px-1"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -202,7 +202,7 @@
                                                     <th>Mavzu</th>
                                                     <th>Izoh</th>
                                                     <th>Tur</th>
-                                                    <th><i class="la la-eye"></i> </th>
+<!--                                                    <th><i class="la la-eye"></i> </th>-->
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -235,7 +235,7 @@
                                                     <th>Mavzu</th>
                                                     <th>Izoh</th>
                                                     <th>Tur</th>
-                                                    <th><i class="la la-eye"></i> </th>
+<!--                                                    <th><i class="la la-eye"></i> </th>-->
                                                 </tr>
                                                 </thead>
                                                 <tbody>

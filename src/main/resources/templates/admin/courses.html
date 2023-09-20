@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Bootstrap Admin Dashboard </title>
+    <title>Edumin - Bootstrap Admin Dashboard </title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -67,13 +67,12 @@
                 <nav class="navbar navbar-expand">
                     <div class="collapse navbar-collapse justify-content-between">
                         <div class="header-left">
-
                         </div>
 
                         <ul class="navbar-nav header-right">
                             <li class="nav-item dropdown header-profile">
-                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-                                    <img th:src="@{${img != null ? '/api/admin/rest/viewImage/' + img : '/images/profile/education/pic-6.jpg'}}" width="20" alt="">
+                                <a class="nav-link" href="javascript:void(0);" role="button" data-toggle="dropdown">
+                                    <img th:src="${img}" width="20">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a th:href="@{/api/admin/profile}" class="dropdown-item ai-icon">
@@ -149,7 +148,6 @@
             Sidebar end
         ***********************************-->
 		
-		
         <!--**********************************
             Content body start
         ***********************************-->
@@ -157,117 +155,60 @@
             <!-- row -->
             <div class="container-fluid">
 				    
-                <div class="row page-titles mx-0">
+                <!-- <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4>Profile tahrirlash</h4>
+                            <h4>Add Library Assets</h4>
                         </div>
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a th:href="@{/api/admin/dashboard}">Dashboard</a></li>
-                                <li class="breadcrumb-item active"><a th:href="@{/api/admin/profile}">Profile</a></li>
-                                <li class="breadcrumb-item active"><a th:href="@{/api/admin/update/profile}">Profile tahrirlash</a></li>
-                            </ol>
-                        </div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Library</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Add Library</a></li>
+                        </ol>
                     </div>
-                </div>
+                </div> -->
 				
 				<div class="row">
-					<div class="col-xl-12 col-xxl-12 col-sm-12">
-                        <div class="card">
-                            <div class="card-header">
-								<h5 class="card-title">Profile tahrirlash</h5>
-							</div>
-                            <div class="alert alert-success alert-dismissible fade show mx-2" role="alert">
-                                <span class="text-dark"></span>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-							<div class="card-body">
-                                <style>
-                                    .alert-success,
-                                    .alert-danger{
-                                        display: none;
-                                    }
-                                </style>
-                                <form id="form">
-									<div class="row">
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Ism</label>
-												<input type="text" th:value="${employee.fullName.split(' ')[1]}" name="name" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Familiya</label>
-												<input type="text" th:value="${employee.fullName.split(' ')[0]}" name="surname" class="form-control">
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Tug'ilgan kun</label>
-												<input name="birthDate" th:value="${employee.birthDate}" class="datepicker-default form-control" id="datepicker1">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Email</label>
-												<input type="text" th:value="${employee.email}" name="email" class="form-control">
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Telefon raqam</label>
-												<input type="text" th:value="${employee.phone}" name="phone" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Jins</label>
-												<select name="gender" th:value="${employee.gender}" class="form-control">
-													<option value="Male">Erkak</option>
-													<option value="Female">Ayol</option>
-												</select>
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Parol</label>
-												<input type="password" name="pass" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Parolni tasdiqlash</label>
-												<input type="password" name="repass" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-12 col-md-12 col-sm-12">
-											<div class="form-group fallback w-100">
-                                                <label class="form-label">Surat</label>
-												<input type="file" accept="image/*" name="image" class="dropify" data-default-file="">
-											</div>
-										</div>
-                                        <div class="col-lg-11 col-md-11 col-sm-11 alert alert-danger alert-dismissible fade show mx-2" role="alert">
-                                            <span class="text-dark" id="error-alert">warning alert</span>
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-body mb-0">
+								<div class="row" th:each="courseDto : ${courseList}">
+                                    <style>
+                                        .card{
+                                            padding: 1rem;
+                                        }
+                                        .img-card{
+                                            height: 20rem;
+                                            background-repeat: no-repeat;
+                                            border-radius: 1rem;
+                                        }
+                                        .card > .btn-group{
+                                            margin-top: 1rem;
+                                            font-size: 24px;
+                                        }
+                                    </style>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 text-center text-uppercase">
+                                        <h1 th:text="${courseDto.science}"></h1>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-sm-12" th:each="course : ${courseDto.courseDtoList}">
+                                        <div class="form-group card">
+                                            <img th:src="${course.image}" class="img-card">
+                                            <div class="btn-group">
+                                                <a th:href="${course.lessonPath}" class="btn btn-success">
+                                                    <i class="la la-list"></i> Ro'yhat
+                                                    <span class="badge badge-light text-success fs-5" th:text="${course.lessonCount}"></span>
+                                                </a>
+                                            </div>
                                         </div>
-										<div class="col-lg-12 col-md-12 col-sm-12">
-											<button type="button" id="editAdminBtn" class="btn btn-primary">Tahrirlash</button>
-											<button type="reset" class="btn btn-light">Bekor qilish</button>
-										</div>
-									</div>
-								</form>
-                            </div>
-                        </div>
-                    </div>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+					</div>
 				</div>
+				
             </div>
         </div>
         <!--**********************************
@@ -280,7 +221,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <!-- <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">Elite center</a> 2023</p> -->
+                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
             </div>
         </div>
         <!--**********************************
@@ -322,7 +263,8 @@
 	
 	<!-- Pickdate -->
     <script src="/js/plugins-init/pickadate-init.js"></script>
-
-    <script src="/js/admin/admin.js"></script>
+<!--	<script src="/js/teacher/add-lesson.js"></script>-->
 </body>
 </html>
+
+

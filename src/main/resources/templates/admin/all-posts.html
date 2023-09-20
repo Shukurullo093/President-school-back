@@ -6,15 +6,13 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Bootstrap Admin Dashboard </title>
+    <title>Admin Dashboard </title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
+	<!-- Datatable -->
+    <link href="/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
-	
-	<!-- Pick date -->
-    <link rel="stylesheet" href="/vendor/pickadate/themes/default.css">
-    <link rel="stylesheet" href="/vendor/pickadate/themes/default.date.css">
 
 </head>
 
@@ -67,13 +65,12 @@
                 <nav class="navbar navbar-expand">
                     <div class="collapse navbar-collapse justify-content-between">
                         <div class="header-left">
-
                         </div>
 
                         <ul class="navbar-nav header-right">
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-                                    <img th:src="@{${img != null ? '/api/admin/rest/viewImage/' + img : '/images/profile/education/pic-6.jpg'}}" width="20" alt="">
+                                    <img th:src="${img}" width="20" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a th:href="@{/api/admin/profile}" class="dropdown-item ai-icon">
@@ -103,31 +100,31 @@
                 <ul class="metismenu" id="menu">
                     <li class="nav-label first">Bosh Menu</li>
                     <li><a class="ai-icon" th:href="@{/api/admin/dashboard}" aria-expanded="false">
-                        <i class="la la-home"></i>
-                        <span class="nav-text">Dashboard</span>
-                    </a>
+							<i class="la la-home"></i>
+							<span class="nav-text">Dashboard</span>
+						</a>
                     </li>
-                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                        <i class="la la-user"></i>
-                        <span class="nav-text">Hodimlar</span>
-                    </a>
+					<li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+							<i class="la la-user"></i>
+							<span class="nav-text">Hodimlar</span>
+						</a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/list/employee}">Barcha hodimlar</a></li>
                             <li><a th:href="@{/api/admin/add/employee}">Yangi hodim</a></li>
                         </ul>
                     </li>
-                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                        <i class="la la-users"></i>
-                        <span class="nav-text">O'quvchilar</span>
-                    </a>
+					<li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+							<i class="la la-users"></i>
+							<span class="nav-text">O'quvchilar</span>
+						</a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
                         </ul>
                     </li>
-                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                        <i class="la la-graduation-cap"></i>
-                        <span class="nav-text">Kurslar</span>
-                    </a>
+					<li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+							<i class="la la-graduation-cap"></i>
+							<span class="nav-text">Kurslar</span>
+						</a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
                         </ul>
@@ -142,13 +139,12 @@
                             <li><a th:href="@{/api/admin/add/news}">Yangi post</a></li>
                         </ul>
                     </li>
-                </ul>
+				</ul>
             </div>
         </div>
         <!--**********************************
             Sidebar end
         ***********************************-->
-		
 		
         <!--**********************************
             Content body start
@@ -160,114 +156,105 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4>Profile tahrirlash</h4>
+                            <h4>Barcha postlar</h4>
                         </div>
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a th:href="@{/api/admin/dashboard}">Dashboard</a></li>
-                                <li class="breadcrumb-item active"><a th:href="@{/api/admin/profile}">Profile</a></li>
-                                <li class="breadcrumb-item active"><a th:href="@{/api/admin/update/profile}">Profile tahrirlash</a></li>
-                            </ol>
-                        </div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/api/admin/dashboard}">Dashboard</a></li>
+                            <li class="breadcrumb-item active"><a th:href="@{/api/admin/list/employee}">Postlar</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Barcha postlar</a></li>
+                        </ol>
                     </div>
                 </div>
 				
 				<div class="row">
-					<div class="col-xl-12 col-xxl-12 col-sm-12">
-                        <div class="card">
-                            <div class="card-header">
-								<h5 class="card-title">Profile tahrirlash</h5>
-							</div>
-                            <div class="alert alert-success alert-dismissible fade show mx-2" role="alert">
-                                <span class="text-dark"></span>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-							<div class="card-body">
-                                <style>
-                                    .alert-success,
-                                    .alert-danger{
-                                        display: none;
-                                    }
-                                </style>
-                                <form id="form">
-									<div class="row">
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Ism</label>
-												<input type="text" th:value="${employee.fullName.split(' ')[1]}" name="name" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Familiya</label>
-												<input type="text" th:value="${employee.fullName.split(' ')[0]}" name="surname" class="form-control">
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Tug'ilgan kun</label>
-												<input name="birthDate" th:value="${employee.birthDate}" class="datepicker-default form-control" id="datepicker1">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Email</label>
-												<input type="text" th:value="${employee.email}" name="email" class="form-control">
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Telefon raqam</label>
-												<input type="text" th:value="${employee.phone}" name="phone" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Jins</label>
-												<select name="gender" th:value="${employee.gender}" class="form-control">
-													<option value="Male">Erkak</option>
-													<option value="Female">Ayol</option>
-												</select>
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Parol</label>
-												<input type="password" name="pass" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Parolni tasdiqlash</label>
-												<input type="password" name="repass" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-12 col-md-12 col-sm-12">
-											<div class="form-group fallback w-100">
-                                                <label class="form-label">Surat</label>
-												<input type="file" accept="image/*" name="image" class="dropify" data-default-file="">
-											</div>
-										</div>
-                                        <div class="col-lg-11 col-md-11 col-sm-11 alert alert-danger alert-dismissible fade show mx-2" role="alert">
-                                            <span class="text-dark" id="error-alert">warning alert</span>
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-										<div class="col-lg-12 col-md-12 col-sm-12">
-											<button type="button" id="editAdminBtn" class="btn btn-primary">Tahrirlash</button>
-											<button type="reset" class="btn btn-light">Bekor qilish</button>
+					<div class="col-lg-12">
+						<ul class="nav nav-pills mb-3">
+							<li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link btn-primary mr-1 show active">Qator</a></li>
+							<li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link btn-primary">Jadval</a></li>
+						</ul>
+					</div>
+					<div class="col-lg-12">
+						<div class="row tab-content">
+							<div id="list-view" class="tab-pane fade active show col-lg-12">
+								<div class="card">
+									<div class="card-header">
+										<h4 class="card-title">Barcha postlar</h4>
+										<a th:href="@{/api/admin/add/news}" class="btn btn-primary">+ Yangi</a>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table id="example3" class="display" style="min-width: 845px;">
+												<thead>
+													<tr>
+														<th></th>
+														<th>Mavzu</th>
+														<th>Tur</th>
+														<th>Izoh</th>
+														<th>Yaratilgan vaqt</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each = "post : ${postList}">
+														<td><img class="rounded" width="75" th:src="${post.imagePath}" alt="post-image"></td>
+														<td th:text="${post.title}" class="text-capitalize"></td>
+														<td th:text="${post.type == 'Rule' ? 'Qonun' : 'Yangilik'}"></td>
+														<td th:text="${post.description}"></td>
+														<td th:text="${post.date}"></td>
+														<td class="text-center">
+															<a th:href="${'/api/admin/edit/news/' + post.id}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
+															<a href="javascript:void(0);" id="deleteBtn1" th:data-id="${post.id}" class="btn btn-sm btn-danger mt-1"><i class="la la-trash-o"></i></a>
+														</td>												
+													</tr>
+												</tbody>
+											</table>
 										</div>
 									</div>
-								</form>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+							<div id="grid-view" class="tab-pane fade col-lg-12">
+								<div class="row">
+									<div class="col-lg-4 col-md-6 col-sm-6 col-12" th:each = "post : ${postList}">
+										<div class="card card-profile">
+											<div class="card-header justify-content-end pb-0">
+												<div class="dropdown">
+													<button class="btn btn-link" type="button" data-toggle="dropdown">
+														<span class="dropdown-dots fs--1"></span>
+													</button>
+													<div class="dropdown-menu dropdown-menu-right border py-0">
+														<div class="py-2">
+															<a class="dropdown-item" th:href="${'/api/admin/edit/news/' + post.id}">Tahrirlash</a>
+															<a class="dropdown-item text-danger" id="deleteBtn" th:data-id="${post.id}" href="javascript:void(0);">O'chirish</a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="card-body pt-2">
+												<div class="text-center">
+													<div class="profile-photo">
+														<img th:src="${post.imagePath}" width="100" class="img-fluid rounded">
+													</div>
+													<h3 class="mt-4 mb-1 text-capitalize" th:text="${post.title}"></h3>
+													<p class="text-muted" th:text="${post.type == 'Rule' ? 'Qonun' : 'Yangilik'}"></p>
+													<ul class="list-group mb-3 list-group-flush">
+                                                        <li class="list-group-item px-0 d-flex justify-content-between">
+                                                            <span class="mb-0">Izoh:</span><strong th:text="${post.description}"></strong></li>
+                                                        <li class="list-group-item px-0 d-flex justify-content-between">
+                                                            <span class="mb-0">Yaratilgan vaqt:</span><strong th:text="${post.date}"></strong></li>
+													</ul>
+													<a class="btn btn-outline-primary btn-rounded mt-3 px-4" th:href="${'/api/admin/about/employee/' + post.id}">Post haqida</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
+				
             </div>
         </div>
         <!--**********************************
@@ -280,7 +267,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <!-- <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">Elite center</a> 2023</p> -->
+                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">DexignLab</a> 2020</p>
             </div>
         </div>
         <!--**********************************
@@ -308,20 +295,16 @@
     <script src="/vendor/global/global.min.js"></script>
 	<script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/js/custom.min.js"></script>
-	<script src="/js/dlabnav-init.js"></script>
-
-	<!-- Svganimation scripts -->
+    <script src="/js/dlabnav-init.js"></script>
+	
+	<!-- Datatable -->
+    <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="/js/plugins-init/datatables.init.js"></script>
+	
+    <!-- Svganimation scripts -->
     <script src="/vendor/svganimation/vivus.min.js"></script>
     <script src="/vendor/svganimation/svg.animation.js"></script>
     <script src="/js/styleSwitcher.js"></script>
-	
-	<!-- pickdate -->
-    <script src="/vendor/pickadate/picker.js"></script>
-    <script src="/vendor/pickadate/picker.time.js"></script>
-    <script src="/vendor/pickadate/picker.date.js"></script>
-	
-	<!-- Pickdate -->
-    <script src="/js/plugins-init/pickadate-init.js"></script>
 
     <script src="/js/admin/admin.js"></script>
 </body>

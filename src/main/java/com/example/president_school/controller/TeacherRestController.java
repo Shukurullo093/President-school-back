@@ -92,4 +92,9 @@ public class TeacherRestController {
                 .contentLength(task.getFileSize())
                 .body(new FileUrlResource(String.format("%s/%s", uploadFolder, task.getUploadPath())));
     }
+
+    @DeleteMapping("/test/{id}")
+    public void deleteTest(@PathVariable String id){
+        teacherService.deleteTest(id);
+    }
 }

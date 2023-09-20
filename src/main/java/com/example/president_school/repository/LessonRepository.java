@@ -12,6 +12,7 @@ import java.util.UUID;
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, UUID> {
     List<Lesson> findAllByCourseEmployeeOrderByCreatedDateAsc(Employee employee);
-    List<Lesson> findAllByCourseGradeAndCourseEmployee(Integer grade, Employee employee);
+    List<Lesson> findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer grade, Employee employee);
     List<Lesson> findAllByCourseOrderByCreatedDateAsc(Course course);
+    int countAllByCourse(Course course);
 }

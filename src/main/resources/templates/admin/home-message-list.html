@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en">
 
 <head>
 	
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Bootstrap Admin Dashboard </title>
+    <title>All messages from home page</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -41,7 +41,7 @@
             Nav header start
         ***********************************-->
         <div class="nav-header">
-            <a href="index.html" class="brand-logo">
+            <a href="javascript:void(0);" class="brand-logo">
                 <img class="logo-abbr" src="/images/logo-white.png" alt="">
                 <img class="logo-compact" src="/images/logo-text-white.png" alt="">
                 <img class="brand-title" src="/images/logo-text-white.png" alt="">
@@ -65,19 +65,91 @@
                 <nav class="navbar navbar-expand">
                     <div class="collapse navbar-collapse justify-content-between">
                         <div class="header-left">
+                            <div class="search_bar dropdown">
+                                <span class="search_icon p-3 c-pointer" data-toggle="dropdown">
+                                    <i class="mdi mdi-magnify"></i>
+                                </span>
+                                <div class="dropdown-menu p-0 m-0">
+                                    <form>
+                                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                    </form>
+                                </div>
+                            </div>
                         </div>
 
                         <ul class="navbar-nav header-right">
+                            <!-- <li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link bell ai-icon" href="#" role="button" data-toggle="dropdown">
+                                    <svg id="icon-user" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
+										<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+										<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+									</svg>
+                                    <div class="pulse-css"></div>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <ul class="list-unstyled">
+                                        <li class="media dropdown-item">
+                                            <span class="success"><i class="ti-user"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong>Martin</strong> has added a <strong>customer</strong> Successfully
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <span class="notify-time">3:20 am</span>
+                                        </li>
+                                        <li class="media dropdown-item">
+                                            <span class="primary"><i class="ti-shopping-cart"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong>Jennifer</strong> purchased Light Dashboard 2.0.</p>
+                                                </a>
+                                            </div>
+                                            <span class="notify-time">3:20 am</span>
+                                        </li>
+                                        <li class="media dropdown-item">
+                                            <span class="danger"><i class="ti-bookmark"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong>Robin</strong> marked a <strong>ticket</strong> as unsolved.
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <span class="notify-time">3:20 am</span>
+                                        </li>
+                                        <li class="media dropdown-item">
+                                            <span class="primary"><i class="ti-heart"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong>David</strong> purchased Light Dashboard 1.0.</p>
+                                                </a>
+                                            </div>
+                                            <span class="notify-time">3:20 am</span>
+                                        </li>
+                                        <li class="media dropdown-item">
+                                            <span class="success"><i class="ti-image"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong> James.</strong> has added a<strong>customer</strong> Successfully
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <span class="notify-time">3:20 am</span>
+                                        </li>
+                                    </ul>
+                                    <a class="all-notification" href="#">See all notifications <i class="ti-arrow-right"></i></a>
+                                </div>
+                            </li> -->
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-                                    <img th:src="@{${img != null ? '/api/admin/rest/viewImage/' + img : '/images/profile/education/pic-6.jpg'}}" width="20" alt="">
+                                    <img th:src="${img}" width="20" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a th:href="@{/api/admin/profile}" class="dropdown-item ai-icon">
                                         <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span class="ml-2">Profile </span>
                                     </a>
-                                    <a href="page-login.html" class="dropdown-item ai-icon">
+                                    <a href="javascript:void(0);" class="dropdown-item ai-icon">
                                         <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                                         <span class="ml-2">Chiqish </span>
                                     </a>
@@ -145,6 +217,8 @@
         <!--**********************************
             Sidebar end
         ***********************************-->
+
+		
 		
         <!--**********************************
             Content body start
@@ -156,62 +230,49 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4>Barcha hodimlar</h4>
+                            <h4>Barcha Xabarlar</h4>
                         </div>
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/api/admin/dashboard}">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a th:href="@{/api/admin/list/employee}">Hodimlar</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Barcha hodimlar</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Xabarlar</a></li>
+<!--                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Barcha hodimlar</a></li>-->
                         </ol>
                     </div>
                 </div>
 				
 				<div class="row">
 					<div class="col-lg-12">
-						<ul class="nav nav-pills mb-3">
-							<li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link btn-primary mr-1 show active">Qator</a></li>
-							<li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link btn-primary">Jadval</a></li>
-						</ul>
-					</div>
-					<div class="col-lg-12">
 						<div class="row tab-content">
 							<div id="list-view" class="tab-pane fade active show col-lg-12">
 								<div class="card">
 									<div class="card-header">
-										<h4 class="card-title">Barcha hodimlar</h4>
-										<a th:href="@{/api/admin/add/employee}" class="btn btn-primary">+ Yangi</a>
+										<h4 class="card-title">Barcha xabarlar</h4>
 									</div>
 									<div class="card-body">
+                                        <div id="bgdiv" style="display: none;" class="col-12 mb-3 bg-success py-2 rounded fs-2">
+                                            <span class="text-light" id="msg">333333</span>
+                                        </div>
 										<div class="table-responsive">
 											<table id="example3" class="display" style="min-width: 845px">
 												<thead>
 													<tr>
-														<th></th>
 														<th>Fio</th>
-														<th>Tug'ilgan kun</th>
-														<th>Jins</th>
-														<th>Fan</th>
 														<th>Telefon</th>
-														<th>Email</th>
-														<th>Joining Date</th>
-														<th>Action</th>
+														<th>Xabar</th>
+														<th>Kelgan vaqt</th>
+														<th>O'chirish</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr th:each = "employee : ${employeeList}">
-														<td><img class="rounded-circle" width="35" th:src="@{${employee.imageHashId != null ? '/api/admin/rest/viewImage/'+employee.imageHashId : '/images/profile/education/pic-6.jpg'}}" alt="user-image"></td>
-														<td th:text="${employee.fullName}" class="text-capitalize"></td>
-														<td th:text="${employee.birthDate}"></td>
-														<td th:text="${employee.gender}"></td>
-														<td th:text="${employee.science}"></td>
-														<td><a href="javascript:void(0);"><strong th:text="${employee.phone}"></strong></a></td>
-														<td><a href="javascript:void(0);"><strong th:text="${employee.email}"></strong></a></td>
-														<td th:text="${employee.joiningDate}"></td>
-														<td>
-															<a th:href="${'/api/admin/edit/employee/' + employee.id}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-<!--															<a href="javascript:void(0);" id="deleteBtn1" th:data-id="${employee.id}" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>-->
+													<tr th:each="message : ${messageList}">
+														<td style="width: 10%; text-transform: capitalize;" th:text="${message.fullName}"></td>
+														<td style="width: 15%;" th:text="${message.phone}"></td>
+														<td th:text="${message.message}" class="text-justify"></td>
+														<td style="width: 15%;" th:text="${message.date}"></td>
+														<td style="width: 5%; text-align: center;">
+															<button type="button" onclick="deleteMsg(this)" th:data-id="${message.id}" class="btn btn-sm btn-danger"><i class="la la-trash-o fs-2"></i></button>
 														</td>												
 													</tr>
 												</tbody>
@@ -220,53 +281,6 @@
 									</div>
                                 </div>
                             </div>
-							<div id="grid-view" class="tab-pane fade col-lg-12">
-								<div class="row">
-									<div class="col-lg-4 col-md-6 col-sm-6 col-12" th:each = "employee : ${employeeList}">
-										<div class="card card-profile">
-											<div class="card-header justify-content-end pb-0">
-												<div class="dropdown">
-													<button class="btn btn-link" type="button" data-toggle="dropdown">
-														<span class="dropdown-dots fs--1"></span>
-													</button>
-													<div class="dropdown-menu dropdown-menu-right border py-0">
-														<div class="py-2">
-															<a class="dropdown-item" th:href="${'/api/admin/edit/employee/' + employee.id}">Tahrirlash</a>
-<!--															<a class="dropdown-item text-danger" id="deleteBtn" th:data-id="${employee.id}" href="javascript:void(0);">O'chirish</a>-->
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="card-body pt-2">
-												<div class="text-center">
-													<div class="profile-photo">
-														<img th:src="@{${employee.imageHashId != null ? '/api/admin/rest/viewImage/'+employee.imageHashId : '/images/profile/education/pic-6.jpg'}}" width="100" class="img-fluid rounded-circle" alt="">
-													</div>
-													<h3 class="mt-4 mb-1 text-capitalize" th:text="${employee.fullName}"></h3>
-													<p class="text-muted" th:text="${employee.role}"></p>
-													<ul class="list-group mb-3 list-group-flush">
-                                                        <li class="list-group-item px-0 d-flex justify-content-between">
-                                                            <span class="mb-0">Tug'ilgan kun:</span><strong th:text="${employee.birthDate}"></strong></li>
-														<li class="list-group-item px-0 d-flex justify-content-between">
-															<span class="mb-0">Jins :</span><strong th:text="${employee.gender}"></strong></li>
-														<li class="list-group-item px-0 d-flex justify-content-between">
-															<span class="mb-0">Telefon :</span><strong th:text="${employee.phone}"></strong></li>
-														<li class="list-group-item px-0 d-flex justify-content-between">
-															<span class="mb-0">Email:</span><strong th:text="${employee.email}"></strong></li>
-														<li class="list-group-item px-0 d-flex justify-content-between">
-															<span class="mb-0">Qo'shilgan vaqt:</span><strong th:text="${employee.joiningDate}"></strong></li>
-                                                        <li class="list-group-item px-0 d-flex justify-content-between">
-                                                            <span class="mb-0">Fan:</span><strong th:text="${employee.science}"></strong></li>
-                                                        <li class="list-group-item px-0 d-flex justify-content-between">
-                                                            <span class="mb-0">Sinf:</span><strong th:text="${employee.grade}"></strong></li>
-													</ul>
-													<a class="btn btn-outline-primary btn-rounded mt-3 px-4" th:href="${'/api/admin/about/employee/' + employee.id}">Hodim haqida</a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -283,7 +297,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">DexignLab</a> 2020</p>
+                <p>Copyright © Designed &amp; Developed by <a href="javascript:void(0);" target="_blank"></a> 2023</p>
             </div>
         </div>
         <!--**********************************
@@ -308,6 +322,48 @@
         Scripts
     ***********************************-->
     <!-- Required vendors -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <script>
+        let baseUrl = window.location.origin;
+
+        function deleteMsg(id){
+            if (confirm("Xabar o'chirilsinmi?") === true){
+                $.ajax({
+                    url: baseUrl + "/api/admin/rest/delete/msg/" + $(id).attr('data-id'),
+                    type: 'DELETE',
+                    enctype: 'application/json',
+                    data: null,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (data) {
+                        if(data['statusCode'] === 200){
+                            $("#bgdiv").css('display', 'block');
+                            $("#msg").text(data['message']);
+                            setTimeout(function(){
+                                $('#bgdiv').css('display', 'none');
+                                $('#msg').text('');
+                            }, 3000);
+                        }
+                        else {
+                            $("#bgdiv").css('display', 'block');
+                            $("#msg").text(data['message']);
+                            setTimeout(function(){
+                                $('#bgdiv').css('display', 'none');
+                                $('#msg').text('');
+                            }, 3000);
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+            }
+        }
+    </script>
+
     <script src="/vendor/global/global.min.js"></script>
 	<script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/js/custom.min.js"></script>
@@ -321,7 +377,5 @@
     <script src="/vendor/svganimation/vivus.min.js"></script>
     <script src="/vendor/svganimation/svg.animation.js"></script>
     <script src="/js/styleSwitcher.js"></script>
-
-    <script src="/js/admin/admin.js"></script>
 </body>
 </html>

@@ -253,8 +253,13 @@
     </section><!-- End About Us Section -->
 
     <!-- ======= Stats Counter Section ======= -->
-    <section id="stats-counter" class="stats-counter">
+    <section id="stats-counter" class="stats-counter sections-bg">
       <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>Raqamli statistika</h2>
+          <p>Aperiam dolorum et et wuia molestias qui eveniet numquam nihil porro incidunt dolores placeat sunt id nobis omnis tiledo stran delop</p>
+        </div>
 
         <div class="row gy-4 align-items-center">
 
@@ -265,17 +270,17 @@
           <div class="col-lg-6">
 
             <div class="stats-item d-flex align-items-center">
-              <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+              <span data-purecounter-start="0" th:data-purecounter-end="${studentSize}" data-purecounter-duration="1" class="purecounter"></span>
               <p><strong>O'quvchilar</strong> consequuntur quae diredo para mesta</p>
             </div><!-- End Stats Item -->
 
             <div class="stats-item d-flex align-items-center">
-              <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+              <span data-purecounter-start="0" th:data-purecounter-end="${lessonSize}" data-purecounter-duration="1" class="purecounter"></span>
               <p><strong>Darslar</strong> adipisci atque cum quia aut</p>
             </div><!-- End Stats Item -->
 
             <div class="stats-item d-flex align-items-center">
-              <span data-purecounter-start="0" data-purecounter-end="453" data-purecounter-duration="1" class="purecounter"></span>
+              <span data-purecounter-start="0" th:data-purecounter-end="${employeeSize}" data-purecounter-duration="1" class="purecounter"></span>
               <p><strong>Hodimlar</strong> aut commodi quaerat</p>
             </div><!-- End Stats Item -->
 
@@ -296,95 +301,44 @@
       </div>
     </section><!-- End Call To Action Section -->
 
-    <!-- ======= Portfolio Section ======= -->
+    <!-- ======= News Section ======= -->
     <section id="portfolio" class="portfolio sections-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-header">
           <h2>Yangiliklar</h2>
-          <p>Quam sed id excepturi ccusantium dolorem ut quis dolores nisi llum nostrum enim velit qui ut et autem uia reprehenderit sunt deleniti</p>
+          <p>Quam sed id excepturi ccusantium dolorem ut quis dolores nisi llum nostrum enim velit qui ut
+            et autem uia reprehenderit sunt deleniti
+          </p>
         </div>
 
-        <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order" data-aos="fade-up" data-aos-delay="100">
+        <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry"
+             data-portfolio-sort="original-order" data-aos="fade-up" data-aos-delay="100">
 
           <div class="row gy-4 portfolio-container" style="row-gap: 1rem;">
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-app">
+            <div th:each="post : ${postList}" class="col-xl-4 col-md-6 portfolio-item filter-app">
               <div class="portfolio-wrap">
-                <a href="/assets/img/portfolio/app-1.jpg" data-gallery="portfolio-gallery-app" class="glightbox">
-                  <img src="/assets/img/portfolio/app-1.jpg" class="img-fluid">
+                <a th:href="${post.imagePath}" data-gallery="portfolio-gallery-app" class="glightbox">
+                  <img th:src="${post.imagePath}" class="img-fluid">
                 </a>
                 <div class="portfolio-info">
-                  <a href="javascript:void(0);">
-                    <h4 title="More Details">App 1</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <a th:href="'/api/home/news/' + ${post.id}">
+                    <h4 title="More Details" th:text="${post.title}"></h4>
+                    <p th:text="${post.description}"></p>
                   </a>
                 </div>
               </div>
             </div>
             <!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-product">
-              <div class="portfolio-wrap">
-                <a href="/assets/img/portfolio/product-1.jpg" data-gallery="portfolio-gallery-app" class="glightbox">
-                  <img src="/assets/img/portfolio/product-1.jpg" class="img-fluid" alt=""></a>
-                <div class="portfolio-info">
-                  <h4><a href="javascript:void(0);" title="More Details">Product 1</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-xl-4 col-md-6 portfolio-item filter-branding">
-              <div class="portfolio-wrap">
-                <a href="/assets/img/portfolio/branding-1.jpg" data-gallery="portfolio-gallery-app" class="glightbox">
-                  <img src="/assets/img/portfolio/branding-1.jpg" class="img-fluid" alt=""></a>
-                <div class="portfolio-info">
-                  <h4><a href="javascript:void(0);" title="More Details">Branding 1</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-xl-4 col-md-6 portfolio-item filter-books">
-              <div class="portfolio-wrap">
-                <a href="/assets/img/portfolio/books-1.jpg" data-gallery="portfolio-gallery-app" class="glightbox">
-                  <img src="/assets/img/portfolio/books-1.jpg" class="img-fluid" alt=""></a>
-                <div class="portfolio-info">
-                  <h4><a href="javascript:void(0);" title="More Details">Books 1</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-xl-4 col-md-6 portfolio-item filter-app">
-              <div class="portfolio-wrap">
-                <a href="/assets/img/portfolio/app-2.jpg" data-gallery="portfolio-gallery-app" class="glightbox">
-                  <img src="/assets/img/portfolio/app-2.jpg" class="img-fluid" alt=""></a>
-                <div class="portfolio-info">
-                  <h4><a href="javascript:void(0);" title="More Details">App 2</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-            <div class="col-xl-4 col-md-6 portfolio-item filter-product">
-              <div class="portfolio-wrap">
-                <a href="/assets/img/portfolio/product-2.jpg" data-gallery="portfolio-gallery-app" class="glightbox">
-                  <img src="/assets/img/portfolio/product-2.jpg" class="img-fluid" alt=""></a>
-                <div class="portfolio-info">
-                  <h4><a href="javascript:void(0);" title="More Details">Product 2</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
           </div><!-- End Portfolio Container -->
 
         </div>
 
       </div>
-    </section><!-- End Portfolio Section -->
+    </section>
+    <!-- End News Section -->
 
     <!-- ======= Our Team Section ======= -->
     <section id="team" class="team">
@@ -397,13 +351,14 @@
 
         <div class="row gy-4">
 
-          <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
-            <div class="member">
-              <img src="/assets/img/team/team-1.jpg" class="img-fluid" alt="">
-              <h4>Walter White</h4>
-              <span>Web Development</span>
+          <div class="col-xl-3 col-md-6 d-flex mb-2" th:each="employee : ${employeeList}" data-aos="fade-up" data-aos-delay="100">
+            <div class="member w-100">
+              <img th:src="${employee.imageHashId}" class="img-fluid w-100">
+              <h4 th:text="${employee.fullName}"></h4>
+              <span th:text="${employee.role}"></span>
+              <span th:text="${employee.science}"></span>
               <div class="social">
-                <a href=""><i class="bi bi-twitter"></i></a>
+                <a th:href="'tel:' + ${employee.phone}"><i class="bi bi-phone"></i></a>
                 <a href=""><i class="bi bi-facebook"></i></a>
                 <a href=""><i class="bi bi-instagram"></i></a>
                 <a href=""><i class="bi bi-linkedin"></i></a>
@@ -569,24 +524,26 @@
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-1">
+                  <button class="accordion-button collapsed pr-4 w-100" style="display : flex; align-items: center; justify-content: space-between;" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-1">
                     <span class="num">1.</span>
-                    Non consectetur a erat nam at lectus urna duis? <i class="bi bi-chevron-down dropdown-indicator"></i>
+                    Non consectetur a erat nam at lectus urna duis?
+                    <i class="bi bi-chevron-down dropdown-indicator" style="margin-left: auto;"></i>
                   </button>
                 </h3>
                 <div id="faq-content-1" class="accordion-collapse collapse" data-bs-parent="#faqlist">
                   <div class="accordion-body">
-                    Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.
+                    Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida.
+                    Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.
                   </div>
                 </div>
               </div><!-- # Faq item-->
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-2">
+                  <button class="accordion-button collapsed pr-4 w-100" style="display : flex; align-items: center; justify-content: space-between;" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-2">
                     <span class="num">2.</span>
                     Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque?
-                    <i class="bi bi-chevron-down dropdown-indicator"></i>
+                    <i class="bi bi-chevron-down dropdown-indicator" style="margin-left: auto;"></i>
                   </button>
                 </h3>
                 <div id="faq-content-2" class="accordion-collapse collapse" data-bs-parent="#faqlist">
@@ -594,27 +551,32 @@
                     Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.
                   </div>
                 </div>
-              </div><!-- # Faq item-->
+              </div>
+              <!-- # Faq item-->
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-3">
+                  <button class="accordion-button collapsed pr-4 w-100" style="display : flex; align-items: center; justify-content: space-between;" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-3">
                     <span class="num">3.</span>
-                    Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi?
+                    Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque?
+                    <i class="bi bi-chevron-down dropdown-indicator" style="margin-left: auto;"></i>
                   </button>
                 </h3>
                 <div id="faq-content-3" class="accordion-collapse collapse" data-bs-parent="#faqlist">
                   <div class="accordion-body">
-                    Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis
+                    Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices.
+                    Fringilla phasellus faucibus scelerisque eleifend donec pretium.
+                    Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.
                   </div>
                 </div>
               </div><!-- # Faq item-->
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-4">
+                  <button class="accordion-button collapsed pr-4 w-100" style="display : flex; align-items: center; justify-content: space-between;" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-4">
                     <span class="num">4.</span>
-                    Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?
+                    Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque?
+                    <i class="bi bi-chevron-down dropdown-indicator" style="margin-left: auto;"></i>
                   </button>
                 </h3>
                 <div id="faq-content-4" class="accordion-collapse collapse" data-bs-parent="#faqlist">
@@ -626,14 +588,15 @@
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-5">
+                  <button class="accordion-button collapsed pr-4 w-100" style="display : flex; align-items: center; justify-content: space-between;" type="button" data-bs-toggle="collapse" data-bs-target="#faq-content-5">
                     <span class="num">5.</span>
-                    Tempus quam pellentesque nec nam aliquam sem et tortor consequat?
+                    Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque?
+                    <i class="bi bi-chevron-down dropdown-indicator" style="margin-left: auto;"></i>
                   </button>
                 </h3>
                 <div id="faq-content-5" class="accordion-collapse collapse" data-bs-parent="#faqlist">
                   <div class="accordion-body">
-                    Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in
+                    Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.
                   </div>
                 </div>
               </div><!-- # Faq item-->
@@ -673,23 +636,23 @@
                 <i class="bi bi-envelope flex-shrink-0"></i>
                 <div>
                   <h4>Email:</h4>
-                  <p>info@example.com</p>
+                  <p th:text="${contact.email}"></p>
                 </div>
               </div><!-- End Info Item -->
 
               <div class="info-item d-flex">
                 <i class="bi bi-phone flex-shrink-0"></i>
                 <div>
-                  <h4>Call:</h4>
-                  <p>+99890 123 45 67</p>
+                  <h4>Telefon:</h4>
+                  <p th:text="${contact.phone}"></p>
                 </div>
               </div><!-- End Info Item -->
 
               <div class="info-item d-flex">
                 <i class="bi bi-clock flex-shrink-0"></i>
                 <div>
-                  <h4>Open Hours:</h4>
-                  <p>Mon-Sat: 11AM - 23PM</p>
+                  <h4>Ish vaqti:</h4>
+                  <p>Dush-Shan: 6:00-20:00</p>
                 </div>
               </div><!-- End Info Item -->
             </div>
@@ -697,7 +660,7 @@
           </div>
 
           <div class="col-lg-8">
-            <form method="post" role="form" class="php-email-form">
+            <form id="form" class="php-email-form">
               <div class="row">
                 <div class="col-md-6 form-group">
                   <input type="text" name="name" class="form-control rounded" id="name" placeholder="Fio..." required>
@@ -706,18 +669,15 @@
                   <input type="tel" class="form-control rounded" name="phone" id="phone" placeholder="+998..." required>
                 </div>
               </div>
-<!--              <div class="form-group mt-3">-->
-<!--                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>-->
-<!--              </div>-->
               <div class="form-group mt-3">
                 <textarea class="form-control rounded" name="message" rows="7" placeholder="Xabar..." required></textarea>
               </div>
               <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
+                <div class="loading">Jo'natilmoqda</div>
+<!--                <div class="error-message"></div>-->
+                <div class="sent-message rounded"></div>
               </div>
-              <div class="text-center"><button type="submit">Jo'natish</button></div>
+              <div class="text-center"><button type="submit" onclick="sendMessage();">Jo'natish</button></div>
             </form>
           </div><!-- End Contact Form -->
 
@@ -764,8 +724,8 @@
 
         <div class="col-lg-5 col-md-12 footer-contact text-center text-md-start">
           <h4>Biz bilan aloqa</h4>
-            <strong>Telefon:</strong> +998 90 123 45 67<br>
-            <strong>Email:</strong> info@example.com<br>
+            <strong>Telefon:</strong> <span th:text="${contact.phone}"></span><br>
+            <strong>Email:</strong> <span th:text="${contact.email}"></span><br>
           </p>
           <a href="javascript:void(0);" class="btn btn-success" style="letter-spacing: 1px;">Created by ELITE group</a>
         </div>
@@ -788,6 +748,7 @@
   <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="/assets/vendor/php-email-form/validate.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
   <!-- Template Main JS File -->
   <script src="/assets/js/main.js"></script>

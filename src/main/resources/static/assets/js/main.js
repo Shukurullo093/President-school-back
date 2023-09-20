@@ -254,3 +254,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+let baseUrl = window.location.origin;
+function sendMessage(){
+  let form = $('#form')[0];
+  let data = new FormData(form);
+
+  $.ajax({
+      url: baseUrl + "/api/admin/rest/home/message",
+      type: 'POST',
+      enctype: 'multipart/form-data',
+      data: data,
+      processData: false,
+      contentType: false,
+      cache: false,
+      success: function () {
+        $('.sent-message').css('display', 'block');
+        $('.sent-message').text('Xabar jo\'natildi. Sizga tez orada javob qaytaramiz.')
+          setTimeout(function(){
+            $('.sent-message').css('display', 'none');
+            $('.sent-message').text('')
+            form.reset();
+          }, 4000);
+      },
+      error: function (e) {
+        console.log(e);
+      }
+    })
+}

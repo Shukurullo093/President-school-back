@@ -126,7 +126,17 @@
 						<span class="nav-text">Kurslar</span>
 					</a>
 						<ul aria-expanded="false">
-							<li><a th:href="@{/api/admin/all/lesson}">Barcha kurslar</a></li>
+							<li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
+						</ul>
+					</li>
+					<li>
+						<a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+							<i class="la la-newspaper-o"></i>
+							<span class="nav-text">Postlar</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a th:href="@{/api/admin/all/news}">Barcha postlar</a></li>
+							<li><a th:href="@{/api/admin/add/news}">Yangi post</a></li>
 						</ul>
 					</li>
 				</ul>

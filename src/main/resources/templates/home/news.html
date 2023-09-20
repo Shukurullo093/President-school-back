@@ -40,21 +40,21 @@
       </a>
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a href="#hero">Uy</a></li>
-          <li><a href="#about">Biz haqimizda</a></li>
-          <li><a href="#stats-counter">Statistika</a></li>
-          <li><a href="#portfolio">Yangiliklar</a></li>
-          <li><a href="#team">Jamoa</a></li>
-          <li><a href="#pricing">Kurslar</a></li>
-          <li class="dropdown">
-            <a href="javascript:void(0);">
-            <span>Profile</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-            <ul>
-              <li><a href="#">Ro'yhatdan o'tish</a></li>
-              <li><a href="#">Kirish</a></li>
-            </ul>
-          </li>
-          <li><a href="#contact">Aloqa</a></li>
+          <li><a th:href="@{/api/home} + '#hero'">Uy</a></li>
+          <li><a th:href="@{/api/home} + '#about'">Biz haqimizda</a></li>
+          <li><a th:href="@{/api/home} + '#stats-counter'">Statistika</a></li>
+          <li><a th:href="@{/api/home} + '#portfolio'">Yangiliklar</a></li>
+          <li><a th:href="@{/api/home} + '#team'">Jamoa</a></li>
+          <li><a th:href="@{/api/home} + '#pricing'">Kurslar</a></li>
+<!--          <li class="dropdown">-->
+<!--            <a href="javascript:void(0);">-->
+<!--            <span>Profile</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>-->
+<!--            <ul>-->
+<!--              <li><a href="#">Ro'yhatdan o'tish</a></li>-->
+<!--              <li><a href="#">Kirish</a></li>-->
+<!--            </ul>-->
+<!--          </li>-->
+          <li><a th:href="@{/api/home} + '#contact'">Aloqa</a></li>
         </ul>
       </nav>
       <!-- .navbar -->
@@ -75,7 +75,10 @@
           <div class="row d-flex justify-content-center">
             <div class="col-lg-6 text-center">
               <h2>Yangiliklar</h2>
-              <p>Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
+              <p>Odio et unde deleniti. Deserunt numquam exercitationem.
+                Officiis quo odio sint voluptas consequatur ut a odio voluptatem.
+                Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.
+              </p>
             </div>
           </div>
         </div>
@@ -83,7 +86,7 @@
       <nav>
         <div class="container">
           <ol>
-            <li><a href="index.html">Home</a></li>
+            <li><a th:href="@{/api/home}">Uy</a></li>
             <li>Yangiliklar</li>
           </ol>
         </div>
@@ -91,7 +94,7 @@
     </div><!-- End Breadcrumbs -->
 
     <!-- ======= Blog Details Section ======= -->
-    <section id="blog" class="blog">
+    <section id="blog" class="blog mx-sm-0 text-justify">
       <div class="container" data-aos="fade-up">
 
         <div class="row g-5">
@@ -101,10 +104,10 @@
             <article class="blog-details">
 
               <div class="post-img">
-                <img src="/assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+                <img th:src="${post.imagePath}" class="img-fluid">
               </div>
 
-              <h2 class="title">Dolorum optio tempore voluptas dignissimos cumque fuga qui quibusdam quia</h2>
+              <h2 class="title text-capitalize" th:text="${post.title}"></h2>
 
               <!-- <div class="meta-top">
                 <ul>
@@ -116,10 +119,7 @@
               <!-- End meta top -->
 
               <div class="content">
-                <p>
-                  Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium. Aliquam et laboriosam eius aut nostrum quidem aliquid dicta.
-                  Et eveniet enim. Qui velit est ea dolorem doloremque deleniti aperiam unde soluta. Est cum et quod quos aut ut et sit sunt. Voluptate porro consequatur assumenda perferendis dolore.
-                </p>
+                <p th:text="${post.description}"></p>
 
                 <p>
                   Sit repellat hic cupiditate hic ut nemo. Quis nihil sunt non reiciendis. Sequi in accusamus harum vel aspernatur. Excepturi numquam nihil cumque odio. Et voluptate cupiditate.
@@ -168,46 +168,14 @@
 
                 <div class="mt-3">
 
-                  <div class="post-item mt-3">
-                    <img src="/assets/img/blog/blog-recent-1.jpg" alt="">
+                  <div class="post-item mt-3" th:each="post : ${postList}">
+                    <img th:src="${post.imagePath}" class="rounded">
                     <div>
-                      <h4><a href="news.html">Nihil blanditiis at in nihil autem</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
+                      <h4><a th:href="'/api/home/news/' + ${post.id}" th:text="${post.title}" class="text-capitalize"></a></h4>
+                      <time datetime="2020-01-01" th:text="${post.date}"></time>
                     </div>
-                  </div><!-- End recent post item-->
-
-                  <div class="post-item">
-                    <img src="/assets/img/blog/blog-recent-2.jpg" alt="">
-                    <div>
-                      <h4><a href="news.html">Quidem autem et impedit</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
-                    </div>
-                  </div><!-- End recent post item-->
-
-                  <div class="post-item">
-                    <img src="/assets/img/blog/blog-recent-3.jpg" alt="">
-                    <div>
-                      <h4><a href="news.html">Id quia et et ut maxime similique occaecati ut</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
-                    </div>
-                  </div><!-- End recent post item-->
-
-                  <div class="post-item">
-                    <img src="/assets/img/blog/blog-recent-4.jpg" alt="">
-                    <div>
-                      <h4><a href="news.html">Laborum corporis quo dara net para</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
-                    </div>
-                  </div><!-- End recent post item-->
-
-                  <div class="post-item">
-                    <img src="/assets/img/blog/blog-recent-5.jpg" alt="">
-                    <div>
-                      <h4><a href="news.html">Et dolores corrupti quae illo quod dolor</a></h4>
-                      <time datetime="2020-01-01">Jan 1, 2020</time>
-                    </div>
-                  </div><!-- End recent post item-->
-
+                  </div>
+                  <!-- End recent post item-->
                 </div>
 
               </div><!-- End sidebar recent posts-->
@@ -216,10 +184,10 @@
                 <h3 class="sidebar-title">Teglar</h3>
                 <ul class="mt-3">
                   <li><a href="javascript:void(0);">Ta'lim</a></li>
-                  <li><a href="javascript:void(0);">IT</a></li>
                   <li><a href="javascript:void(0);">Qonun</a></li>
-                  <li><a href="javascript:void(0);">Huquq</a></li>
                   <li><a href="javascript:void(0);">Yangilik</a></li>
+                  <li><a href="javascript:void(0);">Huquq</a></li>
+                  <li><a href="javascript:void(0);">IT</a></li>
                   <li><a href="javascript:void(0);">Texnologiya</a></li>
                 </ul>
               </div><!-- End sidebar tags-->
@@ -230,7 +198,8 @@
         </div>
 
       </div>
-    </section><!-- End Blog Details Section -->
+    </section>
+    <!-- End Blog Details Section -->
 
   </main><!-- End #main -->
 

@@ -18,4 +18,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Optional<Employee> findByPhone(String phone);
 
     List<Employee> findByRoleNot(Role role);
+
+    Employee findByRole(Role admin);
 }

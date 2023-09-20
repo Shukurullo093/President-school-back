@@ -2,11 +2,10 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 
 <head>
-	
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Edumin - Bootstrap Admin Dashboard </title>
+    <title>Dashboard </title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/jqvmap/css/jqvmap.min.css">
@@ -16,7 +15,6 @@
 	<link rel="stylesheet" th:href="@{/vendor/bootstrap-select/dist/css/bootstrap-select.min.css}">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/skin-3.css">
-
 </head>
 <body>
 
@@ -70,6 +68,29 @@
                         </div>
 
                         <ul class="navbar-nav header-right">
+                            <li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link bell ai-icon" href="javascript:void(0);" role="button" data-toggle="dropdown">
+                                    <svg id="icon-user" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
+                                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                    </svg>
+                                    <div class="pulse-css"></div>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <ul class="list-unstyled">
+                                        <li class="media dropdown-item border" th:each = "message : ${messageList}">
+                                            <span class="success"><i class="ti-user"></i></span>
+                                            <div class="media-body">
+                                                <a href="javascript:void(0);">
+                                                    <p><strong class="text-capitalize" th:text="${message.fullName}"></strong><br> <span th:text="${message.message}"></span></p>
+                                                </a>
+                                            </div>
+                                            <span class="notify-time text-right" th:text="${message.date}"></span>
+                                        </li>
+                                    </ul>
+                                    <a class="all-notification" th:href="@{/api/admin/all/home/message}">Barcha xabarlar <i class="ti-arrow-right"></i></a>
+                                </div>
+                            </li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="javascript:void(0);" role="button" data-toggle="dropdown">
                                     <img th:src="@{${img != null ? '/api/admin/rest/viewImage/' + img : '/images/profile/education/pic-6.jpg'}}" width="20" alt="">
@@ -128,7 +149,17 @@
                         <span class="nav-text">Kurslar</span>
                     </a>
                         <ul aria-expanded="false">
-                            <li><a th:href="@{/api/admin/all/lesson}">Barcha kurslar</a></li>
+                            <li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+                            <i class="la la-newspaper-o"></i>
+                            <span class="nav-text">Postlar</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a th:href="@{/api/admin/all/news}">Barcha postlar</a></li>
+                            <li><a th:href="@{/api/admin/add/news}">Yangi post</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -224,7 +255,7 @@
                     </div>
 					<div class="col-xl-3 col-xxl-4 col-lg-6 col-md-6">
 						<div class="card">
-							<img class="img-fluid" src="/images/science/math.jpg" style="height: 12rem" alt="">
+							<img class="img-fluid" src="/images/science/math.jpg" style="height: 12rem;">
 							<div class="card-body">
 								<h4><a href="about-courses.html">Matematika</a></h4>
 								<ul class="list-group mb-3 list-group-flush">
@@ -237,7 +268,7 @@
 									<li class="list-group-item px-0 d-flex justify-content-between">
 										<span><i class="fa fa-graduation-cap text-primary mr-2"></i>Student</span><strong>+120</strong></li>
 								</ul>
-								<a href="about-courses.html" class="btn btn-primary">Read More</a>
+								<a th:href="@{/api/admin/courses}" class="btn btn-primary">Ko'proq</a>
 							</div>
 						</div>
 					</div>
@@ -298,114 +329,7 @@
 							</div>
 						</div>
 					</div>
-					
-					<!-- <div class="col-xl-6 col-xxl-6 col-lg-6 col-md-12 col-sm-12">
-						<div class="card">
-                            <div class="card-body">
-								<form action="#" method="post">
-									<div class="form-group">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">To</span>
-											</div>
-											<input type="text" class="form-control">
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">Subject</span>
-											</div>
-											<input type="text" class="form-control">
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="summernote"></div>
-									</div>
-									<div class="row align-items-center">
-										<div class="col-lg-6">
-											<div class="fallback w-100">
-												<input type="file" class="dropify" data-default-file="">
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<button type="button" class="btn btn-primary float-right">
-												Send <i class="fa fa-paper-plane-o"></i>
-											</button>									
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-6 col-xxl-6 col-lg-6 col-md-12 col-sm-12">
-						<div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Exam Toppers</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table verticle-middle">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Roll No.</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">Edit</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>542</td>
-												<td>Jack Ronan</td>
-                                                <td><span id="widget_sparklinedash"><canvas></canvas></span></td>
-                                                <td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>243 </td>
-                                                <td>Jimmy Morris</td>
-                                                <td><div class="ico-sparkline"><div id="widget_spark-bar"></div></div></td>
-												<td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>452 </td>
-                                                <td>Nashid Martines</td>
-                                                <td><div class="ico-sparkline"><div id="widget_StackedBarChart"></div></div></td>
-												<td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>124</td>
-                                                <td>Roman Aurora</td>
-                                                <td> <div class="ico-sparkline"> <div id="widget_tristate"></div></div></td>
-												<td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>234</td>
-                                                <td>Samantha</td>
-                                                <td> <div class="ico-sparkline"> <div id="widget_composite-bar"></div> </div> </td>
-												<td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-					</div> -->
+
 					<div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-header">
@@ -416,19 +340,15 @@
                                     <table class="table verticle-middle table-responsive-md">
                                         <thead>
                                             <tr>
-<!--                                                <th scope="col">No.</th>-->
                                                 <th scope="col">Fio</th>
                                                 <th scope="col">Telefon</th>
                                                 <th scope="col">Vaqt</th>
                                                 <th scope="col">Jins</th>
                                                 <th scope="col">Sinf</th>
-<!--                                                <th scope="col">Fees</th>-->
-<!--                                                <th scope="col">Edit</th>-->
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr th:each="student : ${newStudentList}">
-<!--                                                <td>01</td>-->
 												<td th:text="${student.fullName}" style="text-transform: capitalize;"></td>
                                                 <td th:text="${student.phone}"></td>
                                                 <td th:text="${student.createdDate.toString().split(' ')[0]}"></td>
@@ -436,11 +356,6 @@
                                                     <span class="badge badge-rounded badge-primary" th:text="${student.gender} == 'male' ? 'o`g`il' : 'qiz'">Checkin</span>
                                                 </td>
                                                 <td th:text="${student.grade}"></td>
-<!--                                                <td>120$</td>-->
-<!--                                                <td>-->
-<!--                                                    <a href="edit-student.html" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>-->
-<!--                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>-->
-<!--                                                </td>-->
                                             </tr>
                                         </tbody>
                                     </table>

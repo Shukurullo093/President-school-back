@@ -1,12 +1,11 @@
 package com.example.president_school.controller;
 
 import com.example.president_school.entity.PersonImage;
+import com.example.president_school.entity.Post;
 import com.example.president_school.entity.TaskSource;
-import com.example.president_school.entity.VideoSource;
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.repository.TaskSourceRepository;
-import com.example.president_school.repository.VideoSourceRepository;
-import com.example.president_school.service.EmployeeService;
+import com.example.president_school.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileUrlResource;
@@ -24,8 +23,7 @@ import java.util.Date;
 @RequestMapping("/api/admin/rest")
 @RequiredArgsConstructor
 public class AdminRestController {
-    private final EmployeeService employeeService;
-    private final VideoSourceRepository videoSourceRepository;
+    private final AdminService adminService;
     private final TaskSourceRepository taskSourceRepository;
 
     @Value("${upload.folder}")
@@ -44,7 +42,7 @@ public class AdminRestController {
                                                           @RequestParam("class") String grade,
                                                           @RequestParam("pass") String pass,
                                                           @RequestParam("image")MultipartFile image){
-        return ResponseEntity.ok(employeeService.addEmployee(name, surname, email, phone, science, birthdate,
+        return ResponseEntity.ok(adminService.addEmployee(name, surname, email, phone, science, birthdate,
                 gender, joiningDate, pass, image, role, grade));
     }
 
@@ -62,7 +60,7 @@ public class AdminRestController {
                                                               @RequestParam("grade") String grade,
                                                               @RequestParam("pass") String pass,
                                                               @RequestParam("image")MultipartFile image){
-        return ResponseEntity.ok(employeeService.updateEmployee(employeeId, name, surname, email, phone, science,
+        return ResponseEntity.ok(adminService.updateEmployee(employeeId, name, surname, email, phone, science,
                role, grade, birthdate, gender, joiningDate, pass, image));
     }
 
@@ -75,12 +73,12 @@ public class AdminRestController {
                                                              @RequestParam("gender") String gender,
                                                              @RequestParam("pass") String pass,
                                                              @RequestParam("image")MultipartFile image){
-        return ResponseEntity.ok(employeeService.updateAdmin(name, surname, email, phone, birthdate, gender, pass, image));
+        return ResponseEntity.ok(adminService.updateAdmin(name, surname, email, phone, birthdate, gender, pass, image));
     }
 
     @GetMapping("/viewImage/{hashId}")
     public ResponseEntity<?> viewImage(@PathVariable String hashId) throws IOException {
-        PersonImage image = employeeService.getImage(hashId);
+        PersonImage image = adminService.getImage(hashId);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + URLEncoder.encode(image.getName()))
                 .contentType(MediaType.parseMediaType(image.getContentType()))
@@ -100,6 +98,45 @@ public class AdminRestController {
 
     @DeleteMapping("/delete/employee/{id}")
     public ResponseEntity<ControllerResponse> deleteEmployee(@PathVariable String id){
-        return ResponseEntity.ok(employeeService.deleteEmployee(id));
+        return ResponseEntity.ok(adminService.deleteEmployee(id));
+    }
+
+    @PostMapping("/add/post")
+    public ResponseEntity<ControllerResponse> createPost(@RequestParam("title")String title,
+                                                         @RequestParam("description")String description,
+                                                         @RequestParam("type")String type,
+                                                         @RequestParam("photo")MultipartFile photo){
+        return ResponseEntity.ok(adminService.addPost(title, description, type, photo));
+    }
+
+    @PutMapping("/edit/post/{id}")
+    public ResponseEntity<ControllerResponse> updatePost(@PathVariable Integer id,
+                                                         @RequestParam("title")String title,
+                                                         @RequestParam("description")String description,
+                                                         @RequestParam("type")String type,
+                                                         @RequestParam("photo")MultipartFile photo){
+        return ResponseEntity.ok(adminService.updatePost(id, title, description, type, photo));
+    }
+
+    @GetMapping("/post/image/{hashId}")
+    public ResponseEntity<?> getPostImage(@PathVariable String hashId) throws IOException {
+        Post image = adminService.getPostImage(hashId);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + URLEncoder.encode(image.getName()))
+                .contentType(MediaType.parseMediaType(image.getContentType()))
+                .contentLength(image.getFileSize())
+                .body(new FileUrlResource(String.format("%s/%s", uploadFolder, image.getUploadPath())));
+    }
+
+    @PostMapping("/home/message")
+    public ResponseEntity<ControllerResponse> sendHomeMsg(@RequestParam("name")String name,
+                                                          @RequestParam("phone")String phone,
+                                                          @RequestParam("message")String message){
+        return ResponseEntity.ok(adminService.sendHomeMsg(name, phone, message));
+    }
+
+    @DeleteMapping("/delete/msg/{id}")
+    public ResponseEntity<?> deleteMsg(@PathVariable String id){
+        return ResponseEntity.ok(adminService.deleteMsg(id));
     }
 }

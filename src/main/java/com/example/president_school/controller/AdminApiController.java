@@ -3,13 +3,15 @@ package com.example.president_school.controller;
 import com.example.president_school.entity.*;
 import com.example.president_school.entity.enums.Role;
 import com.example.president_school.entity.enums.Science;
-import com.example.president_school.payload.EmployeeDto;
-import com.example.president_school.payload.LessonDto;
-import com.example.president_school.payload.StudentDto;
+import com.example.president_school.payload.*;
 import com.example.president_school.repository.*;
 import com.example.president_school.service.GeneralService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,8 @@ public class AdminApiController {
     private final VideoSourceRepository videoSourceRepository;
     private final TaskSourceRepository taskSourceRepository;
     private final GeneralService generalService;
+    private final PostRepository postRepository;
+    private final HomeMessageRepository homeMessageRepository;
 
     @Value("${default.person.image.path}")
     private String defaultPersonImgPath;
@@ -51,6 +55,22 @@ public class AdminApiController {
         else {
             map.addAttribute("img", null);
         }
+//        ********************************************
+        final List<HomeMessage> messageList = homeMessageRepository.findByMessageStatus(true);
+        List<MessageDto> messageDtoList = new ArrayList<>();
+        messageList.forEach(homeMessage -> {
+            MessageDto messageDto = new MessageDto();
+            messageDto.setId(homeMessage.getId());
+            messageDto.setFullName(homeMessage.getOwnerName());
+            messageDto.setPhone(homeMessage.getOwnerPhone());
+            messageDto.setMessage(homeMessage.getMessage());
+            messageDto.setStatus(homeMessage.isMessageStatus());
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            messageDto.setDate(dateFormat.format(homeMessage.getCreatedDate()));
+            messageDtoList.add(messageDto);
+        });
+        map.addAttribute("messageList", messageDtoList);
+//        ********************************************
 
         final List<Student> studentList = studentRepository.findAll();
         map.addAttribute("totalSize", studentList.size());
@@ -118,10 +138,6 @@ public class AdminApiController {
         }
         map.addAttribute("employeeList", employeeDtoList);
         return "admin/allEmployee";
-    }
-
-    private String getDate(Date date){
-        return date.toString().substring(0, date.toString().indexOf(" "));
     }
 
     @GetMapping("/edit/employee/{id}")
@@ -225,8 +241,46 @@ public class AdminApiController {
         return "admin/employeeProfile";
     }
 
-    @GetMapping("/all/lesson")
-    public String getAllLesson(Model map){
+    @GetMapping("/courses")
+    public String getCourses(Model map){
+        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");
+        Employee employee = employeeOptional.get();
+        if (employee.getImage() != null){
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
+        }
+        else {
+            map.addAttribute("img", defaultPersonImgPath);
+        }
+
+        List<CourseDtoList> courseDtoListList = new ArrayList<>();
+        for (Science science : Science.values()){
+            List<CourseDto> courseDtoList = new ArrayList<>();
+            for (int i = 2; i < 5; i++){
+                Optional<Course> course = courseRepository.findByScienceAndGrade(science, i);
+                CourseDto courseDto = new CourseDto();
+                courseDto.setScience(science.toString());
+                if (course.isPresent()){
+                    int i1 = lessonRepository.countAllByCourse(course.get());
+                    courseDto.setLessonCount(i1);
+                    if (i1 == 0) courseDto.setLessonPath("javascript:void(0);");
+                    else courseDto.setLessonPath("/api/admin/all/lesson/" + science.name().toLowerCase() + "/" + i);
+                } else {
+                    courseDto.setLessonCount(0);
+                    courseDto.setLessonPath("javascript:void(0);");
+                }
+                if (i == 2) courseDto.setImage("/images/second.png");
+                if (i == 3) courseDto.setImage("/images/third.png");
+                if (i == 4) courseDto.setImage("/images/f44.png");
+                courseDtoList.add(courseDto);
+            }
+            courseDtoListList.add(new CourseDtoList(science.toString(), courseDtoList));
+        }
+        map.addAttribute("courseList", courseDtoListList);
+        return "admin/courses";
+    }
+
+    @GetMapping("/all/lesson/{science}/{grade}")
+    public String getAllLesson(Model map, @PathVariable String science, @PathVariable String grade){
         Optional<Employee> employeeOptional1 = employeeRepository.findByPhone("+998901234567");
         Employee employee12 = employeeOptional1.get();
         if (employee12.getImage() != null){
@@ -236,7 +290,10 @@ public class AdminApiController {
             map.addAttribute("img", null);
         }
 
-        List<Lesson> all = lessonRepository.findAll();
+        String science1 = grade + "-sinf " + Science.valueOf(science.toUpperCase()) + " darslari ro'yhati";
+        map.addAttribute("science", science1);
+        Course course = courseRepository.findByScienceAndGrade(Science.valueOf(science.toUpperCase()), Integer.parseInt(grade)).get();
+        List<Lesson> all = lessonRepository.findAllByCourseOrderByCreatedDateAsc(course);
         List<LessonDto> lessonDtoList = new ArrayList<>();
         int i=1;
         for (Lesson lesson : all) {
@@ -291,6 +348,92 @@ public class AdminApiController {
 
         map.addAttribute("lessonInfo", lessonDto);
         return "admin/about-lesson";
+    }
+
+    @GetMapping("/all/news")
+    public String getAllNews(Model map){
+        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");
+        Employee employee = employeeOptional.get();
+        if (employee.getImage() != null){
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
+        } else {
+            map.addAttribute("img", defaultPersonImgPath);
+        }
+
+        List<Post> postList = postRepository.findAll(Sort.by("createdAt").descending());
+        List<PostDto> postDtoList = new ArrayList<>();
+        for(Post post : postList){
+            PostDto postDto = new PostDto();
+            postDto.setId(post.getId());
+            postDto.setTitle(post.getTitle());
+            postDto.setDescription((post.getDescription().length() > 80) ? post.getDescription().substring(0, 80) + "..." : post.getDescription());
+            postDto.setType(post.getType());
+            DateFormat monthFormat;
+            monthFormat = new SimpleDateFormat("dd/MM/yyyy");
+            postDto.setDate(monthFormat.format(post.getCreatedAt()));
+            postDto.setImagePath("/api/admin/rest/post/image/" + post.getHashId());
+            postDtoList.add(postDto);
+        }
+        map.addAttribute("postList", postDtoList);
+        return "admin/all-posts";
+    }
+
+    @GetMapping("/add/news")
+    public String createNews(Model map){
+        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");
+        Employee employee = employeeOptional.get();
+        if (employee.getImage() != null){
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
+        } else {
+            map.addAttribute("img", defaultPersonImgPath);
+        }
+        return "admin/news";
+    }
+
+    @GetMapping("/edit/news/{id}")
+    public String editNews(Model map, @PathVariable String id){
+        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");
+        Employee employee = employeeOptional.get();
+        if (employee.getImage() != null){
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
+        } else {
+            map.addAttribute("img", defaultPersonImgPath);
+        }
+
+        final Optional<Post> postOp = postRepository.findById(Integer.valueOf(id));
+        final Post post = postOp.get();
+        map.addAttribute("post", post);
+        return "admin/edit-news";
+    }
+
+    @GetMapping("/all/home/message")
+    public String homeMessage(Model map){
+        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");
+        Employee employee = employeeOptional.get();
+        if (employee.getImage() != null){
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
+        } else {
+            map.addAttribute("img", defaultPersonImgPath);
+        }
+
+        final List<HomeMessage> messageList = homeMessageRepository.findAll(Sort.by("createdDate").descending());
+        List<MessageDto> messageDtoList = new ArrayList<>();
+        messageList.forEach(homeMessage -> {
+            MessageDto messageDto = new MessageDto();
+            messageDto.setId(homeMessage.getId());
+            messageDto.setFullName(homeMessage.getOwnerName());
+            messageDto.setPhone(homeMessage.getOwnerPhone());
+            messageDto.setMessage(homeMessage.getMessage());
+            messageDto.setStatus(homeMessage.isMessageStatus());
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            messageDto.setDate(dateFormat.format(homeMessage.getCreatedDate()));
+            messageDtoList.add(messageDto);
+
+            homeMessage.setMessageStatus(false);
+            homeMessageRepository.save(homeMessage);
+        });
+        map.addAttribute("messageList", messageDtoList);
+        return "admin/home-message-list";
     }
 
     @GetMapping("/profile")
@@ -367,5 +510,17 @@ public class AdminApiController {
         DateFormat monthFormat;
         monthFormat = new SimpleDateFormat("dd MMMM, yyyy");
         return monthFormat.format(date);
+    }
+
+    private String getDate(Date date){
+        return date.toString().substring(0, date.toString().indexOf(" "));
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    class CourseDtoList{
+        private String science;
+        private List<CourseDto> courseDtoList;
     }
 }

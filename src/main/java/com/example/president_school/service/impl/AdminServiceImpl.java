@@ -1,21 +1,14 @@
 package com.example.president_school.service.impl;
 
-import com.example.president_school.entity.Course;
-import com.example.president_school.entity.Employee;
-import com.example.president_school.entity.PersonImage;
+import com.example.president_school.entity.*;
 import com.example.president_school.entity.enums.Role;
 import com.example.president_school.entity.enums.Science;
-//import com.example.president_school.jwt.JwtService;
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.LoginDto;
-import com.example.president_school.repository.CourseRepository;
-import com.example.president_school.repository.EmployeeRepository;
-import com.example.president_school.repository.PersonImageRepository;
-import com.example.president_school.service.EmployeeService;
+import com.example.president_school.repository.*;
+import com.example.president_school.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,13 +20,12 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeServiceImpl implements EmployeeService {
+public class AdminServiceImpl implements AdminService {
     private final EmployeeRepository employeeRepository;
     private final PersonImageRepository personImageRepository;
     private final CourseRepository courseRepository;
-//    private final JwtService jwtService;
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
+    private final PostRepository postRepository;
+    private final HomeMessageRepository homeMessageRepository;
 
     @Value("${upload.folder}")
     private String uploadFolder;
@@ -292,6 +284,107 @@ public class EmployeeServiceImpl implements EmployeeService {
             return new ControllerResponse("Ma'lumotlar muvaffaqqiyatli tahrirlandi.", 200);
         }
         return new ControllerResponse("Profile topilmadi.", 301);
+    }
+
+    @Override
+    public ControllerResponse addPost(String title, String description, String type, MultipartFile image) {
+        Post post = new Post();
+        post.setTitle(title);
+        post.setDescription(description);
+        post.setType(type);
+        if (!image.isEmpty()) {
+            File uploadFolder = new File(String.format("%s/POST_IMAGES/",
+                    this.uploadFolder));
+            if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+//                System.out.println("Created folders.");
+            }
+            post.setContentType(image.getContentType());
+            post.setName(image.getOriginalFilename());
+            post.setExtension(getExtension(image.getOriginalFilename()));
+            post.setFileSize(image.getSize());
+            post.setHashId(UUID.randomUUID().toString().substring(0, 10));
+            post.setUploadPath(String.format("POST_IMAGES/%s.%s",
+                    post.getHashId(),
+                    post.getExtension()));
+//            PersonImage personImage1 = personImageRepository.save(post);
+            uploadFolder = uploadFolder.getAbsoluteFile();
+            File file = new File(uploadFolder, String.format("%s.%s",
+                    post.getHashId(),
+                    post.getExtension()));
+            try {
+                image.transferTo(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            return new ControllerResponse("Post uchun rasm yuklang", 301);
+        }
+        postRepository.save(post);
+        return new ControllerResponse("Post saqlandi", 200);
+    }
+
+    @Override
+    public Post getPostImage(String hashId) {
+        return postRepository.findByHashId(hashId);
+    }
+
+    @Override
+    public ControllerResponse sendHomeMsg(String name, String phone, String message) {
+        homeMessageRepository.save(new HomeMessage(name, phone, message, true));
+        return new ControllerResponse("Xabar jo'natildi", 200);
+    }
+
+    @Override
+    public ControllerResponse deleteMsg(String id) {
+        final Optional<HomeMessage> messageOptional = homeMessageRepository.findById(Integer.valueOf(id));
+        if (messageOptional.isPresent()){
+            homeMessageRepository.deleteById(Integer.valueOf(id));
+            return new ControllerResponse("Xabar o'chirildi", 200);
+        }
+        return new ControllerResponse("Xabar topilmadi", 208);
+    }
+
+    @Override
+    public ControllerResponse updatePost(Integer id, String title, String description, String type, MultipartFile image) {
+        final Optional<Post> postOptional = postRepository.findById(id);
+        if (postOptional.isPresent()){
+            final Post post = postOptional.get();
+            post.setTitle(title);
+            post.setDescription(description);
+            post.setType(type);
+            if (!image.isEmpty()){
+                File uploadFolder = new File(String.format("%s/POST_IMAGES/",
+                        this.uploadFolder));
+                if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+//                System.out.println("Created folders.");
+                }
+                File file1 = new File(String.format("%s/%s",
+                        this.uploadFolder,
+                        post.getUploadPath()));
+                file1.delete();
+                post.setContentType(image.getContentType());
+                post.setName(image.getOriginalFilename());
+                post.setExtension(getExtension(image.getOriginalFilename()));
+                post.setFileSize(image.getSize());
+                post.setHashId(UUID.randomUUID().toString().substring(0, 10));
+                post.setUploadPath(String.format("POST_IMAGES/%s.%s",
+                        post.getHashId(),
+                        post.getExtension()));
+//            PersonImage personImage1 = personImageRepository.save(post);
+                uploadFolder = uploadFolder.getAbsoluteFile();
+                File file = new File(uploadFolder, String.format("%s.%s",
+                        post.getHashId(),
+                        post.getExtension()));
+                try {
+                    image.transferTo(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            postRepository.save(post);
+            return new ControllerResponse("Post tahrirlandi", 200);
+        }
+        return new ControllerResponse("Post topilmadi", 208);
     }
 
     private String getExtension(String fileName) {

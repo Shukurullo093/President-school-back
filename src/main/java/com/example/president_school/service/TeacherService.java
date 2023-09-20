@@ -19,9 +19,5 @@ public interface TeacherService {
 
     ControllerResponse editLesson(String id, String title, String description, String type, MultipartFile video, MultipartFile task);
 
-
-//    LessonSource getVideo(String hashId);
-
-//    ControllerResponse editLesson(String id, String title, String description, String type,
-//                                  MultipartFile source, MultipartFile task, MultipartFile test, String testAnswer);
+    void deleteTest(String id);
 }

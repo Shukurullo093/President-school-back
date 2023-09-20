@@ -34,12 +34,12 @@
       </div>
 
       <div class="profile">
-         <img src="/user/images/pic-1.jpg" class="image" alt="">
-         <h3 class="name">john doe</h3>
+         <img th:src="${profile.imageHashId}" class="image" alt="">
+         <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
          <!-- <p class="role">studen</p> -->
-         <a href="update.html" class="btn">profile</a>
+         <a th:href="@{/api/user/update/profile}" class="btn">Profile</a>
          <div class="flex-btn">
-            <a href="login.html" class="option-btn">chiqish</a>
+            <a th:href="@{/api/user/login}" class="option-btn">chiqish</a>
             <!-- <a href="register.html" class="option-btn">sign up</a> -->
          </div>
       </div>
@@ -53,102 +53,80 @@
    </div>
 
    <div class="profile">
-      <img src="/user/images/pic-1.jpg" class="image" alt="">
-      <h3 class="name">john doe</h3>
-      <p class="role"><i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i> 1220 / 1</p>
+      <img th:src="${profile.imageHashId}" class="image" alt="">
+      <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
+<!--      <p class="role"><i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i> 1220 / 1</p>-->
       <!-- <a href="profile.html" class="btn">view profile</a> -->
    </div>
 
    <nav class="navbar">
-      <a href="home.html"><i class="fas fa-home"></i><span>dashboard</span></a>
-      <!-- <a href="about.html"><i class="fas fa-question"></i><span>about</span></a> -->
-      <a href="dashboard.html"><i class="fas fa-graduation-cap"></i><span>kurslar</span></a>
-      <a href="top-students.html"><i class="fas fa-chalkboard-user"></i><span>reyting</span></a>
+      <a th:href="@{/api/user/dashboard}"><i class="fas fa-home"></i><span>dashboard</span></a>
+      <!-- <a href="dashboard.html"><i class="fas fa-question"></i><span>kurslar</span></a> -->
+      <a th:href="@{/api/user/my/course}"><i class="fas fa-graduation-cap"></i><span>mening kurslarim</span></a>
+      <!--      <a href="top-students.html"><i class="fas fa-chalkboard-user"></i><span>reyting</span></a>-->
       <!-- <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a> -->
    </nav>
 </div>
 
 <section class="watch-video">
-   <h1 class="heading">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h1>
+
    <div class="video-container" id="div">
       <div class="begin" id="begin">
+         <h1 class="heading" th:text="${title}"></h1>
+         <span th:text="${description}"></span><br><br>
          <span>Test ishlashga tayyor bo'lsangiz quyidagi tugmani bosing.</span><br>
          <button type="button" class="inline-btn" onclick="begin()">Boshlash</button>
       </div>
-      <ul id="ul">
-         <li>
-            <form id="form">
-               <h4 class="question-text">{#1} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, accusamus.</h4>
-               <img src="/user/images/post-1-1.png" alt="question-img">
-               <div class="flex">
-                  <div class="input-group">
-                     <input type="radio" name="check" id="var1">
-                     <label for="var1">Lorem, ipsum dolor.</label>
+      <div id="ul">
+         <form id="form">
+            <ul style="list-style: none;">
+               <li style="margin-bottom: 2rem;" th:each="test : ${testList}" th:data-id="${test.id}">
+                  <div class="flex">
+                     <div class="question">
+                        <h4 class="question-text" th:text="'{#' + ${test.order} + '} ' + ${test.question}"></h4>
+                        <a th:if="${test.questionImgUrl != null}" th:href="${test.questionImgUrl}">
+                           <img th:src="${test.questionImgUrl}" alt="question-img">
+                        </a>
+                     </div>
+                     <div class="input-group">
+                        <input type="radio" th:data-id="${test.answer1Id}" th:name="'check' + ${test.order}" id="var1">
+                        <label for="var1">
+                           <a th:if="${test.answer1ImgUrl != null}" th:href="${test.answer1ImgUrl}">
+                              <img th:src="${test.answer1ImgUrl}" alt="answer-img"><br>
+                           </a>
+                           <span th:text="${test.answer1}"></span>
+                        </label>
+                     </div>
+                     <div class="input-group">
+                        <input type="radio" th:data-id="${test.answer2Id}" th:name="'check' + ${test.order}" id="var2">
+                        <label for="var2">
+                           <a th:if="${test.answer2ImgUrl != null}" th:href="${test.answer2ImgUrl}">
+                              <img th:src="${test.answer2ImgUrl}" alt="answer-img"><br>
+                           </a>
+                           <span th:text="${test.answer2}"></span>
+                        </label>
+                     </div>
+                     <div class="input-group">
+                        <input type="radio" th:data-id="${test.answer3Id}" th:name="'check' + ${test.order}" id="var3">
+                        <label for="var3">
+                           <a th:if="${test.answer3ImgUrl != null}" th:href="${test.answer3ImgUrl}">
+                              <img th:src="${test.answer3ImgUrl}" alt="answer-img">
+                              <br>
+                           </a>
+                           <span th:text="${test.answer3}"></span>
+                        </label>
+                     </div>
                   </div>
-                  <div class="input-group">
-                     <input type="radio" name="check" id="var2">
-                     <label for="var2">Lorem, ipsum dolor.</label>
-                  </div>
-                  <div class="input-group">
-                     <input type="radio" name="check" id="var3">
-                     <label for="var3">Lorem, ipsum dolor.</label>
-                  </div>
-               </div>
-               <div class="flex-btn">
-                  <button type="button" class="option-btn" onclick="next(1)">keyingisi</button>
-                  <button type="button" class="inline-btn" onclick="answer(1)">saqlash</button>
-               </div>
-            </form>
-         </li>
-         <li>
-            <form id="form">
-               <h4 class="question-text">{#2} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, accusamus.</h4>
-               <img src="/user/images/post-1-1.png" alt="question-img">
-               <div class="flex">
-                  <div class="input-group">
-                     <input type="radio" name="check" id="var1">
-                     <label for="var1">Lorem, ipsum dolor.</label>
-                  </div>
-                  <div class="input-group">
-                     <input type="radio" name="check" id="var2">
-                     <label for="var2">Lorem, ipsum dolor.</label>
-                  </div>
-                  <div class="input-group">
-                     <input type="radio" name="check" id="var3">
-                     <label for="var3">Lorem, ipsum dolor.</label>
-                  </div>
-               </div>
-               <div class="flex-btn">
-                  <button type="button" class="option-btn" onclick="next(2)">keyingisi</button>
-                  <button type="button" class="inline-btn" onclick="answer(2)">saqlash</button>
-               </div>
-            </form>
-         </li>
-         <li>
-            <form id="form">
-               <h4 class="question-text">{#3} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, accusamus.</h4>
-               <img src="/user/images/post-1-1.png" alt="question-img">
-               <div class="flex">
-                  <div class="input-group">
-                     <input type="radio" name="check" id="var1">
-                     <label for="var1">Lorem, ipsum dolor.</label>
-                  </div>
-                  <div class="input-group">
-                     <input type="radio" name="check" id="var2">
-                     <label for="var2">Lorem, ipsum dolor.</label>
-                  </div>
-                  <div class="input-group">
-                     <input type="radio" name="check" id="var3">
-                     <label for="var3">Lorem, ipsum dolor.</label>
-                  </div>
-               </div>
-               <div class="flex-btn">
-                  <button type="button" class="option-btn" onclick="next(3)">keyingisi</button>
-                  <button type="button" class="inline-btn" onclick="answer(3)">saqlash</button>
-               </div>
-            </form>
-         </li>
-      </ul>
+               </li>
+
+            </ul>
+
+            <div class="flex-btn">
+<!--               <button type="button" class="option-btn" onclick="next(1)">keyingisi</button>-->
+               <button type="button" class="inline-btn" onclick="answer(1)" disabled>Tugatish</button>
+            </div>
+         </form>
+      </div>
       <div class="finish" id="finish">
          <span>Test yakunlandi. <br>Natijani quyidagi tugma orqali bilib olishingiz mumkin.</span><br>
          <button type="button" class="inline-btn">Natija</button>
@@ -156,9 +134,9 @@
    </div> 
 </section>
 
-<footer class="footer">
-   &copy; copyright @ 2023 by <span></span> | all rights reserved!
-</footer>
+<!--<footer class="footer">-->
+<!--   &copy; copyright @ 2023 by <span></span> | all rights reserved!-->
+<!--</footer>-->
 
    <!-- custom js file link  -->
    <script src="/user/js/watch-video.js"></script>
@@ -166,43 +144,9 @@
    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script> -->
 
    <script>
-      let ans = [];
       function begin(){
          document.getElementById("begin").style.display = "none";
          document.getElementById("ul").style.display = "block";
-      }
-
-      function next(order){
-         const li = document.getElementsByTagName("li");
-         order == li.length ? li[0].style.display = "block" : li[order].style.display = "block";
-         li[order - 1].style.display = "none";
-      }
-
-      function answer(order){
-         const form = document.getElementsByTagName("form");
-         
-         for(let i = 0; i < form[order-1].getElementsByTagName("input").length; i++){
-            if(form[order-1].getElementsByTagName("input")[i].checked){
-               ans[order-1]=i;
-            }           
-         }
-
-         let count = 0;
-         for(let i=0; i<ans.length; i++){
-            if(ans[i]!=null){
-               count++;
-            }
-         }
-         
-         if(count == form.length){
-            document.getElementById("ul").style.display = "none";
-            document.getElementById("finish").style.display = "block";
-         }
-         else{
-            const li = document.getElementsByTagName("li");
-            order == li.length ? li[0].style.display = "block" : li[order].style.display = "block";
-            li[order - 1].style.display = "none";
-         }         
       }
    </script>
 </body>

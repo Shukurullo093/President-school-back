@@ -103,39 +103,46 @@
                 <ul class="metismenu" id="menu">
                     <li class="nav-label first">Bosh Menu</li>
                     <li><a class="ai-icon" th:href="@{/api/admin/dashboard}" aria-expanded="false">
-							<i class="la la-home"></i>
-							<span class="nav-text">Dashboard</span>
-						</a>
+                        <i class="la la-home"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
                     </li>
-					<li>
-                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-							<i class="la la-user"></i>
-							<span class="nav-text">Hodimlar</span>
-						</a>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-user"></i>
+                        <span class="nav-text">Hodimlar</span>
+                    </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/list/employee}">Barcha hodimlar</a></li>
                             <li><a th:href="@{/api/admin/add/employee}">Yangi hodim</a></li>
                         </ul>
                     </li>
-					<li>
-                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-							<i class="la la-users"></i>
-							<span class="nav-text">O'quvchilar</span>
-						</a>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-users"></i>
+                        <span class="nav-text">O'quvchilar</span>
+                    </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
                         </ul>
                     </li>
-					<li>
-                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-							<i class="la la-graduation-cap"></i>
-							<span class="nav-text">Kurslar</span>
-						</a>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-graduation-cap"></i>
+                        <span class="nav-text">Kurslar</span>
+                    </a>
                         <ul aria-expanded="false">
-                            <li><a th:href="@{/api/admin/all/lesson}">Barcha kurslar</a></li>
+                            <li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
                         </ul>
                     </li>
-				</ul>
+                    <li>
+                        <a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+                            <i class="la la-newspaper-o"></i>
+                            <span class="nav-text">Postlar</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a th:href="@{/api/admin/all/news}">Barcha postlar</a></li>
+                            <li><a th:href="@{/api/admin/add/news}">Yangi post</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
         <!--**********************************
@@ -189,31 +196,31 @@
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">Ism</label>
-												<input type="text" name="name" class="form-control">
+												<input type="text" name="name" class="form-control" required>
 											</div>
 										</div>
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">Familiya</label>
-												<input type="text" name="surname" class="form-control">
+												<input type="text" name="surname" class="form-control" required>
 											</div>
 										</div>
                                         <div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">Tug'ilgan kun</label>
-												<input name="birthDate" class="datepicker-default form-control" id="datepicker1">
+												<input name="birthDate" class="datepicker-default form-control" id="datepicker1" required>
 											</div>
 										</div>
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">Email</label>
-												<input type="text" name="email" class="form-control">
+												<input type="text" name="email" class="form-control" required>
 											</div>
 										</div>
                                         <div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">Telefon raqam</label>
-												<input type="text" name="phone" class="form-control">
+												<input type="text" name="phone" class="form-control" required>
 											</div>
 										</div>
 										<div class="col-lg-6 col-md-6 col-sm-12">
@@ -229,7 +236,7 @@
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">Ish boshlagan vaqt</label>
-												<input name="joiningDate" class="datepicker-default form-control" id="datepicker">
+												<input name="joiningDate" class="datepicker-default form-control" id="datepicker" required>
 											</div>
 										</div>
                                         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -266,13 +273,13 @@
                                         <div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">Parol</label>
-												<input type="password" name="pass" class="form-control">
+												<input type="password" name="pass" class="form-control" required>
 											</div>
 										</div>
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">Parolni tasdiqlash</label>
-												<input type="password" name="repass" class="form-control">
+												<input type="password" name="repass" class="form-control" required>
 											</div>
 										</div>
 										<div class="col-lg-12 col-md-12 col-sm-12">
@@ -282,7 +289,7 @@
 											</div>
 										</div>
                                         <div class="col-lg-11 col-md-11 col-sm-11 alert alert-danger alert-dismissible fade show mx-2" role="alert">
-                                            <span class="text-dark" id="error-alert">Employee successfully added!</span>
+                                            <span class="text-dark" id="error-alert"></span>
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
