@@ -205,7 +205,7 @@
 														<td th:text="${post.date}"></td>
 														<td class="text-center">
 															<a th:href="${'/api/admin/edit/news/' + post.id}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>
-															<a href="javascript:void(0);" id="deleteBtn1" th:data-id="${post.id}" class="btn btn-sm btn-danger mt-1"><i class="la la-trash-o"></i></a>
+															<a href="javascript:void(0);" onclick="deletePost(this)" th:data-id="${post.id}" class="btn btn-sm btn-danger mt-1"><i class="la la-trash-o"></i></a>
 														</td>												
 													</tr>
 												</tbody>
@@ -226,7 +226,7 @@
 													<div class="dropdown-menu dropdown-menu-right border py-0">
 														<div class="py-2">
 															<a class="dropdown-item" th:href="${'/api/admin/edit/news/' + post.id}">Tahrirlash</a>
-															<a class="dropdown-item text-danger" id="deleteBtn" th:data-id="${post.id}" href="javascript:void(0);">O'chirish</a>
+															<a class="dropdown-item text-danger" onclick="deletePost(this)" th:data-id="${post.id}" href="javascript:void(0);">O'chirish</a>
 														</div>
 													</div>
 												</div>
@@ -267,7 +267,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">DexignLab</a> 2020</p>
+                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">Elite group</a> 2023</p>
             </div>
         </div>
         <!--**********************************
@@ -306,6 +306,6 @@
     <script src="/vendor/svganimation/svg.animation.js"></script>
     <script src="/js/styleSwitcher.js"></script>
 
-    <script src="/js/admin/admin.js"></script>
+    <script src="/js/admin/news.js"></script>
 </body>
 </html>

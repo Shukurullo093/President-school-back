@@ -419,9 +419,9 @@
               <span th:text="${employee.science}"></span>
               <div class="social">
                 <a th:href="'tel:' + ${employee.phone}"><i class="bi bi-phone"></i></a>
-                <a href=""><i class="bi bi-facebook"></i></a>
-                <a href=""><i class="bi bi-instagram"></i></a>
-                <a href=""><i class="bi bi-linkedin"></i></a>
+                <a th:href="'https://t.me/' + ${employee.phone}"><i class="bi bi-telegram"></i></a>
+                <a th:href="'https://instagram.com/' + ${employee.phone}"><i class="bi bi-instagram"></i></a>
+                <a href="javascript:void(0);"><i class="bi bi-linkedin"></i></a>
               </div>
             </div>
           </div><!-- End Team Member -->
@@ -758,14 +758,14 @@
     <div class="container">
       <div class="row gy-4">
         <div class="col-lg-5 col-md-12 footer-info">
-          <a href="index.html" class="logo d-flex align-items-center">
+          <a href="javascript:void(0);" class="logo d-flex align-items-center">
             <span>President school</span>
           </a>
           <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita
             valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
           <div class="social-links d-flex mt-4">
-            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a th:href="'tel:' + ${contact.phone}" class="twitter"><i class="bi bi-phone"></i></a>
+            <a th:href="'https://t.me/' + ${contact.phone}" class="facebook"><i class="bi bi-telegram"></i></a>
             <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
             <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
           </div>
@@ -788,10 +788,9 @@
 
         <div class="col-lg-5 col-md-12 footer-contact text-center text-md-start">
           <h4>Biz bilan aloqa</h4>
-            <strong>Telefon:</strong> <span th:text="${contact.phone}"></span><br>
-            <strong>Email:</strong> <span th:text="${contact.email}"></span><br>
-          </p>
-          <a href="javascript:void(0);" class="btn btn-success" style="letter-spacing: 1px;">Created by ELITE group</a>
+          <strong><i class="bi bi-phone"></i> Telefon:</strong> <span th:text="${contact.phone}"></span><br>
+          <strong><i class="bi bi-mailbox"></i> Email:</strong> <span th:text="${contact.email}"></span><br>
+          <a href="javascript:void(0);" class="btn btn-outline-success text-light border-light mt-2" style="letter-spacing: 1px;">Created by ELITE group</a>
         </div>
 
       </div>

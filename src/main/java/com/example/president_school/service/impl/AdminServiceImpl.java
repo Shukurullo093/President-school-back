@@ -50,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
         } else {
             b = courseRepository.existsByScience(Science.valueOf(science));
         }
-        if (b){
+        if (b && Role.valueOf(role.toUpperCase()).equals(Role.TEACHER)){
             return new ControllerResponse("Bu sinfga tegishli boshqa o'qituvchi yaratib bo'lmaydi", 301);
         }
 
@@ -385,6 +385,17 @@ public class AdminServiceImpl implements AdminService {
             return new ControllerResponse("Post tahrirlandi", 200);
         }
         return new ControllerResponse("Post topilmadi", 208);
+    }
+
+    @Override
+    public void deletePost(Integer id) {
+        final Optional<Post> postOptional = postRepository.findById(id);
+        if (postOptional.isPresent()){
+            final Post post = postOptional.get();
+            File file = new File(uploadFolder + "/" + post.getUploadPath());
+            file.delete();
+            postRepository.deleteById(id);
+        }
     }
 
     private String getExtension(String fileName) {

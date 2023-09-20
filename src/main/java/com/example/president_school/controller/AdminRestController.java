@@ -118,6 +118,11 @@ public class AdminRestController {
         return ResponseEntity.ok(adminService.updatePost(id, title, description, type, photo));
     }
 
+    @DeleteMapping("/delete/post/{id}")
+    public void deletePost(@PathVariable Integer id){
+        adminService.deletePost(id);
+    }
+
     @GetMapping("/post/image/{hashId}")
     public ResponseEntity<?> getPostImage(@PathVariable String hashId) throws IOException {
         Post image = adminService.getPostImage(hashId);

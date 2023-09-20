@@ -82,3 +82,21 @@ $("#editBtn").click(function (){
         }
     })
 });
+
+function deletePost(th){
+    $.ajax({
+        url: baseUrl + "/api/admin/rest/delete/post/" + $(th).attr('data-id'),
+        type: 'DELETE',
+        enctype: 'multipart/form-data',
+        data: null,
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function () {
+            window.location = baseUrl + "/api/admin/all/news";
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    })
+}

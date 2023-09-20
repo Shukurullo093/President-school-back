@@ -35,4 +35,6 @@ public interface AdminService {
     ControllerResponse deleteMsg(String id);
 
     ControllerResponse updatePost(Integer id, String title, String description, String type, MultipartFile photo);
+
+    void deletePost(Integer id);
 }
