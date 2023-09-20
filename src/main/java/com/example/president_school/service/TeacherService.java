@@ -20,4 +20,6 @@ public interface TeacherService {
     ControllerResponse editLesson(String id, String title, String description, String type, MultipartFile video, MultipartFile task);
 
     void deleteTest(String id);
+
+    ControllerResponse editTest(String lessonId, Integer testId, String question, MultipartFile questionImg, String ans1, MultipartFile ans1Img, String ans2, MultipartFile ans2Img, String ans3, MultipartFile ans3Img);
 }

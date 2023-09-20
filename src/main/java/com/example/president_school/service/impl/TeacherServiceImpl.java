@@ -147,13 +147,45 @@ public class TeacherServiceImpl implements TeacherService {
         return new ControllerResponse("Test yaratildi", 200);
     }
 
+    @Override
+    public ControllerResponse editTest(String lessonId, Integer testId, String question, MultipartFile questionImg, String ans1,
+                                       MultipartFile ans1Img, String ans2, MultipartFile ans2Img, String ans3, MultipartFile ans3Img) {
+        final Optional<Test> testOptional = testRepository.findById(testId);
+        if (testOptional.isPresent()) {
+            final Test test = testOptional.get();
+            test.setQuestionTxt(question);
+            test.setAnswer1(ans1);
+            test.setAnswer2(ans2);
+            test.setAnswer3(ans3);
+            if (!questionImg.isEmpty()){
+                int id = test.getQuestionImg() == null ? 0 : test.getQuestionImg().getId();
+                test.setQuestionImg(updateSource(questionImg, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
+            }
+            if (!ans1Img.isEmpty()) {
+                int id = test.getAnswer1Img() == null ? 0 : test.getAnswer1Img().getId();
+                test.setAnswer1Img(updateSource(ans1Img, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
+            }
+            if (!ans2Img.isEmpty()) {
+                int id = test.getAnswer2Img() == null ? 0 : test.getAnswer2Img().getId();
+                test.setAnswer2Img(updateSource(ans2Img, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
+            }
+            if (!ans3Img.isEmpty()) {
+                int id = test.getAnswer3Img() == null ? 0 : test.getAnswer3Img().getId();
+                test.setAnswer3Img(updateSource(ans3Img, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
+            }
+            testRepository.save(test);
+            return new ControllerResponse("Test tahrirlandi", 200);
+        }
+        return new ControllerResponse("Test topilmadi", 208);
+    }
+
     private TestImageSource getSource(MultipartFile file, String sourceType, Integer course) {
         File uploadFolder = new File(String.format("%s/%d/TEST/%s/",
                 this.uploadFolder,
                 course,
                 sourceType));
         if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
-            System.out.println(uploadFolder);
+            System.out.println(uploadFolder + " path created for test");
         }
         TestImageSource testImageSource = new TestImageSource();
         testImageSource.setContentType(file.getContentType());
@@ -174,6 +206,47 @@ public class TeacherServiceImpl implements TeacherService {
                 testImageSource.getExtension()));
         try {
             file.transferTo(file1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return save;
+    }
+
+    private TestImageSource updateSource(MultipartFile file, Integer id, String sourceType, Integer course){
+        File uploadFolder = new File(String.format("%s/%d/TEST/%s/",
+                this.uploadFolder,
+                course,
+                sourceType));
+        if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+            System.out.println(uploadFolder + " path created for test");
+        }
+        final Optional<TestImageSource> byId = testImgSourceRepository.findById(id);
+        TestImageSource testImageSource;
+        testImageSource = byId.orElseGet(TestImageSource::new);
+
+        File file1 = new File(uploadFolder + "/" + testImageSource.getUploadPath());
+        if (file1.delete()) {
+            System.out.println("deleted " + file1);
+        }
+
+        testImageSource.setContentType(file.getContentType());
+        testImageSource.setName(file.getOriginalFilename());
+        testImageSource.setExtension(generalService.getExtension(file.getOriginalFilename()));
+        testImageSource.setFileSize(file.getSize());
+        testImageSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
+        testImageSource.setUploadPath(String.format("%d/TEST/%s/%s.%s",
+                course,
+                sourceType,
+                testImageSource.getHashId(),
+                testImageSource.getExtension()));
+        TestImageSource save = testImgSourceRepository.save(testImageSource);
+
+        uploadFolder = uploadFolder.getAbsoluteFile();
+        File file12 = new File(uploadFolder, String.format("%s.%s",
+                testImageSource.getHashId(),
+                testImageSource.getExtension()));
+        try {
+            file.transferTo(file12);
         } catch (IOException e) {
             e.printStackTrace();
         }

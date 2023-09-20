@@ -390,6 +390,32 @@ public class AdminApiController {
         return "admin/news";
     }
 
+    @GetMapping("/about/news/{id}")
+    public String aboutNews(@PathVariable Integer id, Model map){
+        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");
+        Employee employee = employeeOptional.get();
+        if (employee.getImage() != null){
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
+        } else {
+            map.addAttribute("img", defaultPersonImgPath);
+        }
+
+        final Optional<Post> postOptional = postRepository.findById(id);
+        PostDto postDto = new PostDto();
+        if (postOptional.isPresent()){
+            final Post post = postOptional.get();
+            postDto.setId(post.getId());
+            postDto.setTitle(post.getTitle());
+            postDto.setDescription(post.getDescription());
+            postDto.setType(post.getType());
+            DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+            postDto.setDate(dateFormat.format(post.getCreatedAt()));
+            postDto.setImagePath("/api/admin/rest/post/image/" + post.getHashId());
+        }
+        map.addAttribute("post", postDto);
+        return "admin/about-news";
+    }
+
     @GetMapping("/edit/news/{id}")
     public String editNews(Model map, @PathVariable String id){
         Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");

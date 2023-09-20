@@ -155,7 +155,7 @@
                                                 <div class="my-post-content pt-3">
                                                     <form id="form">
                                                         <div class="row">
-                                                            <div class="alert alert-success alert-dismissible fade show mx-2" role="alert">
+                                                            <div class="col-11 alert alert-success alert-dismissible fade show mx-2" role="alert">
                                                                 <span class="text-dark"></span>
                                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
@@ -173,22 +173,22 @@
                                                             </div>
                                                             <div class="col-lg-3 col-md-6 col-sm-12">
                                                                 <label class="form-label">Test savoli</label>
-                                                                <textarea name="questionTxt" class="form-control" style="resize: none;" rows="5"></textarea>
+                                                                <textarea name="questionTxt" class="form-control questionTxt" style="resize: none;" rows="5"></textarea>
                                                                 <input type="file" name="questionImg" class="form-control mt-2" accept="image/*">
                                                             </div>
                                                             <div class="col-lg-3 col-md-6 col-sm-12">
                                                                 <label class="form-label">Variant(#1)[To'g'ri javob]</label>
-                                                                <textarea name="v1" class="form-control" style="resize: none;" rows="5"></textarea>
+                                                                <textarea name="v1" class="form-control v1" style="resize: none;" rows="5"></textarea>
                                                                 <input type="file" name="v1img" class="form-control mt-2" accept="image/*">
                                                             </div>
                                                             <div class="col-lg-3 col-md-6 col-sm-12">
                                                                 <label class="form-label">Variant(#2)</label>
-                                                                <textarea name="v2" class="form-control" style="resize: none;" rows="5"></textarea>
+                                                                <textarea name="v2" class="form-control v2" style="resize: none;" rows="5"></textarea>
                                                                 <input type="file" name="v2img" class="form-control mt-2" accept="image/*">
                                                             </div>
                                                             <div class="col-lg-3 col-md-6 col-sm-12">
                                                                 <label class="form-label">Variant(#3)</label>
-                                                                <textarea name="v3" class="form-control" style="resize: none;" rows="5"></textarea>
+                                                                <textarea name="v3" class="form-control v3" style="resize: none;" rows="5"></textarea>
                                                                 <input type="file" name="v3img" class="form-control mt-2" accept="image/*">
                                                             </div>
                                                             <div class="col-lg-12 col-md-12 col-sm-12 alert alert-danger alert-dismissible fade show mx-2" role="alert">
@@ -204,20 +204,24 @@
                                                         </div>
                                                     </form>
                                                     <div class="col-lg-12 col-md-12 col-sm-12 mt-5" style="width: 100%; overflow-x: scroll;">
-                                                        <table class="table table-bordered table-striped rounded">
+                                                        <table id="table" class="table table-bordered table-striped rounded">
                                                             <thead>
                                                                 <tr class="text-capitalize text-center">
                                                                     <th>No.</th>
+                                                                    <th></th>
                                                                     <th>Savol</th>
-                                                                    <th>Variant(#1)</th>
+                                                                    <th>Variant(#1)*</th>
                                                                     <th>Variant(#2)</th>
                                                                     <th>Variant(#3)</th>
-                                                                    <th></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr th:each = "test : ${testList}" class="text-center" style="word-break: break-word">
                                                                     <td th:text="${test.order}" style="width: 4%;"></td>
+                                                                    <td style="width: 4%; font-size: 18px; font-weight: 600;">
+                                                                        <i th:data-id="${test.id}" class="la la-edit bg-primary btn text-light py-1 px-2 rounded"></i>
+                                                                        <i th:data-id="${test.id}" onclick="deleteTest(this)" class="la la-trash bg-danger btn text-light py-1 px-2 rounded mt-2"></i>
+                                                                    </td>
                                                                     <td style="width: 23%;">
                                                                         <img th:if="${test.questionImgUrl != null}" th:src="${test.questionImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
                                                                         <span th:text="${test.question}"></span>
@@ -233,10 +237,6 @@
                                                                     <td style="width: 23%;">
                                                                         <img th:if="${test.answer3ImgUrl != null}" th:src="${test.answer3ImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
                                                                         <span th:text="${test.answer3}"></span>
-                                                                    </td>
-                                                                    <td style="width: 4%; font-size: 18px; font-weight: 600;">
-                                                                        <i class="la la-edit bg-primary btn text-light py-1 px-2 rounded"></i>
-                                                                        <i th:data-id="${test.id}" class="la la-trash bg-danger btn text-light py-1 px-2 rounded mt-2"></i>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>

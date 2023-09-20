@@ -28,12 +28,17 @@ public class LessonDto {
     private String lessonInfoLink;
 
     private String access;
+    private boolean star;
+    private boolean chat;
 
-    public LessonDto(UUID id, int orderNumber, String title, String type) {
+    public LessonDto(UUID id, int orderNumber, String title, String type, String access, String link, boolean star) {
         this.id = id;
         this.orderNumber = orderNumber;
         this.title = title;
         this.type = type;
+        this.access = access;
+        this.lessonInfoLink = link;
+        this.star = star;
     }
 
     public LessonDto(UUID id, int orderNumber, String title, String description, String type, String access, String link) {

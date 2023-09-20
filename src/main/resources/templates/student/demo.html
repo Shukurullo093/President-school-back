@@ -123,31 +123,31 @@
       <a th:if="${lesson2 != null}" class="box" th:href="'/api/user/watch/' + ${lesson2.id}">
          <span class="lesson-type" th:text="${lesson2.type}"></span>
          <span class="lesson-order-number" th:text="${'#' + lesson2.orderNumber}"></span>
-                  <span class="score">
-                     <i class="fa-regular fa-star fa-beat" style="color: gray;"></i>
-                     <i class="fa-regular fa-star fa-beat" style="color: gray"></i>
-                     <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
-                     <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
-                     <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
-                  </span>
+<!--                  <span class="score">-->
+<!--                     <i class="fa-regular fa-star fa-beat" style="color: gray;"></i>-->
+<!--                     <i class="fa-regular fa-star fa-beat" style="color: gray"></i>-->
+<!--                     <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
+<!--                     <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
+<!--                     <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
+<!--                  </span>-->
          <i class="fas fa-play"></i>
          <img src="/user/images/post-1-1.png" alt="">
          <h3 th:text="${lesson2.title}"></h3>
       </a>
 <!--'/api/user/watch/' + ${lesson.id}-->
-      <a th:if="${lesson1 == null}" class="box" th:each="lesson : ${lessonList}" th:href="${lesson.type} == 'test' ? '/api/user/test/' + ${lesson.id} : '/api/user/watch/' + ${lesson.id}">
+      <a th:if="${lesson1 == null}" class="box" th:each="lesson : ${lessonList}" th:href="${lesson.lessonInfoLink}">
          <span class="lesson-type" th:text="${lesson.type}"></span>
          <span class="lesson-order-number" th:text="${'#' + lesson.orderNumber}"></span>
-<!--         <span class="score" th:if="${lesson.access}">-->
-<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
-<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
-<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
-<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
-<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
-<!--         </span>-->
+         <span class="score" th:if="${lesson.star}">
+            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
+            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
+            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
+            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
+            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
+         </span>
          <i th:if="${lesson.access}" class="fas fa-play"></i>
          <i th:if="${!lesson.access}" class="fas fa-lock"></i>
-         <img src="/user/images/post-1-1.png" alt="">
+         <img src="/user/images/post-1-1.png">
          <h3 th:text="${lesson.title}"></h3>
       </a>
    </div>

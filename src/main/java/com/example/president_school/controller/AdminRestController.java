@@ -96,10 +96,10 @@ public class AdminRestController {
                 .body(new FileUrlResource(String.format("%s/%s", uploadFolder, lessonSource.getUploadPath())));
     }
 
-    @DeleteMapping("/delete/employee/{id}")
-    public ResponseEntity<ControllerResponse> deleteEmployee(@PathVariable String id){
-        return ResponseEntity.ok(adminService.deleteEmployee(id));
-    }
+//    @DeleteMapping("/delete/employee/{id}")
+//    public ResponseEntity<ControllerResponse> deleteEmployee(@PathVariable String id){
+//        return ResponseEntity.ok(adminService.deleteEmployee(id));
+//    }
 
     @PostMapping("/add/post")
     public ResponseEntity<ControllerResponse> createPost(@RequestParam("title")String title,

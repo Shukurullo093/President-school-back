@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.scrollY > 50){
       document.getElementById("exampleModalCenter").style.display = "none";
     }
-    if (window.scrollY === 0){
-      document.getElementById("exampleModalCenter").style.display = "flex";
-    }
+    // if (window.scrollY === 0){
+    //   document.getElementById("exampleModalCenter").style.display = "flex";
+    // }
   });
   /**
    * Preloader

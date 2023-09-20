@@ -81,7 +81,7 @@
                                         <li class="media dropdown-item border" th:each = "message : ${messageList}">
                                             <span class="success"><i class="ti-user"></i></span>
                                             <div class="media-body">
-                                                <a href="javascript:void(0);">
+                                                <a th:href="@{/api/admin/all/home/message}">
                                                     <p><strong class="text-capitalize" th:text="${message.fullName}"></strong><br> <span th:text="${message.message}"></span></p>
                                                 </a>
                                             </div>

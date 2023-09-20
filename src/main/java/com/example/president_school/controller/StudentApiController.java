@@ -136,20 +136,23 @@ public class StudentApiController {
             } else {
                 map.addAttribute("lesson1", null);
                 map.addAttribute("lesson2", null);
-//                final List<Lesson> lessonList = lessonRepository.findAllByCourseOrderByCreatedDateAsc(course.get());
-//                map.addAttribute("courseId", course.get().getId());
-//                map.addAttribute("science", Science.valueOf(science.toUpperCase()).toString());
-//                map.addAttribute("lessonSize", lessonList.size());
-//                map.addAttribute("tasksSize", lessonList.size() * 5);
-//                map.addAttribute("testSize", lessonList.size() / 7);
                 List<LessonDto> lessonDtoList = new ArrayList<>();
                 for (int i = 0; i < lessonList.size(); i++) {
                     if (accessLessonRepository.existsByLessonAndStudent(lessonList.get(i), studentRepository.findByPhone("+998901234568").get()) || i <= 1) {
+                        String lessonLink = lessonList.get(i).getLessonType() == LessonType.TEST ? "/api/user/test/" + lessonList.get(i).getId()
+                                : "/api/user/watch/" + lessonList.get(i).getId();
+                        boolean star = true;
+                        if (i >= 1 && i <= lessonList.size() - 1){
+                            if (!accessLessonRepository.existsByLessonAndStudent(lessonList.get(i+1), studentRepository.findByPhone("+998901234568").get())){
+                                star = false;
+                            }
+                        }
+
                         lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), i + 1,
-                                lessonList.get(i).getTitle(), lessonList.get(i).getLessonType().toString().toLowerCase(), "true"));
+                                lessonList.get(i).getTitle(), lessonList.get(i).getLessonType().toString().toLowerCase(), "true", lessonLink, star));
                     } else {
                         lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), i + 1,
-                                lessonList.get(i).getTitle(), lessonList.get(i).getLessonType().toString().toLowerCase(), "false"));
+                                lessonList.get(i).getTitle(), lessonList.get(i).getLessonType().toString().toLowerCase(), "false", "javascript:void(0);", false));
                     }
                 }
                 map.addAttribute("lessonList", lessonDtoList);
@@ -172,6 +175,9 @@ public class StudentApiController {
                 lessonDto.setTitle(lesson.getTitle());
                 lessonDto.setDescription(lesson.getDescription());
                 lessonDto.setTaskLink("/api/admin/rest/pdf/" + taskSourceRepository.findByLessonId(lesson.getId()).get().getHashId());
+                if (lesson.getLessonType().equals(LessonType.DEMO) && !b){
+                    lessonDto.setChat(false);
+                } else { lessonDto.setChat(true); }
                 map.addAttribute("lesson", lessonDto);
             }
             else {

@@ -53,6 +53,21 @@ public class TeacherRestController {
         return ResponseEntity.ok(teacherService.addTest(lessonId, question, questionImg, ans1, ans1Img, ans2, ans2Img, ans3, ans3Img));
     }
 
+    @PutMapping("/edit/test/{lessonId}/{testId}")
+    public ResponseEntity<ControllerResponse> updateTest(@PathVariable String lessonId,
+                                                      @PathVariable Integer testId,
+                                                      @RequestParam("questionTxt")String question,
+                                                      @RequestParam("questionImg")MultipartFile questionImg,
+                                                      @RequestParam("v1")String ans1,
+                                                      @RequestParam("v1img")MultipartFile ans1Img,
+                                                      @RequestParam("v2")String ans2,
+                                                      @RequestParam("v2img")MultipartFile ans2Img,
+                                                      @RequestParam("v3")String ans3,
+                                                      @RequestParam("v3img")MultipartFile ans3Img){
+
+        return ResponseEntity.ok(teacherService.editTest(lessonId, testId, question, questionImg, ans1, ans1Img, ans2, ans2Img, ans3, ans3Img));
+    }
+
     @GetMapping("/viewImage/{hashId}")
     public ResponseEntity<?> viewImage(@PathVariable String hashId) throws IOException {
         TestImageSource image = testImgSourceRepository.findByHashId(hashId).get();

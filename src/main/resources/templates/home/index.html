@@ -96,7 +96,34 @@
     </div>
 
     <div class="position-absolute h-100" id="exampleModalCenter">
-      <div class="modal-bg h-100 mt-3">
+      <div id="modal-bg-question" class="modal-bg-question w-25 h-100 mt-3">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5>Ro'yhatdan o'tish</h5>
+            <button type="button" class="close" aria-label="Close">
+              <span aria-hidden="false" onclick="document.getElementById('exampleModalCenter').style.display = 'none';">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mt-0">
+            <form class="w-100">
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                  <h1 class="pb-0">Ro'yhatdan o'tishni hoxlaysizmi?</h1>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <button type="button" onclick="document.getElementById('modal-bg-question').style.display = 'none';
+                    document.getElementById('modal-bg-login').style.display = 'block';" class="btn btn-primary form-control fs-3 mt-lg-4 mt-md-3 mt-sm-1">Kirish</button>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <button type="button" onclick="document.getElementById('modal-bg-question').style.display = 'none';
+                  document.getElementById('modal-bg-register').style.display = 'block';" class="btn btn-success form-control fs-3 mt-lg-4 mt-md-3 mt-sm-1">Ro'yhatdan o'tish</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div id="modal-bg-register" style="display: none;" class="modal-bg-register w-75 h-100 mt-3">
         <div class="modal-content">
           <div class="modal-header">
             <h5>Ro'yhatdan o'tish</h5>
@@ -149,16 +176,46 @@
                   <button type="button" class="btn btn-success form-control fs-3 mt-lg-4 mt-md-3 mt-sm-1">Ro'yhatdan o'tish</button>
                 </div>
                 <div class="col-12 text-center mt-1">
-                  <span>Sizda allaqachon hisob bormi? <a th:href="@{/api/user/login}" class="text-primary fs-3">Kirish</a></span>
+                  <span>Sizda allaqachon hisob bormi? <a href="javascript:void(0);" onclick="document.getElementById('modal-bg-login').style.display = 'block';
+                    document.getElementById('modal-bg-register').style.display = 'none';" class="text-primary fs-3">Kirish</a></span>
                 </div>
               </div>
             </form>
           </div>
-<!--          <div class="modal-footer">-->
-<!--            <button type="button" class="btn btn-secondary"-->
-<!--                    onclick="document.getElementById('exampleModalCenter').style.display = 'none';">Yopish</button>-->
-<!--            <button type="button" class="btn btn-primary">Save changes</button>-->
-<!--          </div>-->
+        </div>
+      </div>
+      <div id="modal-bg-login" style="display: none;" class="modal-bg-login w-25 h-100 mt-3">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5>Kirish</h5>
+            <button type="button" class="close" aria-label="Close">
+              <span aria-hidden="false" onclick="document.getElementById('exampleModalCenter').style.display = 'none';">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mt-0">
+            <form class="w-100">
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <label class="form-label mt-lg-1 mt-md-3 mt-sm-1">Telefon*</label>
+                  <input type="tel" class="form-control" placeholder="+998***" required>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <label class="form-label mt-lg-4 mt-md-3 mt-sm-1">Parol*</label>
+                  <input type="password" class="form-control" placeholder="***" required>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <button type="reset" class="btn btn-danger form-control fs-3 mt-lg-4 mt-md-3 mt-sm-1">Bekor qilish</button>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <button type="button" class="btn btn-primary form-control fs-3 mt-lg-4 mt-md-3 mt-sm-1">Kirish</button>
+                </div>
+                <div class="col-12 text-center mt-1">
+                  <span>Sizda hisob yo`qmi? <a href="javascript:void(0);" onclick="document.getElementById('modal-bg-login').style.display = 'none';
+                    document.getElementById('modal-bg-register').style.display = 'block';" class="text-primary fs-3">Ro'yhatdan o'tish</a></span>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -250,7 +307,8 @@
         </div>
 
       </div>
-    </section><!-- End About Us Section -->
+    </section>
+    <!-- End About Us Section -->
 
     <!-- ======= Stats Counter Section ======= -->
     <section id="stats-counter" class="stats-counter sections-bg">
@@ -289,7 +347,8 @@
         </div>
 
       </div>
-    </section><!-- End Stats Counter Section -->
+    </section>
+    <!-- End Stats Counter Section -->
 
     <!-- ======= Call To Action Section ======= -->
     <section id="call-to-action" class="call-to-action">
@@ -299,7 +358,8 @@
         <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         <a class="cta-btn" href="#">Call To Action</a>
       </div>
-    </section><!-- End Call To Action Section -->
+    </section>
+    <!-- End Call To Action Section -->
 
     <!-- ======= News Section ======= -->
     <section id="portfolio" class="portfolio sections-bg">
@@ -411,7 +471,8 @@
         </div>
 
       </div>
-    </section><!-- End Our Team Section -->
+    </section>
+    <!-- End Our Team Section -->
 
     <!-- ======= Pricing Section ======= -->
     <section id="pricing" class="pricing sections-bg">
@@ -500,7 +561,8 @@
         </div>
 
       </div>
-    </section><!-- End Pricing Section -->
+    </section>
+    <!-- End Pricing Section -->
 
     <!-- ======= Frequently Asked Questions Section ======= -->
     <section id="faq" class="faq">
@@ -607,7 +669,8 @@
         </div>
 
       </div>
-    </section><!-- End Frequently Asked Questions Section -->
+    </section>
+    <!-- End Frequently Asked Questions Section -->
 
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
@@ -684,7 +747,8 @@
         </div>
 
       </div>
-    </section><!-- End Contact Section -->
+    </section>
+    <!-- End Contact Section -->
 
   </main><!-- End #main -->
 
