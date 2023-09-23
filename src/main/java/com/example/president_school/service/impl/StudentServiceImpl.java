@@ -17,8 +17,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -94,6 +97,11 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
+    @Override
+    public void exportTestResultToPdf(HttpServletResponse response) {
+
+    }
+
     private String getExtension(String fileName) {
         String ext = null;
         if (fileName != null && !fileName.isEmpty()) {
@@ -104,4 +112,86 @@ public class StudentServiceImpl implements StudentService {
         }
         return ext;
     }
+
+//    public void exportToPdf(List<Group> groupList, HttpServletResponse response) throws IOException {
+//        setResponseHeader(response, "application/pdf", ".pdf", "Guruh_");
+//        Document document=new Document(PageSize.A4);
+//        PdfWriter.getInstance(document, response.getOutputStream());
+//        document.open();
+//
+////        Font font= FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+//        Font font = FontFactory.getFont("Times New Roman");
+//        font.setSize(18);
+//        font.setColor(Color.BLACK);
+//
+//        Paragraph paragraph=new Paragraph("Guruhlar ro'yhati", font);
+//        paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+//        document.add(paragraph);
+//
+//        PdfPTable table=new PdfPTable(8);
+//        table.setWidthPercentage(100f);
+//        table.setSpacingBefore(10);
+//        writeGroupHeader(table);
+//        writeGroupData(table, groupList);
+//        document.add(table);
+//
+//        document.close();
+//    }
+//
+//    private void writeGroupData(PdfPTable table, List<Group> groupList) {
+//        int i=1;
+//        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+//        for (Group group : groupList) {
+//            table.addCell(String.valueOf(i++));
+//            table.addCell(group.getName());
+//            table.getDefaultCell().setBackgroundColor(Color.BLUE);
+//            table.addCell(group.getScience().getName());
+//            table.getDefaultCell().setBackgroundColor(Color.WHITE);
+//            table.addCell(group.getTeacher().getLastname()+" "+group.getTeacher().getFirstname());
+//            String days="";
+//            for (String day : group.getDays()) {
+//                days+=day+"\n";
+//            }
+//            days+=group.getLessontime();
+//            table.addCell(days);
+//            table.addCell(String.valueOf(group.getRoom().getNumber()));
+//            table.addCell(String.valueOf(group.getPayment()));
+//            table.addCell(group.getComment());
+//        }
+//    }
+//
+//    private void writeGroupHeader(PdfPTable table) {
+//        PdfPCell pdfPCell=new PdfPCell();
+//        pdfPCell.setBackgroundColor(Color.GREEN);
+//        pdfPCell.setPadding(5);
+//
+//        Font font= FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+//        font.setColor(Color.white);
+//
+//        pdfPCell.setPhrase(new Phrase("#", font));
+//        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(pdfPCell);
+//        pdfPCell.setPhrase(new Phrase("Nomi", font));
+//        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(pdfPCell);
+//        pdfPCell.setPhrase(new Phrase("Fan", font));
+//        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(pdfPCell);
+//        pdfPCell.setPhrase(new Phrase("O'qituvchi", font));
+//        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(pdfPCell);
+//        pdfPCell.setPhrase(new Phrase("Vaqt", font));
+//        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(pdfPCell);
+//        pdfPCell.setPhrase(new Phrase("Xona", font));
+//        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(pdfPCell);
+//        pdfPCell.setPhrase(new Phrase("To'lov", font));
+//        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(pdfPCell);
+//        pdfPCell.setPhrase(new Phrase("Ta'rif", font));
+//        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(pdfPCell);
+//    }
 }

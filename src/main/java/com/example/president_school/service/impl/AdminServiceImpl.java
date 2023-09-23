@@ -8,14 +8,18 @@ import com.example.president_school.payload.LoginDto;
 import com.example.president_school.repository.*;
 import com.example.president_school.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -29,6 +33,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Value("${upload.folder}")
     private String uploadFolder;
+
+    private XSSFWorkbook workbook;
+    private XSSFSheet sheet;
 
     @Transactional
     @Override
@@ -396,6 +403,106 @@ public class AdminServiceImpl implements AdminService {
             file.delete();
             postRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public void exportEmployeeToExcel(HttpServletResponse response) throws IOException {
+        final List<Employee> employeeList = employeeRepository.findAll();
+        exportToExcel(employeeList, response);
+    }
+
+    public void setResponseHeader(HttpServletResponse response, String contentType, String extension, String prefix){
+        DateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String timeStamp = dataFormat.format(new Date());
+        String fileName = prefix + timeStamp + extension;
+        response.setContentType(contentType);
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=" + fileName;
+        response.setHeader(headerKey, headerValue);
+    }
+
+    public void exportToExcel(List<Employee> employeeList, HttpServletResponse response) throws IOException {
+        workbook = new XSSFWorkbook();
+        setResponseHeader(response, "application/octet-stream", ".xlsx", "Hodimlar_");
+        writeHeaderLine();
+        writeDataLine(employeeList);
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        outputStream.close();
+    }
+
+    private void writeDataLine(List<Employee> employeeList) {
+        int rowIndex = 1;
+        XSSFCellStyle cellStyle = workbook.createCellStyle();
+        XSSFFont font = workbook.createFont();
+        font.setFamily(FontFamily.ROMAN);
+        font.setBold(false);
+        font.setFontHeight(14);
+        cellStyle.setFont(font);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setWrapText(true);
+        for (Employee employee : employeeList) {
+            XSSFRow row = sheet.createRow(rowIndex++);
+            int columnIndex = 0;
+            createCell(row, columnIndex++, rowIndex - 1, cellStyle);
+
+            createCell(row, columnIndex++, "", cellStyle);
+
+            createCell(row, columnIndex++, employee.getLastName() + " " + employee.getFirstName(), cellStyle);
+            createCell(row, columnIndex++, employee.getPhone(), cellStyle);
+            createCell(row, columnIndex++, employee.getEmail(), cellStyle);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            createCell(row, columnIndex++, dateFormat.format(employee.getBirthDate()), cellStyle);
+            String gender = switch (employee.getGender()) {
+                case "Male" -> "Erkak";
+                case "Female" -> "Ayol";
+                default -> "Aniqlanmadi";
+            };
+            createCell(row, columnIndex++, gender, cellStyle);
+            createCell(row, columnIndex++, employee.getScience().toString(), cellStyle);
+            createCell(row, columnIndex++, employee.getGrade(), cellStyle);
+            createCell(row, columnIndex++, employee.getRole().toString(), cellStyle);
+            createCell(row, columnIndex++, dateFormat.format(employee.getJoiningDate()), cellStyle);
+        }
+    }
+
+    private void writeHeaderLine() {
+        sheet=workbook.createSheet("Hodimlar");
+        XSSFRow row=sheet.createRow(0);
+        XSSFCellStyle cellStyle=workbook.createCellStyle();
+        XSSFFont font=workbook.createFont();
+        font.setBold(true);
+        font.setFontHeight(16);
+        font.setFamily(FontFamily.DECORATIVE);
+        cellStyle.setFont(font);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setWrapText(true);
+        createCell(row, 0, "No.", cellStyle);
+        createCell(row, 1, "Rasm", cellStyle);
+        createCell(row, 2, "Fio", cellStyle);
+        createCell(row, 3, "Telefon", cellStyle);
+        createCell(row, 4, "Email", cellStyle);
+        createCell(row, 5, "Tug'ilgan kun", cellStyle);
+        createCell(row, 6, "Jins", cellStyle);
+        createCell(row, 7, "Fan", cellStyle);
+        createCell(row, 8, "Sinf", cellStyle);
+        createCell(row, 9, "Lavozim", cellStyle);
+        createCell(row, 10, "Qo'shilgan vaqt", cellStyle);
+    }
+
+    private void createCell(XSSFRow row, int i, Object value, XSSFCellStyle cellStyle) {
+        XSSFCell cell = row.createCell(i);
+        sheet.autoSizeColumn(i);
+        if(value instanceof Integer){
+            cell.setCellValue((Integer)value);
+        } else if(value instanceof Boolean){
+            cell.setCellValue((Boolean) value);
+        } else{
+            cell.setCellValue((String) value);
+        }
+        cell.setCellStyle(cellStyle);
     }
 
     private String getExtension(String fileName) {

@@ -175,6 +175,12 @@
 						<ul class="nav nav-pills mb-3">
 							<li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link btn-primary mr-1 show active">Qator</a></li>
 							<li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link btn-primary">Jadval</a></li>
+							<li class="nav-item mr-4 ml-auto">
+								<a href="/api/admin/rest/export/student/excel" class="btn btn-primary">
+									<i class="la la-download"></i>
+									<i class="la la-file-excel-o fs-6"></i>
+								</a>
+							</li>
 						</ul>
 					</div>
 					<div class="col-lg-12">
@@ -183,7 +189,6 @@
 								<div class="card">
 									<div class="card-header">
 										<h4 class="card-title">Barcha o'quvchilar</h4>
-<!--										<a href="/api/admin/rest/add/employee" class="btn btn-primary">+ Yangi</a>-->
 									</div>
 									<div class="card-body">
 										<div class="table-responsive">
@@ -195,10 +200,7 @@
 														<th>Telefon</th>
 														<th>Jins</th>
 														<th>Sinf</th>
-<!--														<th>Telefon</th>-->
-<!--														<th>Email</th>-->
 														<th>Yaratilgan vaqt</th>
-<!--														<th>Action</th>-->
 													</tr>
 												</thead>
 												<tbody>
@@ -208,13 +210,7 @@
 														<td th:text="${student.phone}"></td>
 														<td th:text="${student.gender}"></td>
 														<td th:text="${student.grade}"></td>
-<!--														<td><a href="javascript:void(0);"><strong>123 456 7890</strong></a></td>-->
-<!--														<td><a href="javascript:void(0);"><strong>info@example.com</strong></a></td>-->
 														<td th:text="${student.createdDate}"></td>
-<!--														<td>-->
-<!--															<a href="javascript:void(0);" class="btn btn-sm btn-primary"><i class="la la-pencil"></i></a>-->
-<!--															<a href="javascript:void(0);" class="btn btn-sm btn-danger"><i class="la la-trash-o"></i></a>-->
-<!--														</td>												-->
 													</tr>
 												</tbody>
 											</table>
@@ -227,18 +223,6 @@
 									<div class="col-lg-4 col-md-6 col-sm-6 col-12" th:each="student : ${studentList}">
 										<div class="card card-profile">
 											<div class="card-header justify-content-end pb-0">
-<!--												<div class="dropdown">-->
-<!--													<button class="btn btn-link" type="button" data-toggle="dropdown">-->
-<!--														<span class="dropdown-dots fs&#45;&#45;1"></span>-->
-<!--													</button>-->
-<!--													<div class="dropdown-menu dropdown-menu-right border py-0">-->
-<!--														<div class="py-2">-->
-<!--															<a class="dropdown-item" href="javascript:void(0);">Edit</a>-->
-<!--															<a class="dropdown-item text-danger" href="javascript:void(0);">Delete</a>-->
-<!--														</div>-->
-<!--													</div>-->
-<!--												</div>-->
-<!--											</div>-->
 											<div class="card-body pt-2">
 												<div class="text-center">
 													<div class="profile-photo">
@@ -253,10 +237,7 @@
 															<span class="mb-0">Telefon :</span><strong th:text="${student.phone}">+01 123 456 7890</strong></li>
 														<li class="list-group-item px-0 d-flex justify-content-between">
 															<span class="mb-0">Yaratilgan vaqt:</span><strong th:text="${student.createdDate}"></strong></li>
-<!--														<li class="list-group-item px-0 d-flex justify-content-between">-->
-<!--															<span class="mb-0">Address:</span><strong>#8901 Marmora Road</strong></li>-->
 													</ul>
-<!--													<a class="btn btn-outline-primary btn-rounded mt-3 px-4" href="professor-profile.html">Read More</a>-->
 												</div>
 											</div>
 										</div>
@@ -266,8 +247,9 @@
 						</div>
 					</div>
 				</div>
-				
-            </div>
+            	</div>
+
+			</div>
         </div>
         <!--**********************************
             Content body end
@@ -279,7 +261,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
+                <p>Copyright © Designed &amp; Developed by <a href="../index.html" target="_blank"></a> 2023</p>
             </div>
         </div>
         <!--**********************************
@@ -317,6 +299,5 @@
     <script src="/vendor/svganimation/vivus.min.js"></script>
     <script src="/vendor/svganimation/svg.animation.js"></script>
     <script src="/js/styleSwitcher.js"></script>
-	
 </body>
 </html>

@@ -75,7 +75,7 @@
          <h1 class="heading" th:text="${title}"></h1>
          <span th:text="${description}"></span><br><br>
          <span>Test ishlashga tayyor bo'lsangiz quyidagi tugmani bosing.</span><br>
-         <button type="button" class="inline-btn" onclick="begin()">Boshlash</button>
+         <button type="button" class="inline-option-btn" onclick="begin()">Boshlash</button>
       </div>
       <div id="ul">
          <form id="form">
@@ -89,7 +89,7 @@
                         </a>
                      </div>
                      <div class="input-group">
-                        <input type="radio" th:data-id="${test.answer1Id}" th:name="'check' + ${test.order}" id="var1">
+                        <input type="radio" onchange="inputChange(this)" th:test-order="${test.order}" th:test-id="${test.id}" th:data-id="${test.answer1Id}" th:name="'check' + ${test.order}" id="var1">
                         <label for="var1">
                            <a th:if="${test.answer1ImgUrl != null}" th:href="${test.answer1ImgUrl}">
                               <img th:src="${test.answer1ImgUrl}" alt="answer-img"><br>
@@ -98,7 +98,7 @@
                         </label>
                      </div>
                      <div class="input-group">
-                        <input type="radio" th:data-id="${test.answer2Id}" th:name="'check' + ${test.order}" id="var2">
+                        <input type="radio" onchange="inputChange(this)" th:test-order="${test.order}" th:test-id="${test.id}" th:data-id="${test.answer2Id}" th:name="'check' + ${test.order}" id="var2">
                         <label for="var2">
                            <a th:if="${test.answer2ImgUrl != null}" th:href="${test.answer2ImgUrl}">
                               <img th:src="${test.answer2ImgUrl}" alt="answer-img"><br>
@@ -107,7 +107,7 @@
                         </label>
                      </div>
                      <div class="input-group">
-                        <input type="radio" th:data-id="${test.answer3Id}" th:name="'check' + ${test.order}" id="var3">
+                        <input type="radio" onchange="inputChange(this)" th:test-order="${test.order}" th:test-id="${test.id}" th:data-id="${test.answer3Id}" th:name="'check' + ${test.order}" id="var3">
                         <label for="var3">
                            <a th:if="${test.answer3ImgUrl != null}" th:href="${test.answer3ImgUrl}">
                               <img th:src="${test.answer3ImgUrl}" alt="answer-img">
@@ -118,12 +118,31 @@
                      </div>
                   </div>
                </li>
-
             </ul>
-
+            <div class="result-span">
+               <span class="number-1">1</span>
+               <span class="number-2">2</span>
+               <span class="number-3">3</span>
+               <span class="number-4">4</span>
+               <span class="number-5">5</span>
+               <span class="number-6">6</span>
+               <span class="number-7">7</span>
+               <span class="number-8">8</span>
+               <span class="number-9">9</span>
+               <span class="number-10 ten">10</span>
+               <span class="number-11 ten">11</span>
+               <span class="number-12 ten">12</span>
+               <span class="number-13 ten">13</span>
+               <span class="number-14 ten">14</span>
+               <span class="number-15 ten">15</span>
+               <span class="number-16 ten">16</span>
+               <span class="number-17 ten">17</span>
+               <span class="number-18 ten">18</span>
+               <span class="number-19 ten">19</span>
+               <span class="number-20 ten">20</span>
+            </div>
             <div class="flex-btn">
-<!--               <button type="button" class="option-btn" onclick="next(1)">keyingisi</button>-->
-               <button type="button" class="inline-btn" onclick="answer(1)" disabled>Tugatish</button>
+               <button type="button" class="option-btn" onclick="checkTest()">Natija</button>
             </div>
          </form>
       </div>
@@ -139,9 +158,9 @@
 <!--</footer>-->
 
    <!-- custom js file link  -->
+   <script src="/user/js/test.js"></script>
    <script src="/user/js/watch-video.js"></script>
    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script> -->
 
    <script>
       function begin(){

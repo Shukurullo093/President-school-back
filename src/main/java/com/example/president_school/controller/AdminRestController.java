@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -143,5 +144,10 @@ public class AdminRestController {
     @DeleteMapping("/delete/msg/{id}")
     public ResponseEntity<?> deleteMsg(@PathVariable String id){
         return ResponseEntity.ok(adminService.deleteMsg(id));
+    }
+
+    @GetMapping("/export/employee/excel")
+    public void exportEmployeeToExcel(HttpServletResponse response) throws IOException {
+        adminService.exportEmployeeToExcel(response);
     }
 }

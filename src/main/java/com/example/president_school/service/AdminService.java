@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 
 @Service
@@ -37,4 +38,6 @@ public interface AdminService {
     ControllerResponse updatePost(Integer id, String title, String description, String type, MultipartFile photo);
 
     void deletePost(Integer id);
+
+    void exportEmployeeToExcel(HttpServletResponse response) throws IOException;
 }
