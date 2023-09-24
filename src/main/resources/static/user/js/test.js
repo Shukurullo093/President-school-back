@@ -23,13 +23,11 @@ function inputChange(th){
 }
 
 function checkTest(){
-    console.log(result);
-
     $.ajax({
         url: baseUrl + "/api/student/rest/check/test",
         type: 'POST',
         enctype: 'application/json',
-        data: {'result': result},
+        data: result,
         processData: false,
         contentType: 'application/json;charset=utf-8',
         cache: false,

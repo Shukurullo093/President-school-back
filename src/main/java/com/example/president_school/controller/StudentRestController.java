@@ -38,7 +38,7 @@ public class StudentRestController {
     }
 
     @PostMapping("/check/test")
-    public ResponseEntity<?> checkTest(@RequestBody TestResultDto[] result1){
+    public ResponseEntity<?> checkTest(@RequestBody String[] result1){
         System.out.println(result1);
         return null;
     }
@@ -49,5 +49,6 @@ public class StudentRestController {
     class TestResultDto{
         private int test_id;
         private int data_id;
+
     }
 }

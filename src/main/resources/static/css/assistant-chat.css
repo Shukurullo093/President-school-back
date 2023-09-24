@@ -42,10 +42,12 @@
     border-radius: 7px;
     display: inline-block;
     position: relative;
+    max-width: 52%;
+    min-width: 20%;
 }
 .message:after {
     bottom: 100%;
-    left: 7%;
+    /*left: 30rem;*/
     border: solid transparent;
     content: " ";
     height: 0;
@@ -63,7 +65,7 @@
 }
 .other-message:after {
     bottom: 100%;
-    left: 30px;
+    left: 1.5rem;
     border: solid transparent;
     content: " ";
     height: 0;
@@ -81,7 +83,7 @@
 }
 .my-message:after {
     border-bottom-color: #e8f1f3;
-    left: 93%;
+    right: 1rem;
 }
 .message-data a i{
     font-size: 18px;
@@ -128,7 +130,22 @@
     font-size: 22px;
     font-weight: bold;
     color: blue;
-    /* background-color: black; */
     padding: 6px;
     border-radius: 50%;
+}
+
+@media (max-width:1200px){
+
+}
+
+@media (max-width:991px){
+    .message{
+        max-width: 70%;
+    }
+}
+
+@media (max-width:450px){
+    .message{
+        max-width: 90%;
+    }
 }

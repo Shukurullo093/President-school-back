@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentDto {
+    private Long id;
     private String fullName;
     private String phone;
     private String gender;
@@ -17,6 +18,12 @@ public class StudentDto {
     private MultipartFile image;
     private String imagePath;
     private String createdDate;
+
+    public StudentDto(Long id, String fullName, String imagePath) {
+        this.id = id;
+        this.fullName = fullName;
+        this.imagePath = imagePath;
+    }
 
     public StudentDto(String fullName, String phone, String gender, String grade, String password, MultipartFile image) {
         this.fullName = fullName;

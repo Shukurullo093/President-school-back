@@ -19,4 +19,10 @@ public class EmployeeDto {
     private String imageHashId;
     private String role;
     private String grade;
+
+    public EmployeeDto(Integer id, String fullName, String imageHashId) {
+        this.id = id;
+        this.fullName = fullName;
+        this.imageHashId = imageHashId;
+    }
 }

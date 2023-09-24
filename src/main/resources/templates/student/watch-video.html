@@ -78,7 +78,6 @@
       </form>
       <p class="description" th:text="${lesson.description}"></p>
    </div>
-
 </section>
 
 <section class="comments" th:if="${lesson != null && lesson.chat}">
@@ -86,44 +85,51 @@
    <h1 class="heading">Chat</h1>
 
    <form class="add-comment">
-<!--      <div class="btn-group">-->
-<!--         <button type="button" class="btn btn-success">-->
-<!--            <a href="javascript:void(0);">-->
-<!--               Topshiriq(#1)-->
+      <div class="btn-group">
+         <button type="button" class="btn btn-success">
+            <a href="javascript:void(0);">Topshiriq(#1)
+               <i class="fas fa-star"></i>
+            </a>
+         </button>
+         <button type="button" class="option-btn">
+            <a href="javascript:void(0);">Topshiriq(#2)
+               <i class="fas fa-star" style="color: yellow;"></i>
+            </a>
+         </button>
+         <button type="button" class="btn btn-success">
+            <a href="javascript:void(0);">Topshiriq(#3)
 <!--               <i class="fas fa-star"></i>-->
-<!--            </a>-->
-<!--         </button>-->
-<!--         <button type="button" class="btn btn-success">-->
-<!--            <a href="javascript:void(0);">Topshiriq(#1)-->
+            </a>
+         </button>
+         <button type="button" class="btn btn-success">
+            <a href="javascript:void(0);">Topshiriq(#4)
 <!--               <i class="fas fa-star"></i>-->
-<!--            </a>-->
-<!--         </button>-->
-<!--         <button type="button" class="btn btn-success">-->
-<!--            <a href="javascript:void(0);">Topshiriq(#1)-->
+            </a>
+         </button>
+         <button type="button" class="btn btn-light">
+            <a href="javascript:void(0);">Topshiriq(#5)
 <!--               <i class="fas fa-star"></i>-->
-<!--            </a>-->
-<!--         </button>-->
-<!--         <button type="button" class="btn btn-success">-->
-<!--            <a href="javascript:void(0);">Topshiriq(#1)-->
-<!--               <i class="fas fa-star"></i>-->
-<!--            </a>-->
-<!--         </button>-->
-<!--         <button type="button" class="btn btn-light">-->
-<!--            <a href="javascript:void(0);">Topshiriq(#1)-->
-<!--               <i class="fas fa-star"></i>-->
-<!--            </a>-->
-<!--         </button>-->
-<!--      </div>-->
+            </a>
+         </button>
+      </div>
       <div class="chat">
-         <div class="icon-group">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-         </div>
+<!--         <div class="icon-group">-->
+<!--            <i class="fas fa-star"></i>-->
+<!--            <i class="fas fa-star"></i>-->
+<!--            <i class="fas fa-star"></i>-->
+<!--            <i class="fas fa-star"></i>-->
+<!--            <i class="fas fa-star"></i>-->
+<!--         </div>-->
          <ul style="list-style: none;">
+            <li class="other-message">
+               <time>10 Sep, 2023</time>
+               <div class="message-body">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                  Quam molestiae sequi dolores perspiciatis obcaecati, ducimus odio atque quisquam
+                  laboriosam veritatis laborum asperiores non provident dolorum est hic nihil.
+                  Corrupti eos ratione facilis voluptas tempore!</div>
+            </li>
             <li class="my-message">
+               <time>10:10, 10-10-2023</time>
                <div class="message-body">hello world, salom dunyo</div>
             </li>
             <li class="other-message">
@@ -131,7 +137,7 @@
             </li>
             <li class="my-message">
                <div class="message-body">
-                  <img src="/user/images/thumb-1.png" style="width: 50%;" /><br>
+                  <img src="/user/images/thumb-1.png" /><br>
                   hello world, salom dunyo
                </div>
             </li>

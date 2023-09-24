@@ -5,15 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
-public class TaskSource extends AbsFileInfoEntity {
-    @OneToOne
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+public class ChatMessageImage extends AbsFileInfoEntity {
 }
