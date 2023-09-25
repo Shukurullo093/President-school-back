@@ -121,21 +121,6 @@
         <div class="content-body">
             <!-- row -->
             <div class="container-fluid">
-				    
-                <!-- <div class="row page-titles mx-0">
-                    <div class="col-sm-6 p-md-0">
-                        <div class="welcome-text">
-                            <h4>About Student</h4>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Students</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">About Student</a></li>
-                        </ol>
-                    </div>
-                </div> -->
 				
 				<div class="row mb-0">
 					<div class="col-xl-3 col-xxl-4 col-lg-4">
@@ -153,14 +138,11 @@
 									<ul class="list-group list-group-flush">
 										<li th:each="i :${#numbers.sequence(1, 5)}" class="list-group-item d-flex justify-content-between py-1" style="align-items: center;">
                                             <span class="mb-0" th:text="'Topshiriq(#' + ${i} + ')'"></span>
-                                            <a th:if="${student.star[i-1]}" href="javascript:void(0);" class="btn btn-success text-light btn-rounded my-0 px-4">Bajarildi</a>
-                                            <a th:unless="${student.star[i-1]}" href="javascript:void(0);" class="btn btn-primary text-light btn-rounded my-0 px-4">Bajardi</a>
+                                            <button type="button" onclick="accessFunc(this)" th:data-id="${i}"
+                                                    th:class="${student.star[i-1]} ? 'btn-success btn text-light btn-rounded my-0 px-4' : 'btn-primary btn text-light btn-rounded my-0 px-4'"
+                                                    th:text="${student.star[i-1]} ? 'Bajarildi' : 'Bajardi'"></button>
                                         </li>
 									</ul>
-									<!-- <div class="card-footer text-center border-0 mt-0">								
-										<a href="javascript:void(0);" class="btn btn-danger btn-rounded px-4">Follow</a>
-										<a href="javascript:void(0);" class="btn btn-warning btn-rounded px-4">Message</a>
-									</div> -->
 								</div>
 							</div>
                         </div>
@@ -199,33 +181,32 @@
                                                         <label for="image">
                                                             <i class="la la-link"></i>
                                                         </label>
-                                                        <input id="image" type="file" accept="image/*" style="display: none;">
-                                                        <input type="text" class="form-control" placeholder="xabar...">
+                                                        <input id="image" name="messageImg" type="file" accept="image/*" style="display: none;">
+                                                        <input type="text" name="messageTxt" class="form-control" placeholder="xabar...">
                                                         <i class="la la-send"></i>
                                                     </form>
                                                 </div>
                                             </div>
 											<div id="my-posts" class="tab-pane fade">
                                                 <div class="my-post-content pt-3 px-sm-0 mx-sm-0">
-                                                    <style>
-                                                        .video-container{
-                                                            /* background-color: var(--white); */
-                                                            border-radius: .5rem;
-                                                            padding: 1rem .8rem;
-                                                        }
-                        
-                                                        .video-container .video{
-                                                            position: relative;
-                                                            margin-bottom: 1.5rem;
-                                                        }
-                        
-                                                        .video-container .video video{
-                                                            border-radius: .5rem;
-                                                            width: 100%;
-                                                            object-fit: contain;
-                                                            background-color: #000;
-                                                        }                        
-                                                    </style>
+<!--                                                    <style>-->
+<!--                                                        .video-container{-->
+<!--                                                            border-radius: .5rem;-->
+<!--                                                            padding: 1rem .8rem;-->
+<!--                                                        }-->
+<!--                        -->
+<!--                                                        .video-container .video{-->
+<!--                                                            position: relative;-->
+<!--                                                            margin-bottom: 1.5rem;-->
+<!--                                                        }-->
+<!--                        -->
+<!--                                                        .video-container .video video{-->
+<!--                                                            border-radius: .5rem;-->
+<!--                                                            width: 100%;-->
+<!--                                                            object-fit: contain;-->
+<!--                                                            background-color: #000;-->
+<!--                                                        }                        -->
+<!--                                                    </style>-->
                                                     <!-- <div class="video-container">
                                                         <div class="video">
                                                            <video src="images/vid-1.mp4" controls poster="images/thumb-1.png" id="video"></video>
@@ -236,42 +217,6 @@
                                                     <object th:data="${lessonInfo.taskLink} + '#toolbar=0&scrollbar=0'" type="application/pdf" width="100%" height="800px">
                                                         <p>Faylni ochib bo'lmadi. <a th:href="@{lessonInfo.taskLink}">Boshqa sahifada</a> ochish.</p>
                                                     </object>
-                                                    <!-- <div class="post-input">
-                                                        <textarea name="textarea" id="textarea" cols="30" rows="5" class="form-control bg-transparent" placeholder="Please type what you want...."></textarea> <a href="javascript:void()"><i class="ti-clip"></i> </a>
-                                                        <a href="javascript:void()"><i class="ti-camera"></i> </a><a href="javascript:void()" class="btn btn-primary">Post</a>
-                                                    </div>
-                                                    <div class="profile-uoloaded-post border-bottom-1 pb-5">
-                                                        <img src="images/profile/8.jpg" alt="" class="img-fluid">
-                                                        <a class="post-title" href="javascript:void()">
-                                                            <h4>Collection of textile samples lay spread</h4>
-                                                        </a>
-                                                        <p>A wonderful serenity has take possession of my entire soul like these sweet morning of spare which enjoy whole heart.A wonderful serenity has take possession of my entire soul like these sweet morning
-                                                            of spare which enjoy whole heart.</p>
-                                                        <button class="btn btn-primary mr-3"><span class="mr-3"><i class="fa fa-heart"></i></span>Like</button>
-                                                        <button class="btn btn-secondary"><span class="mr-3"><i class="fa fa-reply"></i></span>Reply</button>
-                                                    </div>
-                                                    <div class="profile-uoloaded-post border-bottom-1 pb-5">
-                                                        <img src="images/profile/9.jpg" alt="" class="img-fluid">
-                                                        <a class="post-title" href="javascript:void()">
-                                                            <h4>Collection of textile samples lay spread</h4>
-                                                        </a>
-                                                        <p>A wonderful serenity has take possession of my entire soul like these sweet morning of spare which enjoy whole heart.A wonderful serenity has take possession of my entire soul like these sweet morning
-                                                            of spare which enjoy whole heart.</p>
-                                                        <button class="btn btn-primary mr-3"><span class="mr-3"><i class="fa fa-heart"></i></span>Like</button>
-                                                        <button class="btn btn-secondary"><span class="mr-3"><i class="fa fa-reply"></i></span>Reply</button>
-                                                    </div>
-                                                    <div class="profile-uoloaded-post pb-5">
-                                                        <img src="images/profile/8.jpg" alt="" class="img-fluid">
-                                                        <a class="post-title" href="javascript:void()">
-                                                            <h4>Collection of textile samples lay spread</h4>
-                                                        </a>
-                                                        <p>A wonderful serenity has take possession of my entire soul like these sweet morning of spare which enjoy whole heart.A wonderful serenity has take possession of my entire soul like these sweet morning
-                                                            of spare which enjoy whole heart.</p>
-                                                        <button class="btn btn-primary mr-3"><span class="mr-3"><i class="fa fa-heart"></i></span>Like</button>
-                                                        <button class="btn btn-secondary"><span class="mr-3"><i class="fa fa-reply"></i></span>Reply</button>
-                                                    </div>
-                                                    <div class="text-center mb-2"><a href="javascript:void()" class="btn btn-primary">Load More</a>
-                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -328,5 +273,7 @@
     <script src="/vendor/svganimation/vivus.min.js"></script>
     <script src="/vendor/svganimation/svg.animation.js"></script>
     <script src="/js/styleSwitcher.js"></script>
+
+    <script src="/js/assistant/chat.js"></script>
 </body>
 </html>

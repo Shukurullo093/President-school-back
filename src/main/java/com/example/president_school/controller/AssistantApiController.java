@@ -11,6 +11,7 @@ import com.example.president_school.repository.*;
 import com.example.president_school.service.GeneralService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,12 +40,27 @@ public class AssistantApiController {
     @GetMapping("/all/message")
     public String getAllMessage(Model map){
         final List<Chat> byViewStatus = chatRepository
-                .findByLessonCourseScienceAndMessageOwnerAndViewStatusOrderByCreatedDateDesc(Science.MATH, Role.STUDENT, false);
+                .findByLessonCourseScienceAndMessageOwnerAndViewStatusOrderByCreatedAtAsc(Science.MATH, Role.STUDENT, false);
+
+        List<Chat> chatList = new ArrayList<>();
+        byViewStatus.forEach(chat -> {
+            boolean available = true;
+            for (Chat chat1 : chatList) {
+                if (chat1.getStudent().equals(chat.getStudent()) && chat1.getLesson().equals(chat.getLesson()) && chat1.getTaskOrder() == chat.getTaskOrder()){
+                    chatList.set(chatList.indexOf(chat1), chat);
+                    available = false;
+                    break;
+                }
+            }
+            if (available){
+                chatList.add(chat);
+            }
+        });
         List<ChatDto> chatDtoList = new ArrayList<>();
         if (byViewStatus.size() > 0){
-            for(Chat chat : byViewStatus){
+            for(Chat chat : chatList){
                 ChatDto chatDto = new ChatDto();
-                chatDto.setId(chat.getChatId());
+                chatDto.setId(Long.valueOf(chat.getId()));
                 Student student = chat.getStudent();
                 String img = chat.getStudent().getImage() != null ? generalService.getProfile(chat.getStudent().getPhone()).getImageHashId()
                         : defaultPersonImgPath;
@@ -67,7 +83,7 @@ public class AssistantApiController {
     }
 
     @GetMapping("/message/{chatId}")
-    public String getMessageByStudentAndLesson(Model map, @PathVariable Long chatId){
+    public String getMessageByStudentAndLesson(Model map, @PathVariable Integer chatId){
         final Optional<Chat> chatOptional = chatRepository.findById(chatId);
         final Chat chat = chatOptional.get();
 
@@ -87,37 +103,29 @@ public class AssistantApiController {
         chatDto1.setStar(star);
         map.addAttribute("student", chatDto1);
 //        ================================
-        final List<Chat> byStudentAndLessonCourseOrderByCreatedDateDesc = chatRepository.findByStudentAndLessonCourseOrderByCreatedDateDesc(chat.getStudent(), chat.getLesson().getCourse());
+        final List<Chat> byStudentAndLessonCourseOrderByCreatedDateDesc = chatRepository.findByStudentAndLessonCourseOrderByCreatedAtDesc(chat.getStudent(), chat.getLesson().getCourse());
         List<ChatDto> chatDtoListHistory = new ArrayList<>();
         for(Chat chat1 : byStudentAndLessonCourseOrderByCreatedDateDesc){
             ChatDto chatDto = new ChatDto();
             chatDto.setMessageOwnerRole(chat1.getMessageOwner().name());
             chatDto.setMessage(chat1.getMessage());
-            chatDto.setMessageImagePath(chat1.getImage() == null ? null : "api/assistant/rest/message/image/" + chat1.getImage().getHashId());
-            chatDto.setDate(getDateFormat(chat1.getCreatedDate(), "HH:MM, dd-MM-yyyy"));
+            chatDto.setMessageImagePath(chat1.getHashId() == null ? null : "api/assistant/rest/message/image/" + chat1.getHashId());
+            chatDto.setDate(getDateFormat(chat1.getCreatedAt(), "HH:MM, dd-MM-yyyy"));
             chatDtoListHistory.add(chatDto);
+
+//            chat1.setViewStatus(true);
+//            chatRepository.save(chat1);
         }
         map.addAttribute("chatHistory", chatDtoListHistory);
 //        ===============================
         LessonDto lessonDto = new LessonDto();
         final Lesson lesson = chat.getLesson();
         lessonDto.setTitle(lesson.getTitle());
-//        lessonDto.setType(lesson.getLessonType().toString());
-//        lessonDto.setDescription(lesson.getDescription());
-
-//        DateFormat monthFormat;
-//        monthFormat = new SimpleDateFormat("dd-MM-yyyy");
-//        lessonDto.setCreatedDate(monthFormat.format(lesson.getCreatedDate()));
         final Optional<VideoSource> videoSource = videoSourceRepository.findByLessonId(lesson.getId());
         final VideoSource video = videoSource.get();
-//        lessonDto.setLessonName(video.getName());
-//        lessonDto.setContentType(video.getContentType());
-//        long fileSize = video.getFileSize() / (1024 * 1024);
-//        lessonDto.setSize(Long.toString(fileSize));
         lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + video.getHashId());
         final TaskSource taskSource = taskSourceRepository.findByLessonId(lesson.getId()).get();
         lessonDto.setTaskLink("/api/admin/rest/pdf/" + taskSource.getHashId());
-//        lessonDto.setTestLink("javascript:void(0);");
 
         map.addAttribute("lessonInfo", lessonDto);
 
@@ -161,8 +169,7 @@ public class AssistantApiController {
     }
 
     private String getDateFormat(Date date, String format) {
-        DateFormat monthFormat;
-        monthFormat = new SimpleDateFormat(format);
+        DateFormat monthFormat = new SimpleDateFormat(format);
         return monthFormat.format(date);
     }
 }

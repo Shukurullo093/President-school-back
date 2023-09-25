@@ -15,10 +15,10 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Chat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long chatId;
+public class Chat extends AbsFileInfoEntity{
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long chatId;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
@@ -32,9 +32,9 @@ public class Chat {
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    private ChatMessageImage image;
+//    @OneToOne
+//    @JoinColumn(name = "image_id")
+//    private ChatMessageImage image;
 
     private int taskOrder;
 
@@ -45,7 +45,7 @@ public class Chat {
 
     private boolean viewStatus;
 
-    @Column(nullable = false, updatable = false)
-    @CreationTimestamp
-    private Date createdDate;
+//    @Column(nullable = false, updatable = false)
+//    @CreationTimestamp
+//    private Date createdDate;
 }

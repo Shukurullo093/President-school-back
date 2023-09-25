@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ChatRepository extends JpaRepository<Chat, Long> {
-    List<Chat> findByLessonCourseScienceAndMessageOwnerAndViewStatusOrderByCreatedDateDesc(Science science, Role role, Boolean status);
-    List<Chat> findByStudentAndLessonCourseOrderByCreatedDateDesc(Student student, Course course);
+public interface ChatRepository extends JpaRepository<Chat, Integer> {
+    List<Chat> findByLessonCourseScienceAndMessageOwnerAndViewStatusOrderByCreatedAtAsc(Science science, Role role, Boolean status);
+    List<Chat> findByStudentAndLessonCourseOrderByCreatedAtDesc(Student student, Course course);
+    Optional<Chat> findByHashId(String hashId);
 }
