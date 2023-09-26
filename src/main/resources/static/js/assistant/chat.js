@@ -1,9 +1,9 @@
 let baseUrl = window.location.origin;
 
-// setInterval(function (){
-//     $('#test').text(new Date());
-//     refresh();
-// }, 1000);
+setInterval(function (){
+    $('#test').text(new Date());
+    refresh();
+}, 1000);
 
 function refresh(){
     $.ajax({
