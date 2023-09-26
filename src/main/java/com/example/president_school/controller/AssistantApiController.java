@@ -11,7 +11,6 @@ import com.example.president_school.repository.*;
 import com.example.president_school.service.GeneralService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,6 +78,7 @@ public class AssistantApiController {
             }
         }
         map.addAttribute("chatList", chatDtoList);
+
         return "assistant/assistant-dashboard";
     }
 
@@ -107,9 +107,10 @@ public class AssistantApiController {
         List<ChatDto> chatDtoListHistory = new ArrayList<>();
         for(Chat chat1 : byStudentAndLessonCourseOrderByCreatedDateDesc){
             ChatDto chatDto = new ChatDto();
+            chatDto.setId(Long.valueOf(chat1.getId()));
             chatDto.setMessageOwnerRole(chat1.getMessageOwner().name());
             chatDto.setMessage(chat1.getMessage());
-            chatDto.setMessageImagePath(chat1.getHashId() == null ? null : "api/assistant/rest/message/image/" + chat1.getHashId());
+            chatDto.setMessageImagePath(chat1.getHashId() == null ? null : "/api/assistant/rest/message/image/" + chat1.getHashId());
             chatDto.setDate(getDateFormat(chat1.getCreatedAt(), "HH:MM, dd-MM-yyyy"));
             chatDtoListHistory.add(chatDto);
 
@@ -117,6 +118,7 @@ public class AssistantApiController {
 //            chatRepository.save(chat1);
         }
         map.addAttribute("chatHistory", chatDtoListHistory);
+        map.addAttribute("lastTask", byStudentAndLessonCourseOrderByCreatedDateDesc.get(byStudentAndLessonCourseOrderByCreatedDateDesc.size()-1).getId());
 //        ===============================
         LessonDto lessonDto = new LessonDto();
         final Lesson lesson = chat.getLesson();

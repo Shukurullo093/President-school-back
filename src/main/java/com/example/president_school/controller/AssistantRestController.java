@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Optional;
@@ -34,7 +35,8 @@ public class AssistantRestController {
     @PostMapping("/send/{task}")
     public ResponseEntity<?> sendMsgToStudent(@PathVariable Integer task,
                                               @RequestParam("messageTxt")String text, @RequestParam("messageImg") MultipartFile photo){
-        final Optional<Employee> byPhone = employeeRepository.findByPhone("+");
+        final Optional<Employee> byPhone = employeeRepository.findByPhone("+998901234568");
+        System.out.println(task);
         return ResponseEntity.ok(assistantService.sendMsgToStudent(byPhone.get(), task, text, photo));
     }
 
@@ -46,5 +48,15 @@ public class AssistantRestController {
                 .contentType(MediaType.parseMediaType(image.getContentType()))
                 .contentLength(image.getFileSize())
                 .body(new FileUrlResource(String.format("%s/%s", uploadFolder, image.getUploadPath())));
+    }
+
+    @GetMapping("/refresh")
+    public String getMsg(){
+        return assistantService.getMsg();
+    }
+
+    @DeleteMapping("/delete/msg/{id}")
+    public ResponseEntity<?> deleteMsg(@PathVariable Integer id){
+        return ResponseEntity.ok(assistantService.deleteMsg(id));
     }
 }

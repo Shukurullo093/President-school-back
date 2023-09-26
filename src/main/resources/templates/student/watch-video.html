@@ -8,6 +8,8 @@
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+<!--   <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">-->
+<!--   <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">-->
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="/user/css/style.css">
@@ -67,7 +69,7 @@
    </nav>
 </div>
 
-<section class="watch-video" th:if="${lesson != null}">
+<section id="watch" class="watch-video" th:if="${lesson != null}">
    <div class="video-container">
       <div class="video">
          <video th:src="${lesson.videoLink}" controls poster="/user/images/post-1-1.png" id="video"></video>
@@ -113,32 +115,38 @@
          </button>
       </div>
       <div class="chat">
-<!--         <div class="icon-group">-->
-<!--            <i class="fas fa-star"></i>-->
-<!--            <i class="fas fa-star"></i>-->
-<!--            <i class="fas fa-star"></i>-->
-<!--            <i class="fas fa-star"></i>-->
-<!--            <i class="fas fa-star"></i>-->
-<!--         </div>-->
          <ul style="list-style: none;">
-            <li class="other-message">
-               <time>10 Sep, 2023</time>
-               <div class="message-body">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Quam molestiae sequi dolores perspiciatis obcaecati, ducimus odio atque quisquam
-                  laboriosam veritatis laborum asperiores non provident dolorum est hic nihil.
-                  Corrupti eos ratione facilis voluptas tempore!</div>
-            </li>
-            <li class="my-message">
-               <time>10:10, 10-10-2023</time>
-               <div class="message-body">hello world, salom dunyo</div>
-            </li>
-            <li class="other-message">
-               <div class="message-body">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</div>
-            </li>
-            <li class="my-message">
-               <div class="message-body">
-                  <img src="/user/images/thumb-1.png" /><br>
-                  hello world, salom dunyo
+<!--            <li class="other-message">-->
+<!--               <div class="message-body">-->
+<!--                  <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit.-->
+<!--                  Quam molestiae sequi dolores perspiciatis obcaecati, ducimus odio atque quisquam-->
+<!--                  laboriosam veritatis laborum asperiores non provident dolorum est hic nihil.-->
+<!--                  Corrupti eos ratione facilis voluptas tempore!</span><br>-->
+<!--                  <a href="#time">10:10</a>-->
+<!--               </div>-->
+<!--            </li>-->
+<!--            <li class="my-message">-->
+<!--               <div class="message-body">-->
+<!--                  <span>hello world, salom dunyo</span><br><br>-->
+<!--                  <time>10:10</time>-->
+<!--               </div>-->
+<!--            </li>-->
+<!--            <li class="date" id="time">-->
+<!--               <time>10 Sep, 2023</time>-->
+<!--            </li>-->
+<!--            <li class="other-message">-->
+<!--               <div class="message-body">-->
+<!--                  <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</span><br><br>-->
+<!--                  <time>10:10</time>-->
+<!--               </div>-->
+<!--            </li>-->
+            <li th:each="history : ${historyList}" th:class="${history.messageOwnerRole}">
+               <time th:if="${history.messageOwnerRole == 'date'}" th:id="${history.scrollId}" th:text="${history.date}"></time>
+               <div th:unless="${history.messageOwnerRole == 'date'}" class="message-body">
+                  <img th:if="${history.messageImagePath != null}" th:src="${history.messageImagePath}" />
+                  <br th:if="${history.messageImagePath != null}">
+                  <span th:text="${history.message}"></span><br><br>
+                  <a th:href="'#' + ${history.scrollId}" th:text="${history.date}"></a>
                </div>
             </li>
          </ul>
@@ -159,7 +167,7 @@
 <!--   &copy; copyright @ 2023 by <span></span> | all rights reserved!-->
 <!--</footer>-->
 
-<!-- custom js file link  -->
-<script src="/user/js/watch-video.js"></script>
+   <!-- custom js file link  -->
+   <script src="/user/js/watch-video.js"></script>
 </body>
 </html>

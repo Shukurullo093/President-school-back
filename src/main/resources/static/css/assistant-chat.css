@@ -85,9 +85,9 @@
     border-bottom-color: #e8f1f3;
     right: 1rem;
 }
-.message-data a i{
+.message-data button{
     font-size: 18px;
-    margin-right: .8rem;
+    margin-right: .5rem;
 }
 
 #about-me .row form{

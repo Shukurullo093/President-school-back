@@ -6,6 +6,9 @@ import com.example.president_school.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -37,5 +40,24 @@ public class GeneralService {
             }
         }
         return ext;
+    }
+
+    public String getDateFormat(Date date, String format){
+        DateFormat dateFormat = new SimpleDateFormat(format);
+        return dateFormat.format(date);
+    }
+
+    public boolean after(Date date1, Date date2){
+        final String[] split1 = getDateFormat(date1, "dd MM yyyy").split(" ");
+        final String[] split2 = getDateFormat(date2, "dd MM yyyy").split(" ");
+
+        if (Integer.parseInt(split1[2]) <= Integer.parseInt(split2[2]))
+        {
+            if (Integer.parseInt(split1[1]) <= Integer.parseInt(split2[1]))
+            {
+                return Integer.parseInt(split1[0]) < Integer.parseInt(split2[0]);
+            }
+        }
+        return false;
     }
 }

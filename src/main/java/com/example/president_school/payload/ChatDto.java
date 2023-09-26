@@ -22,6 +22,11 @@ public class ChatDto {
     private UUID lessonId;
     private int lessonOrder;
     private int taskOrder;
+    private String scrollId;
 
-
+    public ChatDto(String messageOwnerRole, String date, String scrollId) {
+        this.messageOwnerRole = messageOwnerRole;
+        this.date = date;
+        this.scrollId = scrollId;
+    }
 }

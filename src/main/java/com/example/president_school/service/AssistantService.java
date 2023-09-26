@@ -11,4 +11,8 @@ public interface AssistantService {
     Chat getMessageImage(String hashId);
 
     ControllerResponse sendMsgToStudent(Employee employee, Integer task, String text, MultipartFile photo);
+
+    String getMsg();
+
+    ControllerResponse deleteMsg(Integer id);
 }

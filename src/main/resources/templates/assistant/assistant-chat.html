@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Edumin - Bootstrap Admin Dashboard </title>
+    <title>Assistant chat</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -21,13 +21,13 @@
     <!--*******************
         Preloader start
     ********************-->
-<!--    <div id="preloader">-->
-<!--        <div class="sk-three-bounce">-->
-<!--            <div class="sk-child sk-bounce1"></div>-->
-<!--            <div class="sk-child sk-bounce2"></div>-->
-<!--            <div class="sk-child sk-bounce3"></div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
     <!--*******************
         Preloader end
     ********************-->
@@ -98,10 +98,11 @@
         <div class="dlabnav">
             <div class="dlabnav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
-                        <i class="la la-users"></i>
-                        <span class="nav-text">Xabarlar</span>
-                    </a>
+                    <li>
+                        <a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+                            <i class="la la-users"></i>
+                            <span class="nav-text">Xabarlar</span>
+                        </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/assistant/all/message}">Barcha xabarlar</a></li>
                         </ul>
@@ -160,17 +161,18 @@
                                             <div id="about-me" class="tab-pane fade active show pb-0">
                                                 <div class="chat mt-1 pb-2 rounded" style="box-shadow: -1px -2px 5px rgb(0 0 0 / 10%),
                                                 1px 2px 5px rgb(0 0 0 / 10%);">
-                                                    <ul class="pt-3 mb-1">
+                                                    <ul id="ul" class="pt-3 mb-1">
                                                         <li th:each="history : ${chatHistory}">
                                                             <div th:class="${history.messageOwnerRole == 'STUDENT'} ? 'message-data'
                                                             : 'message-data text-right'">
                                                                 <span class="message-data-time" th:text="${history.date}"></span>
-                                                                <a th:if="${history.messageOwnerRole != 'STUDENT'}" href="javascript:void(0);"><i class="la la-trash border border-dark rounded-circle p-2"></i></a>
-
+                                                                <button th:if="${history.messageOwnerRole != 'STUDENT'}" class="ml-1 rounded-circle" th:data-id="${history.id}" onclick="deleteMsg(this)">
+                                                                    <i class="la la-trash p-2"></i>
+                                                                </button>
                                                             </div>
                                                             <div th:class="${history.messageOwnerRole == 'STUDENT'} ? 'message other-message'
                                                             : 'message my-message'">
-                                                                <img th:if="${history.messageImagePath != null}" th:src="${history.messageImagePath}">
+                                                                <img th:if="${history.messageImagePath != null}" class="img-fluid" th:src="${history.messageImagePath}"><br th:if="${history.messageImagePath != null}">
                                                                 <span th:text="${history.message}"></span>
                                                             </div>
                                                         </li>
@@ -183,9 +185,10 @@
                                                         </label>
                                                         <input id="image" name="messageImg" type="file" accept="image/*" style="display: none;">
                                                         <input type="text" name="messageTxt" class="form-control" placeholder="xabar...">
-                                                        <i class="la la-send"></i>
+                                                        <i th:data-id="${lastTask}" class="la la-send"></i>
                                                     </form>
                                                 </div>
+                                                <span id="test"></span>
                                             </div>
 											<div id="my-posts" class="tab-pane fade">
                                                 <div class="my-post-content pt-3 px-sm-0 mx-sm-0">
