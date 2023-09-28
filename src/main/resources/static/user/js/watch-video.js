@@ -1,3 +1,35 @@
+let baseUrl = window.location.origin;
+let dataIdBtn = 1;
+
+$(".fa-paper-plane").click(function (){
+   let form = $('#form')[0];
+   let data = new FormData(form);
+
+   $.ajax({
+      url: baseUrl + "/api/student/rest/send/" + $('.fa-paper-plane').attr('data-lesson-id')  + "/" + $('.fa-paper-plane').attr('data-id'),
+      type: 'POST',
+      enctype: 'multipart/form-data',
+      data: data,
+      processData: false,
+      contentType: false,
+      cache: false,
+      success: function () {
+         form.reset();
+         // refresh();
+      },
+      error: function (e) {
+         console.log(e);
+      }
+   })
+});
+
+function taskBtn(th){
+   $('button[data-id=' + dataIdBtn + ']').attr('class', 'btn');
+   dataIdBtn = $(th).attr('data-id');
+   $('.fa-paper-plane').attr('data-id', dataIdBtn);
+   $(th).attr('class', 'option-btn');
+}
+
 let toggleBtn = document.getElementById('toggle-btn');
 let body = document.body;
 let darkMode = localStorage.getItem('dark-mode');

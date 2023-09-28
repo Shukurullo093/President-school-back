@@ -132,16 +132,23 @@
 										<div class="profile-photo">
 											<img th:src="${student.student.imagePath}" width="100" class="img-fluid rounded-circle">
 										</div>
-										<h3 class="mt-3 mb-1 text-white text-capitalize" th:text="${student.student.fullName}"></h3>
-                                        <span class="text-white" th:text="${student.lessonOrder + '-dars'}"></span><br>
-                                        <span class="text-white" th:text="${student.taskOrder + '-topshiriq'}"></span>
+										<h3 class="mt-3 mb-1 text-white text-capitalize" id="studentId" th:data-id="${student.studentId}" th:text="${student.student.fullName}"></h3>
+                                        <span class="text-white" id="lessonId" th:data-id="${student.lessonId}" th:text="${student.lessonOrder + '-dars'}"></span><br>
+                                        <span class="text-white" id="taskOrderNumber" th:data-id="${student.taskOrder}" th:text="${student.taskOrder + '-topshiriq'}"></span>
 									</div>
 									<ul class="list-group list-group-flush">
 										<li th:each="i :${#numbers.sequence(1, 5)}" class="list-group-item d-flex justify-content-between py-1" style="align-items: center;">
                                             <span class="mb-0" th:text="'Topshiriq(#' + ${i} + ')'"></span>
                                             <button type="button" onclick="accessFunc(this)" th:data-id="${i}"
                                                     th:class="${student.star[i-1]} ? 'btn-success btn text-light btn-rounded my-0 px-4' : 'btn-primary btn text-light btn-rounded my-0 px-4'"
-                                                    th:text="${student.star[i-1]} ? 'Bajarildi' : 'Bajardi'"></button>
+                                                    >
+                                                <i class="la la-times"></i>
+<!--                                                <i class="la la-send-o"></i>-->
+<!--                                                th:text="${student.star[i-1]} ? 'Bajarildi' : 'Bajardi'" -->
+                                            </button>
+                                            <button type="button" th:onclick="'changeChat(' + ${i} + ')'" class="btn-warning btn text-light btn-rounded my-0 px-4">
+                                                <i class="la la-send-o"></i>
+                                            </button>
                                         </li>
 									</ul>
 								</div>

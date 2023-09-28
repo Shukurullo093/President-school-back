@@ -1,16 +1,10 @@
 package com.example.president_school.service.impl;
 
-import com.example.president_school.entity.AccessCourse;
-import com.example.president_school.entity.Course;
-import com.example.president_school.entity.PersonImage;
-import com.example.president_school.entity.Student;
+import com.example.president_school.entity.*;
 import com.example.president_school.entity.enums.Role;
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.StudentDto;
-import com.example.president_school.repository.AccessCourseRepository;
-import com.example.president_school.repository.CourseRepository;
-import com.example.president_school.repository.PersonImageRepository;
-import com.example.president_school.repository.StudentRepository;
+import com.example.president_school.repository.*;
 import com.example.president_school.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +26,9 @@ public class StudentServiceImpl implements StudentService {
     private final PersonImageRepository personImageRepository;
     private final CourseRepository courseRepository;
     private final AccessCourseRepository accessCourseRepository;
+    private final LessonRepository lessonRepository;
+    private final ChatRepository chatRepository;
+
     @Value("${upload.folder}")
     private String uploadFolder;
 
@@ -100,6 +97,45 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void exportTestResultToPdf(HttpServletResponse response) {
 
+    }
+
+    @Override
+    public ControllerResponse sendMsg(Student student, String lessonId, Integer taskOrder, String text, MultipartFile image) {
+        Chat chat = new Chat();
+        chat.setStudent(student);
+        chat.setMessage(text);
+        chat.setMessageOwner(Role.STUDENT);
+        final Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(lessonId));
+        chat.setLesson(lessonOptional.get());
+        chat.setTaskOrder(taskOrder);
+        if (!image.isEmpty()){
+            File uploadFolder = new File(String.format("%s/CHAT/",
+                    this.uploadFolder));
+            if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+                System.out.println("Created folders. for chat images");
+            }
+
+            chat.setContentType(image.getContentType());
+            chat.setName(image.getOriginalFilename());
+            chat.setExtension(getExtension(image.getOriginalFilename()));
+            chat.setFileSize(image.getSize());
+            chat.setHashId(UUID.randomUUID().toString().substring(0, 10));
+            chat.setUploadPath(String.format("CHAT/%s.%s",
+                    chat.getHashId(),
+                    chat.getExtension()));
+
+            uploadFolder = uploadFolder.getAbsoluteFile();
+            File file = new File(uploadFolder, String.format("%s.%s",
+                    chat.getHashId(),
+                    chat.getExtension()));
+            try {
+                image.transferTo(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        chatRepository.save(chat);
+        return new ControllerResponse("Xabar jo'natildi", 200);
     }
 
     private String getExtension(String fileName) {

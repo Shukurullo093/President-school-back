@@ -75,9 +75,9 @@
          <video th:src="${lesson.videoLink}" controls poster="/user/images/post-1-1.png" id="video"></video>
       </div>
       <h3 class="title" th:text="${lesson.title}"></h3>
-      <form method="post" class="flex">
+      <div class="flex">
          <a th:href="${lesson.taskLink}" class="inline-btn">topshiriq</a>
-      </form>
+      </div>
       <p class="description" th:text="${lesson.description}"></p>
    </div>
 </section>
@@ -86,60 +86,26 @@
 
    <h1 class="heading">Chat</h1>
 
-   <form class="add-comment">
+   <div class="add-comment">
       <div class="btn-group">
-         <button type="button" class="btn btn-success">
-            <a href="javascript:void(0);">Topshiriq(#1)
+         <button type="button" onclick="taskBtn(this)" data-id="1" class="option-btn">Topshiriq(#1)
                <i class="fas fa-star"></i>
-            </a>
          </button>
-         <button type="button" class="option-btn">
-            <a href="javascript:void(0);">Topshiriq(#2)
+         <button type="button" onclick="taskBtn(this)" data-id="2" class="btn">Topshiriq(#2)
                <i class="fas fa-star" style="color: yellow;"></i>
-            </a>
          </button>
-         <button type="button" class="btn btn-success">
-            <a href="javascript:void(0);">Topshiriq(#3)
-<!--               <i class="fas fa-star"></i>-->
-            </a>
+         <button type="button" onclick="taskBtn(this)" data-id="3" class="btn">Topshiriq(#3)
+               <i class="fas fa-star"></i>
          </button>
-         <button type="button" class="btn btn-success">
-            <a href="javascript:void(0);">Topshiriq(#4)
-<!--               <i class="fas fa-star"></i>-->
-            </a>
+         <button type="button" onclick="taskBtn(this)" data-id="4" class="btn">Topshiriq(#4)
+               <i class="fas fa-star"></i>
          </button>
-         <button type="button" class="btn btn-light">
-            <a href="javascript:void(0);">Topshiriq(#5)
-<!--               <i class="fas fa-star"></i>-->
-            </a>
+         <button type="button" onclick="taskBtn(this)" data-id="5" class="btn">Topshiriq(#5)
+               <i class="fas fa-star"></i>
          </button>
       </div>
       <div class="chat">
          <ul style="list-style: none;">
-<!--            <li class="other-message">-->
-<!--               <div class="message-body">-->
-<!--                  <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit.-->
-<!--                  Quam molestiae sequi dolores perspiciatis obcaecati, ducimus odio atque quisquam-->
-<!--                  laboriosam veritatis laborum asperiores non provident dolorum est hic nihil.-->
-<!--                  Corrupti eos ratione facilis voluptas tempore!</span><br>-->
-<!--                  <a href="#time">10:10</a>-->
-<!--               </div>-->
-<!--            </li>-->
-<!--            <li class="my-message">-->
-<!--               <div class="message-body">-->
-<!--                  <span>hello world, salom dunyo</span><br><br>-->
-<!--                  <time>10:10</time>-->
-<!--               </div>-->
-<!--            </li>-->
-<!--            <li class="date" id="time">-->
-<!--               <time>10 Sep, 2023</time>-->
-<!--            </li>-->
-<!--            <li class="other-message">-->
-<!--               <div class="message-body">-->
-<!--                  <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</span><br><br>-->
-<!--                  <time>10:10</time>-->
-<!--               </div>-->
-<!--            </li>-->
             <li th:each="history : ${historyList}" th:class="${history.messageOwnerRole}">
                <time th:if="${history.messageOwnerRole == 'date'}" th:id="${history.scrollId}" th:text="${history.date}"></time>
                <div th:unless="${history.messageOwnerRole == 'date'}" class="message-body">
@@ -153,13 +119,13 @@
          <div class="send-message">
             <form id="form">
                <label for="image" class="fas fa-image"></label>
-               <input id="image" type="file" accept="image/*" style="display: none;">
-               <input type="text" class="form-control" placeholder="Xabar yozing ...">
-               <i class="fas fa-paper-plane"></i>
+               <input name="messageImg" id="image" type="file" accept="image/*" style="display: none;">
+               <input name="messageTxt" type="text" class="form-control" placeholder="Xabar yozing ...">
+               <i th:data-lesson-id="${lesson.id}" data-id="1" class="fas fa-paper-plane"></i>
             </form>
          </div>
       </div>
-   </form>
+   </div>
 
 </section>
 
@@ -168,6 +134,7 @@
 <!--</footer>-->
 
    <!-- custom js file link  -->
+   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
    <script src="/user/js/watch-video.js"></script>
 </body>
 </html>

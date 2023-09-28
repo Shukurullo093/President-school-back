@@ -15,6 +15,7 @@ public class ChatDto {
     private String messageOwnerRole;
     private EmployeeDto assistant;
     private StudentDto student;
+    private Long studentId;
     private boolean[] star;
     private String message;
     private String messageImagePath;

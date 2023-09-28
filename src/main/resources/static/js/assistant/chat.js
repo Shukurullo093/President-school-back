@@ -2,12 +2,13 @@ let baseUrl = window.location.origin;
 
 setInterval(function (){
     $('#test').text(new Date());
-    refresh();
+    refresh($('#taskOrderNumber').attr('data-id'));
 }, 1000);
 
-function refresh(){
+function refresh(taskOrder){
     $.ajax({
-        url: baseUrl + "/api/assistant/rest/refresh",
+        url: baseUrl + "/api/assistant/rest/refresh/" + $('#studentId').attr('data-id') + "/" +
+            $('#lessonId').attr('data-id') + "/" + taskOrder,
         type: 'GET',
         enctype: 'application/json',
         data: null,
@@ -23,6 +24,13 @@ function refresh(){
     })
 }
 
+function changeChat(taskOrder){
+    refresh(taskOrder);
+    $('.la-send').attr('data-id', taskOrder);
+    $('#taskOrderNumber').text(taskOrder + '-topshiriq');
+    $('#taskOrderNumber').attr('data-id', taskOrder);
+}
+
 function deleteMsg(th){
     $.ajax({
         url: baseUrl + "/api/assistant/rest/delete/msg/" + $(th).attr('data-id'),
@@ -34,7 +42,7 @@ function deleteMsg(th){
         cache: false,
         success: function (data) {
             if (data.statusCode === 200){
-                refresh();
+                refresh($('.la-send').attr('data-id'));
             }
         },
         error: function (e) {
@@ -48,7 +56,8 @@ $(".la-send").click(function (){
     let data = new FormData(form);
 
     $.ajax({
-        url: baseUrl + "/api/assistant/rest/send/" + $('.la-send').attr('data-id'),
+        url: baseUrl + "/api/assistant/rest/send/" + $('#studentId').attr('data-id') + "/" +
+            $('#lessonId').attr('data-id') + "/" + $('#taskOrderNumber').attr('data-id'),
         type: 'POST',
         enctype: 'multipart/form-data',
         data: data,
@@ -57,12 +66,10 @@ $(".la-send").click(function (){
         cache: false,
         success: function () {
             form.reset();
-            refresh();
+            refresh($('#taskOrderNumber').attr('data-id'));
         },
         error: function (e) {
             console.log(e);
         }
     })
 });
-
-// ngrok http --domain=president-school.ngrok-free.app 8080

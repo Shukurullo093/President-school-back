@@ -943,7 +943,7 @@ section{
    color: var(--light);
 }
 .comments .add-comment .btn-group i{
-   color: yellow;
+   color: grey;
 }
 
 .comments .add-comment .chat{
@@ -1044,7 +1044,7 @@ section{
 .comments .add-comment .chat ul li .message-body img{
    width: 100%;
 }
-.comments .add-comment .chat .send-message{
+.comments .add-comment .chat .send-message form{
    margin-top: auto;
    width: 100%;
    position: relative;

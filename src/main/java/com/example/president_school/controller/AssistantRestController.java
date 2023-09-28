@@ -17,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/assistant/rest")
@@ -32,12 +33,11 @@ public class AssistantRestController {
         this.employeeRepository = employeeRepository;
     }
 
-    @PostMapping("/send/{task}")
-    public ResponseEntity<?> sendMsgToStudent(@PathVariable Integer task,
+    @PostMapping("/send/{student}/{lesson}/{task}")
+    public ResponseEntity<?> sendMsgToStudent(@PathVariable Long student, @PathVariable UUID lesson, @PathVariable Integer task,
                                               @RequestParam("messageTxt")String text, @RequestParam("messageImg") MultipartFile photo){
         final Optional<Employee> byPhone = employeeRepository.findByPhone("+998901234568");
-        System.out.println(task);
-        return ResponseEntity.ok(assistantService.sendMsgToStudent(byPhone.get(), task, text, photo));
+        return ResponseEntity.ok(assistantService.sendMsgToStudent(byPhone.get(), student, lesson, task, text, photo));
     }
 
     @GetMapping("/message/image/{hashId}")
@@ -50,9 +50,9 @@ public class AssistantRestController {
                 .body(new FileUrlResource(String.format("%s/%s", uploadFolder, image.getUploadPath())));
     }
 
-    @GetMapping("/refresh")
-    public String getMsg(){
-        return assistantService.getMsg();
+    @GetMapping("/refresh/{student}/{lesson}/{task}")
+    public String getMsg(@PathVariable Long student, @PathVariable UUID lesson, @PathVariable Integer task){
+        return assistantService.getMsg(student, lesson, task);
     }
 
     @DeleteMapping("/delete/msg/{id}")

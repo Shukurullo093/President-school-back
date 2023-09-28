@@ -91,7 +91,9 @@ public class AssistantApiController {
         ChatDto chatDto1 = new ChatDto();
         String img = chat.getStudent().getImage() != null ? generalService.getProfile(chat.getStudent().getPhone()).getImageHashId()
                 : defaultPersonImgPath;
+        chatDto1.setStudentId(student.getId());
         chatDto1.setStudent(new StudentDto(student.getId(), student.getFullName(), img));
+        chatDto1.setLessonId(chat.getLesson().getId());
         chatDto1.setLessonId(chat.getLesson().getId());
         final List<Lesson> allByCourseOrderByCreatedDateAsc = lessonRepository.findAllByCourseOrderByCreatedDateAsc(chat.getLesson().getCourse());
         chatDto1.setLessonOrder(allByCourseOrderByCreatedDateAsc.indexOf(chat.getLesson()) + 1);
@@ -103,7 +105,8 @@ public class AssistantApiController {
         chatDto1.setStar(star);
         map.addAttribute("student", chatDto1);
 //        ================================
-        final List<Chat> byStudentAndLessonCourseOrderByCreatedDateDesc = chatRepository.findByStudentAndLessonCourseOrderByCreatedAtDesc(chat.getStudent(), chat.getLesson().getCourse());
+        final List<Chat> byStudentAndLessonCourseOrderByCreatedDateDesc =
+                chatRepository.findByStudentAndLessonAndTaskOrderOrderByCreatedAtDesc(chat.getStudent(), chat.getLesson(), chat.getTaskOrder());
         List<ChatDto> chatDtoListHistory = new ArrayList<>();
         for(Chat chat1 : byStudentAndLessonCourseOrderByCreatedDateDesc){
             ChatDto chatDto = new ChatDto();
@@ -111,7 +114,7 @@ public class AssistantApiController {
             chatDto.setMessageOwnerRole(chat1.getMessageOwner().name());
             chatDto.setMessage(chat1.getMessage());
             chatDto.setMessageImagePath(chat1.getHashId() == null ? null : "/api/assistant/rest/message/image/" + chat1.getHashId());
-            chatDto.setDate(getDateFormat(chat1.getCreatedAt(), "HH:MM, dd-MM-yyyy"));
+            chatDto.setDate(getDateFormat(chat1.getCreatedAt(), "HH:mm, dd-MM-yyyy"));
             chatDtoListHistory.add(chatDto);
 
 //            chat1.setViewStatus(true);

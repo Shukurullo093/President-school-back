@@ -2,6 +2,7 @@ package com.example.president_school.repository;
 
 import com.example.president_school.entity.Chat;
 import com.example.president_school.entity.Course;
+import com.example.president_school.entity.Lesson;
 import com.example.president_school.entity.Student;
 import com.example.president_school.entity.enums.Role;
 import com.example.president_school.entity.enums.Science;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
     List<Chat> findByLessonCourseScienceAndMessageOwnerAndViewStatusOrderByCreatedAtAsc(Science science, Role role, Boolean status);
-    List<Chat> findByStudentAndLessonCourseOrderByCreatedAtDesc(Student student, Course course);
+    List<Chat> findByStudentAndLessonAndTaskOrderOrderByCreatedAtDesc(Student student, Lesson lesson, Integer taskOrder);
     Optional<Chat> findByHashId(String hashId);
     List<Chat> findByStudentIdAndLessonIdAndTaskOrderOrderByCreatedAtAsc(Long studentId, UUID lessonId, Integer taskOrder);
 }
