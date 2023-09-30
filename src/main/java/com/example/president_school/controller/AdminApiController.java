@@ -132,8 +132,8 @@ public class AdminApiController {
             }
             employeeDto.setEmail(employee.getEmail());
             employeeDto.setPhone(employee.getPhone());
-            employeeDto.setBirthDate(getDate(employee.getBirthDate()));
-            employeeDto.setJoiningDate(getDate(employee.getJoiningDate()));
+            employeeDto.setBirthDate(getDateFormat(employee.getBirthDate()));
+            employeeDto.setJoiningDate(getDateFormat(employee.getJoiningDate()));
             employeeDtoList.add(employeeDto);
         }
         map.addAttribute("employeeList", employeeDtoList);
@@ -223,8 +223,8 @@ public class AdminApiController {
             employeeDto.setFullName(employee.getLastName() + ' ' + employee.getFirstName());
             employeeDto.setEmail(employee.getEmail());
             employeeDto.setPhone(employee.getPhone());
-            employeeDto.setBirthDate(getDate(employee.getBirthDate()));
-            employeeDto.setJoiningDate(getDate(employee.getJoiningDate()));
+            employeeDto.setBirthDate(getDateFormat(employee.getBirthDate()));
+            employeeDto.setJoiningDate(getDateFormat(employee.getJoiningDate()));
             employeeDto.setScience(employee.getScience().toString());
             switch (employee.getGender()) {
                 case "Male" -> employeeDto.setGender("Erkak");
@@ -462,6 +462,21 @@ public class AdminApiController {
         return "admin/home-message-list";
     }
 
+    @GetMapping("/iq-test")
+    public String iqTest(Model map){
+        Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");
+        Employee employee = employeeOptional.get();
+        if (employee.getImage() != null){
+            map.addAttribute("img", "/api/admin/rest/viewImage/" + employeeOptional.get().getImage().getHashId());
+        } else {
+            map.addAttribute("img", defaultPersonImgPath);
+        }
+        List<TestDto> testDtoList = new ArrayList<>();
+        map.addAttribute("testList", testDtoList);
+
+        return "admin/iq-test";
+    }
+
     @GetMapping("/profile")
     public String profile(Model map){
         Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998901234567");
@@ -485,9 +500,9 @@ public class AdminApiController {
         if (employee.getBirthDate() == null){
             employeeDto.setBirthDate("aniqlanmadi");
         }else {
-            employeeDto.setBirthDate(getDate(employee.getBirthDate()));
+            employeeDto.setBirthDate(getDateFormat(employee.getBirthDate()));
         }
-        employeeDto.setJoiningDate(getDate(employee.getJoiningDate()));
+        employeeDto.setJoiningDate(getDateFormat(employee.getJoiningDate()));
         if (employee.getGender() == null){
             employeeDto.setGender("aniqlanmadi");
         }else {
@@ -536,10 +551,6 @@ public class AdminApiController {
         DateFormat monthFormat;
         monthFormat = new SimpleDateFormat("dd MMMM, yyyy");
         return monthFormat.format(date);
-    }
-
-    private String getDate(Date date){
-        return date.toString().substring(0, date.toString().indexOf(" "));
     }
 
     @AllArgsConstructor

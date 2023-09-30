@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 
@@ -111,5 +112,15 @@ public class TeacherRestController {
     @DeleteMapping("/test/{id}")
     public void deleteTest(@PathVariable String id){
         teacherService.deleteTest(id);
+    }
+
+    @GetMapping("/export/lesson/excel")
+    public void exportLessonToExcel(HttpServletResponse response) throws IOException {
+        teacherService.exportLessonToExcel(response);
+    }
+
+    @GetMapping("/export/lesson/pdf")
+    public void exportLessonToPdf(HttpServletResponse response) throws IOException {
+        teacherService.exportLessonToPdf(response);
     }
 }

@@ -98,10 +98,11 @@
             <div class="dlabnav-scroll">
                 <ul class="metismenu" id="menu">
                     <li class="nav-label first">Bosh Menu</li>
-                    <li><a class="ai-icon" th:href="@{/api/admin/dashboard}" aria-expanded="false">
-                        <i class="la la-home"></i>
-                        <span class="nav-text">Dashboard</span>
-                    </a>
+                    <li>
+                        <a class="ai-icon" th:href="@{/api/admin/dashboard}" aria-expanded="false">
+                            <i class="la la-home"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
                     </li>
                     <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
                         <i class="la la-user"></i>
@@ -128,10 +129,17 @@
                             <li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
                         </ul>
                     </li>
-                    <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
-                        <i class="la la-newspaper-o"></i>
-                        <span class="nav-text">Postlar</span>
-                    </a>
+                    <li>
+                        <a class="ai-icon" th:href="@{/api/admin/iq-test}" aria-expanded="false">
+                            <i class="la la-list-alt"></i>
+                            <span class="nav-text">IQ Test</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+                            <i class="la la-newspaper-o"></i>
+                            <span class="nav-text">Postlar</span>
+                        </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/all/news}">Barcha postlar</a></li>
                             <li><a th:href="@{/api/admin/add/news}">Yangi post</a></li>

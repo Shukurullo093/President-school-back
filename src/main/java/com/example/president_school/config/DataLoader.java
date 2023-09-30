@@ -1,8 +1,12 @@
 package com.example.president_school.config;
 
+import com.example.president_school.entity.Course;
 import com.example.president_school.entity.Employee;
+import com.example.president_school.entity.Lesson;
+import com.example.president_school.entity.enums.LessonType;
 import com.example.president_school.entity.enums.Role;
 import com.example.president_school.repository.EmployeeRepository;
+import com.example.president_school.repository.LessonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +21,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
     private final EmployeeRepository employeeRepository;
+    private final LessonRepository lessonRepository;
 //    @Autowired
 //    PasswordEncoder passwordEncoder;
 
@@ -31,6 +36,9 @@ public class DataLoader implements ApplicationRunner {
                 employeeRepository.save(new Employee(
                         "admin@gmail.com", "+998901234567", "1111", Role.ADMIN, new Date()
                 ));
+            }
+            if (!lessonRepository.existsByLessonType(LessonType.IQ)){
+                lessonRepository.save(new Lesson("IQ test", "description for iq", LessonType.IQ));
             }
         }
     }

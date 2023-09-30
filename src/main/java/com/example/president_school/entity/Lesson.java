@@ -39,4 +39,10 @@ public class Lesson {
     @Column(updatable = false)
     @CreationTimestamp
     private Date createdDate;
+
+    public Lesson(String title, String description, LessonType lessonType) {
+        this.title = title;
+        this.description = description;
+        this.lessonType = lessonType;
+    }
 }

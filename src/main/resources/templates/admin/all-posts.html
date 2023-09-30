@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Admin Dashboard </title>
+    <title>Admin All Post</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -99,35 +99,42 @@
             <div class="dlabnav-scroll">
                 <ul class="metismenu" id="menu">
                     <li class="nav-label first">Bosh Menu</li>
-                    <li><a class="ai-icon" th:href="@{/api/admin/dashboard}" aria-expanded="false">
-							<i class="la la-home"></i>
-							<span class="nav-text">Dashboard</span>
-						</a>
+                    <li>
+                        <a class="ai-icon" th:href="@{/api/admin/dashboard}" aria-expanded="false">
+                            <i class="la la-home"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
                     </li>
-					<li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-							<i class="la la-user"></i>
-							<span class="nav-text">Hodimlar</span>
-						</a>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-user"></i>
+                        <span class="nav-text">Hodimlar</span>
+                    </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/list/employee}">Barcha hodimlar</a></li>
                             <li><a th:href="@{/api/admin/add/employee}">Yangi hodim</a></li>
                         </ul>
                     </li>
-					<li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-							<i class="la la-users"></i>
-							<span class="nav-text">O'quvchilar</span>
-						</a>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-users"></i>
+                        <span class="nav-text">O'quvchilar</span>
+                    </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
                         </ul>
                     </li>
-					<li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-							<i class="la la-graduation-cap"></i>
-							<span class="nav-text">Kurslar</span>
-						</a>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-graduation-cap"></i>
+                        <span class="nav-text">Kurslar</span>
+                    </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
                         </ul>
+                    </li>
+                    <li>
+                        <a class="ai-icon" th:href="@{/api/admin/iq-test}" aria-expanded="false">
+                            <i class="la la-list-alt"></i>
+                            <span class="nav-text">IQ Test</span>
+                        </a>
                     </li>
                     <li>
                         <a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
@@ -139,7 +146,7 @@
                             <li><a th:href="@{/api/admin/add/news}">Yangi post</a></li>
                         </ul>
                     </li>
-				</ul>
+                </ul>
             </div>
         </div>
         <!--**********************************

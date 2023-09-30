@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Edumin - Bootstrap Admin Dashboard </title>
+    <title>Admin IQ Test </title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -72,7 +72,7 @@
                                     <img th:src="${img}" width="20" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a th:href="@{/api/teacher/profile}" class="dropdown-item ai-icon">
+                                    <a th:href="@{/api/admin/profile}" class="dropdown-item ai-icon">
                                         <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span class="ml-2">Profile </span>
                                     </a>
@@ -99,18 +99,50 @@
                 <ul class="metismenu" id="menu">
                     <li class="nav-label first">Bosh Menu</li>
                     <li>
-                        <a class="ai-icon" th:href="@{/api/teacher/dashboard}" aria-expanded="false">
+                        <a class="ai-icon" th:href="@{/api/admin/dashboard}" aria-expanded="false">
                             <i class="la la-home"></i>
                             <span class="nav-text">Dashboard</span>
                         </a>
                     </li>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-user"></i>
+                        <span class="nav-text">Hodimlar</span>
+                    </a>
+                        <ul aria-expanded="false">
+                            <li><a th:href="@{/api/admin/list/employee}">Barcha hodimlar</a></li>
+                            <li><a th:href="@{/api/admin/add/employee}">Yangi hodim</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-users"></i>
+                        <span class="nav-text">O'quvchilar</span>
+                    </a>
+                        <ul aria-expanded="false">
+                            <li><a th:href="@{/api/admin/all/student}">Barcha o'quvchilar</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="la la-graduation-cap"></i>
+                        <span class="nav-text">Kurslar</span>
+                    </a>
+                        <ul aria-expanded="false">
+                            <li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
+                        </ul>
+                    </li>
                     <li>
-                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                            <i class="la la-graduation-cap"></i>
-                            <span class="nav-text">Darslar</span>
+                        <a class="ai-icon" th:href="@{/api/admin/iq-test}" aria-expanded="false">
+                            <i class="la la-list-alt"></i>
+                            <span class="nav-text">IQ Test</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+                            <i class="la la-newspaper-o"></i>
+                            <span class="nav-text">Postlar</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a th:href="@{/api/teacher/all/lesson}">Barcha darslar</a></li>
+                            <li><a th:href="@{/api/admin/all/news}">Barcha postlar</a></li>
+                            <li><a th:href="@{/api/admin/add/news}">Yangi post</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -132,14 +164,14 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4>Yangi dars</h4>
+                            <h4>IQ Test</h4>
                         </div>
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/api/teacher/dashboard}">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a th:href="@{/api/teacher/all/lesson}">Darslar</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Yangi dars</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/api/admin/dashboard}">Dashboard</a></li>
+                            <li class="breadcrumb-item active"><a th:href="@{/api/admin/iq-test}">IQ Test</a></li>
+<!--                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Yangi dars</a></li>-->
                         </ol>
                     </div>
                 </div>
@@ -167,10 +199,10 @@
                                                                     display: none;
                                                                 }
                                                             </style>
-                                                            <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
-                                                                <label class="form-label">Test mavzusi</label>
-                                                                <input type="text" th:value="${title}" class="form-control" readonly>
-                                                            </div>
+<!--                                                            <div class="col-lg-12 col-md-12 col-sm-12 mb-2">-->
+<!--                                                                <label class="form-label">Test mavzusi</label>-->
+<!--                                                                <input type="text" th:value="${title}" class="form-control" readonly>-->
+<!--                                                            </div>-->
                                                             <div class="col-lg-3 col-md-6 col-sm-12">
                                                                 <label class="form-label">Test savoli</label>
                                                                 <textarea name="questionTxt" class="form-control questionTxt" style="resize: none;" rows="5"></textarea>
@@ -264,7 +296,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
+                <p>Copyright © Designed &amp; Developed by <a href="javascript:void(0);" target="_blank"></a> 2023</p>
             </div>
         </div>
         <!--**********************************
@@ -299,17 +331,17 @@
     <script src="/vendor/svganimation/svg.animation.js"></script>
     <script src="/js/styleSwitcher.js"></script>
 
-    <script src="/js/teacher/teacher.js"></script>
-	<script>
-        function scaleImg(th){
-            if ($(th).css("height") === "200px"){
-                $(th).css("height", '300px');
-            }
-            else {
-                $(th).css("height", '200px');
-            }
-        }
-    </script>
+<!--    <script src="/js/teacher/teacher.js"></script>-->
+<!--	<script>-->
+<!--        function scaleImg(th){-->
+<!--            if ($(th).css("height") === "200px"){-->
+<!--                $(th).css("height", '300px');-->
+<!--            }-->
+<!--            else {-->
+<!--                $(th).css("height", '200px');-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
 </body>
 </html>
 

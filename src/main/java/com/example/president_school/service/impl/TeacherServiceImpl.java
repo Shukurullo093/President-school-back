@@ -6,16 +6,30 @@ import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.repository.*;
 import com.example.president_school.service.GeneralService;
 import com.example.president_school.service.TeacherService;
+import com.lowagie.text.*;
+import com.lowagie.text.Font;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +42,9 @@ public class TeacherServiceImpl implements TeacherService {
     private final TestRepository testRepository;
     private final TestImgSourceRepository testImgSourceRepository;
     private final GeneralService generalService;
+
+    private XSSFWorkbook workbook;
+    private XSSFSheet sheet;
 
     @Value("${upload.folder}")
     private String uploadFolder;
@@ -384,4 +401,243 @@ public class TeacherServiceImpl implements TeacherService {
         }
         testRepository.deleteById(Integer.valueOf(id));
     }
+//      ***************************************
+    @Override
+    public void exportLessonToExcel(HttpServletResponse response) throws IOException {
+        final Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998930024547");
+        final Employee employee = employeeOptional.get();
+        if (employee.getGrade().equals("Hammasi")){
+            List<Lesson> lessonList = new ArrayList<>();
+            for (int i = 2; i < 5; i++){
+                final Optional<Course> courseOptional = courseRepository.findByGradeAndEmployee(i, employee);
+                final List<Lesson> allByCourseOrderByCreatedDateAsc =
+                        lessonRepository.findAllByCourseOrderByCreatedDateAsc(courseOptional.get());
+                lessonList.addAll(allByCourseOrderByCreatedDateAsc);
+            }
+            exportToExcel(lessonList, response);
+        } else {
+            final Optional<Course> courseOptional = courseRepository.findByGradeAndEmployee(Integer.valueOf(employee.getGrade()), employee);
+            final List<Lesson> allByCourseOrderByCreatedDateAsc = lessonRepository.findAllByCourseOrderByCreatedDateAsc(courseOptional.get());
+            exportToExcel(allByCourseOrderByCreatedDateAsc, response);
+        }
+    }
+
+    public void setResponseHeader(HttpServletResponse response, String contentType, String extension, String prefix){
+        DateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String timeStamp = dataFormat.format(new Date());
+        String fileName = prefix + timeStamp + extension;
+        response.setContentType(contentType);
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=" + fileName;
+        response.setHeader(headerKey, headerValue);
+    }
+
+    public void exportToExcel(List<Lesson> lessonList, HttpServletResponse response) throws IOException {
+        workbook = new XSSFWorkbook();
+        setResponseHeader(response, "application/octet-stream", ".xlsx", "Darslar_");
+        writeHeaderLine();
+        writeDataLine(lessonList);
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        outputStream.close();
+    }
+
+    private void writeDataLine(List<Lesson> lessonList) {
+        int rowIndex = 1;
+        XSSFCellStyle cellStyle = workbook.createCellStyle();
+        XSSFFont font = workbook.createFont();
+        font.setFamily(FontFamily.ROMAN);
+        font.setBold(false);
+        font.setFontHeight(14);
+        cellStyle.setFont(font);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setWrapText(true);
+
+        for (Lesson lesson : lessonList) {
+            XSSFRow row = sheet.createRow(rowIndex++);
+            int columnIndex = 0;
+//            if (lesson.getCourse().getGrade().equals("2")){
+//                cellStyle.setFillForegroundColor(IndexedColors.DARK_RED.index);
+//                cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//            } else if (lesson.getCourse().getGrade().equals("3")){
+//                cellStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.index);
+//                cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//            }
+            createCell(row, columnIndex++, rowIndex - 1, cellStyle);
+            createCell(row, columnIndex++, lesson.getTitle(), cellStyle);
+            createCell(row, columnIndex++, lesson.getDescription(), cellStyle);
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyy");
+            createCell(row, columnIndex++, dateFormat.format(lesson.getCreatedDate()), cellStyle);
+            createCell(row, columnIndex++, lesson.getCourse().getGrade(), cellStyle);
+            createCell(row, columnIndex++, lesson.getLessonType().name(), cellStyle);
+            if (!lesson.getLessonType().equals(LessonType.TEST)){
+                final Optional<VideoSource> videoSourceOptional = videoSourceRepository.findByLessonId(lesson.getId());
+                final VideoSource videoSource = videoSourceOptional.get();
+                createCell(row, columnIndex++, videoSource.getName(), cellStyle);
+                createCell(row, columnIndex++, videoSource.getFileSize() / 1024 / 1024 + "MB", cellStyle);
+            } else {
+                createCell(row, columnIndex++, "", cellStyle);
+                createCell(row, columnIndex++, "", cellStyle);
+            }
+        }
+    }
+
+    private void writeHeaderLine() {
+        sheet = workbook.createSheet("Darslar");
+        XSSFRow row=sheet.createRow(0);
+        XSSFCellStyle cellStyle=workbook.createCellStyle();
+        XSSFFont font=workbook.createFont();
+        font.setBold(true);
+        font.setFontHeight(16);
+        font.setFamily(FontFamily.DECORATIVE);
+        cellStyle.setFont(font);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setWrapText(true);
+        createCell(row, 0, "No.", cellStyle);
+        createCell(row, 1, "Mavzu", cellStyle);
+        createCell(row, 2, "Izoh", cellStyle);
+        createCell(row, 3, "Yaratilgan vaqt", cellStyle);
+        createCell(row, 4, "Sinf", cellStyle);
+        createCell(row, 5, "Tur", cellStyle);
+        createCell(row, 6, "Video nomi", cellStyle);
+        createCell(row, 7, "Hajm", cellStyle);
+    }
+
+    private void createCell(XSSFRow row, int i, Object value, XSSFCellStyle cellStyle) {
+        XSSFCell cell = row.createCell(i);
+        sheet.autoSizeColumn(i);
+        if(value instanceof Integer){
+            cell.setCellValue((Integer)value);
+        } else if(value instanceof Boolean){
+            cell.setCellValue((Boolean) value);
+        } else{
+            cell.setCellValue((String) value);
+        }
+        cell.setCellStyle(cellStyle);
+    }
+//    ************************************
+    @Override
+    public void exportLessonToPdf(HttpServletResponse response) throws IOException {
+        final Optional<Employee> employeeOptional = employeeRepository.findByPhone("+998930024547");
+        final Employee employee = employeeOptional.get();
+        if (employee.getGrade().equals("Hammasi")){
+            List<Lesson> lessonList = new ArrayList<>();
+            for (int i = 2; i < 5; i++){
+                final Optional<Course> courseOptional = courseRepository.findByGradeAndEmployee(i, employee);
+                final List<Lesson> allByCourseOrderByCreatedDateAsc =
+                        lessonRepository.findAllByCourseOrderByCreatedDateAsc(courseOptional.get());
+                lessonList.addAll(allByCourseOrderByCreatedDateAsc);
+            }
+            exportToPdf(lessonList, response);
+        } else {
+            final Optional<Course> courseOptional = courseRepository.findByGradeAndEmployee(Integer.valueOf(employee.getGrade()), employee);
+            final List<Lesson> allByCourseOrderByCreatedDateAsc = lessonRepository.findAllByCourseOrderByCreatedDateAsc(courseOptional.get());
+            exportToPdf(allByCourseOrderByCreatedDateAsc, response);
+        }
+    }
+
+    public void exportToPdf(List<Lesson> lessonList, HttpServletResponse response) throws IOException {
+        setResponseHeader(response, "application/pdf", ".pdf", "Darslar Ro'yhati_");
+        Document document = new Document(PageSize.A4);
+        PdfWriter.getInstance(document, response.getOutputStream());
+//        document.set
+        document.open();
+
+    //        Font font= FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        Font font = FontFactory.getFont("Times New Roman");
+        font.setSize(14);
+        font.setColor(Color.BLACK);
+
+        Paragraph paragraph=new Paragraph("Guruhlar ro'yhati", font);
+        paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(paragraph);
+
+        PdfPTable table=new PdfPTable(8);
+        table.setWidthPercentage(100f);
+        table.setSpacingBefore(10);
+        writeGroupHeader(table);
+        writeGroupData(table, lessonList);
+        document.add(table);
+
+        document.close();
+    }
+
+    private void writeGroupData(PdfPTable table, List<Lesson> lessonList) {
+        int i = 1;
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+        for (Lesson lesson : lessonList) {
+            table.addCell(String.valueOf(i++));
+            table.addCell(lesson.getTitle());
+            table.getDefaultCell().setBackgroundColor(Color.BLUE);
+            table.addCell(lesson.getDescription());
+            table.getDefaultCell().setBackgroundColor(Color.WHITE);
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            table.addCell(dateFormat.format(lesson.getCreatedDate()));
+            table.addCell(lesson.getCourse().getGrade().toString());
+            table.addCell(lesson.getLessonType().name());
+            if (!lesson.getLessonType().equals(LessonType.TEST)){
+                final Optional<VideoSource> videoSourceOptional = videoSourceRepository.findByLessonId(lesson.getId());
+                final VideoSource videoSource = videoSourceOptional.get();
+                table.addCell(videoSource.getName());
+                table.addCell(videoSource.getFileSize() / 1024 / 1024 + "MB");
+            } else {
+                table.addCell("");
+                table.addCell("");
+            }
+
+        }
+    }
+
+    private void writeGroupHeader(PdfPTable table) {
+        PdfPCell pdfPCell=new PdfPCell();
+        pdfPCell.setBackgroundColor(Color.GREEN);
+        pdfPCell.setPadding(5);
+
+        Font font= FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        font.setColor(Color.white);
+
+        pdfPCell.setPhrase(new Phrase("#", font));
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(pdfPCell);
+        pdfPCell.setPhrase(new Phrase("Mavzu", font));
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(pdfPCell);
+        pdfPCell.setPhrase(new Phrase("Izoh", font));
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(pdfPCell);
+        pdfPCell.setPhrase(new Phrase("Yaratilgan vaqt", font));
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(pdfPCell);
+        pdfPCell.setPhrase(new Phrase("Sinf", font));
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(pdfPCell);
+        pdfPCell.setPhrase(new Phrase("Tur", font));
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(pdfPCell);
+        pdfPCell.setPhrase(new Phrase("Video nomi", font));
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(pdfPCell);
+        pdfPCell.setPhrase(new Phrase("Hajm", font));
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(pdfPCell);
+    }
 }
+
+// $('#statusBtn').click(function(){
+//        let date=document.getElementById("groupDate1").value.toString();
+//        let value = $("select#statusSlc option:selected").val();
+//        $.ajax({
+//            type:"GET",
+//            contentType: "application/json",
+//            url: baseUrl+"/d1/print/"+value+"/"+date,
+//            success: function(data) {
+//                let restorePage = document.body.innerHTML;
+//                document.body.innerHTML = data;
+//                window.print();
+//                document.body.innerHTML = restorePage;
+//            }
+//        })
+//    });

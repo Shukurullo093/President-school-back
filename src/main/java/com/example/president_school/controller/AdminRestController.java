@@ -97,11 +97,6 @@ public class AdminRestController {
                 .body(new FileUrlResource(String.format("%s/%s", uploadFolder, lessonSource.getUploadPath())));
     }
 
-//    @DeleteMapping("/delete/employee/{id}")
-//    public ResponseEntity<ControllerResponse> deleteEmployee(@PathVariable String id){
-//        return ResponseEntity.ok(adminService.deleteEmployee(id));
-//    }
-
     @PostMapping("/add/post")
     public ResponseEntity<ControllerResponse> createPost(@RequestParam("title")String title,
                                                          @RequestParam("description")String description,
@@ -149,5 +144,10 @@ public class AdminRestController {
     @GetMapping("/export/employee/excel")
     public void exportEmployeeToExcel(HttpServletResponse response) throws IOException {
         adminService.exportEmployeeToExcel(response);
+    }
+
+    @PostMapping("/add-test")
+    public ResponseEntity<?> addTest(){
+        return null;
     }
 }

@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Edumin - Bootstrap Admin Dashboard </title>
+    <title>Teacher All Lesson</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -75,13 +75,13 @@
                                     <img th:src="@{${img != null ? '/api/admin/rest/viewImage/' + img : '/images/profile/education/pic-6.jpg'}}" width="20" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="javascript:void(0);" class="dropdown-item ai-icon">
+                                    <a th:href="@{/api/teacher/profile}" class="dropdown-item ai-icon">
                                         <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                        <span class="ml-2">Profile </span>
+                                        <span class="ml-2">Profile</span>
                                     </a>
                                     <a href="javascript:void(0);" class="dropdown-item ai-icon">
                                         <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                                        <span class="ml-2">Chiqish </span>
+                                        <span class="ml-2">Chiqish</span>
                                     </a>
                                 </div>
                             </li>
@@ -150,8 +150,20 @@
 				<div class="row">
                     <div class="col-lg-12">
                         <ul class="nav nav-pills mb-3">
-                            <li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link btn-primary mr-1 show active">Qator</a></li>
-                            <li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link btn-primary">Jadval</a></li>
+                            <li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link rounded btn-primary mr-1 show active">Jadval</a></li>
+                            <li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link rounded btn-primary">Karta</a></li>
+                            <li class="nav-item mr-1 ml-auto">
+                                <a href="/api/teacher/rest/export/lesson/excel" class="btn btn-primary">
+                                    <i class="la la-download"></i>
+                                    <i class="la la-file-excel-o fs-6"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item mr-4">
+                                <a href="/api/teacher/rest/export/lesson/pdf" class="btn btn-primary">
+                                    <i class="la la-download"></i>
+                                    <i class="la la-file-pdf-o fs-6"></i>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-lg-12">

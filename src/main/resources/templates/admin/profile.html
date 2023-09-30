@@ -98,10 +98,11 @@
             <div class="dlabnav-scroll">
                 <ul class="metismenu" id="menu">
                     <li class="nav-label first">Bosh Menu</li>
-                    <li><a class="ai-icon" th:href="@{/api/admin/dashboard}" aria-expanded="false">
-                        <i class="la la-home"></i>
-                        <span class="nav-text">Dashboard</span>
-                    </a>
+                    <li>
+                        <a class="ai-icon" th:href="@{/api/admin/dashboard}" aria-expanded="false">
+                            <i class="la la-home"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
                     </li>
                     <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
                         <i class="la la-user"></i>
@@ -127,6 +128,12 @@
                         <ul aria-expanded="false">
                             <li><a th:href="@{/api/admin/courses}">Barcha kurslar</a></li>
                         </ul>
+                    </li>
+                    <li>
+                        <a class="ai-icon" th:href="@{/api/admin/iq-test}" aria-expanded="false">
+                            <i class="la la-list-alt"></i>
+                            <span class="nav-text">IQ Test</span>
+                        </a>
                     </li>
                     <li>
                         <a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
@@ -172,7 +179,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="card">
-									<div class="text-center p-3 overlay-box" style="background-image: url(/images/big/img1.jpg);">
+									<div class="text-center p-3 overlay-box">
 										<div class="profile-photo">
 											<img th:src="@{${employee.imageHashId != null ? '/api/admin/rest/viewImage/' + employee.imageHashId : '/images/profile/education/pic-6.jpg'}}" width="100" class="img-fluid rounded-circle" alt="">
 										</div>

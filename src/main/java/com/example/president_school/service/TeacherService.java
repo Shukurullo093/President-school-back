@@ -6,6 +6,9 @@ import com.example.president_school.payload.ControllerResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @Service
 public interface TeacherService {
     ControllerResponse addLesson(String title, String description, String type, Integer grade,
@@ -22,4 +25,8 @@ public interface TeacherService {
     void deleteTest(String id);
 
     ControllerResponse editTest(String lessonId, Integer testId, String question, MultipartFile questionImg, String ans1, MultipartFile ans1Img, String ans2, MultipartFile ans2Img, String ans3, MultipartFile ans3Img);
+
+    void exportLessonToExcel(HttpServletResponse response) throws IOException;
+
+    void exportLessonToPdf(HttpServletResponse response) throws IOException;
 }
