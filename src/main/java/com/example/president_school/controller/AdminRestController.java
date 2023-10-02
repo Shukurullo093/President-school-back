@@ -146,8 +146,15 @@ public class AdminRestController {
         adminService.exportEmployeeToExcel(response);
     }
 
-    @PostMapping("/add-test")
-    public ResponseEntity<?> addTest(){
-        return null;
+    @PostMapping("/add-iq-test")
+    public ResponseEntity<?> addTest(@RequestParam("questionTxt")String question,
+                                     @RequestParam("questionImg")MultipartFile questionImg,
+                                     @RequestParam("v1")String ans1,
+                                     @RequestParam("v1img")MultipartFile ans1Img,
+                                     @RequestParam("v2")String ans2,
+                                     @RequestParam("v2img")MultipartFile ans2Img,
+                                     @RequestParam("v3")String ans3,
+                                     @RequestParam("v3img")MultipartFile ans3Img){
+        return ResponseEntity.ok(adminService.addTest(question, questionImg, ans1, ans1Img, ans2, ans2Img, ans3, ans3Img));
     }
 }

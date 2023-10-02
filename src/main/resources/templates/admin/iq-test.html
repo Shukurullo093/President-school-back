@@ -199,10 +199,6 @@
                                                                     display: none;
                                                                 }
                                                             </style>
-<!--                                                            <div class="col-lg-12 col-md-12 col-sm-12 mb-2">-->
-<!--                                                                <label class="form-label">Test mavzusi</label>-->
-<!--                                                                <input type="text" th:value="${title}" class="form-control" readonly>-->
-<!--                                                            </div>-->
                                                             <div class="col-lg-3 col-md-6 col-sm-12">
                                                                 <label class="form-label">Test savoli</label>
                                                                 <textarea name="questionTxt" class="form-control questionTxt" style="resize: none;" rows="5"></textarea>
@@ -223,14 +219,14 @@
                                                                 <textarea name="v3" class="form-control v3" style="resize: none;" rows="5"></textarea>
                                                                 <input type="file" name="v3img" class="form-control mt-2" accept="image/*">
                                                             </div>
-                                                            <div class="col-lg-12 col-md-12 col-sm-12 alert alert-danger alert-dismissible fade show mx-2" role="alert">
+                                                            <div class="col-lg-11 col-md-12 col-sm-12 mt-2 alert alert-danger alert-dismissible fade show mx-2" role="alert">
                                                                 <span class="text-dark" id="error-alert"></span>
                                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="col-lg-12 col-md-12 col-sm-12 text-end mt-3">
-                                                                <button type="button" onclick="addTest(this)" th:data-id="${lessonId}" class="btn btn-primary">Saqlash</button>
+                                                                <button type="button" id="saveBtn" class="btn btn-primary">Saqlash</button>
                                                                 <button type="reset" class="btn btn-light">Bekor qilish</button>
                                                             </div>                                                            
                                                         </div>
@@ -331,17 +327,17 @@
     <script src="/vendor/svganimation/svg.animation.js"></script>
     <script src="/js/styleSwitcher.js"></script>
 
-<!--    <script src="/js/teacher/teacher.js"></script>-->
-<!--	<script>-->
-<!--        function scaleImg(th){-->
-<!--            if ($(th).css("height") === "200px"){-->
-<!--                $(th).css("height", '300px');-->
-<!--            }-->
-<!--            else {-->
-<!--                $(th).css("height", '200px');-->
-<!--            }-->
-<!--        }-->
-<!--    </script>-->
+    <script src="/js/admin/iq-test.js"></script>
+	<script>
+        function scaleImg(th){
+            if ($(th).css("height") === "200px"){
+                $(th).css("height", '300px');
+            }
+            else {
+                $(th).css("height", '200px');
+            }
+        }
+    </script>
 </body>
 </html>
 

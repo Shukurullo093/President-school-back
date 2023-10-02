@@ -1,12 +1,14 @@
 package com.example.president_school.service.impl;
 
 import com.example.president_school.entity.*;
+import com.example.president_school.entity.enums.LessonType;
 import com.example.president_school.entity.enums.Role;
 import com.example.president_school.entity.enums.Science;
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.LoginDto;
 import com.example.president_school.repository.*;
 import com.example.president_school.service.AdminService;
+import com.example.president_school.service.GeneralService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
@@ -30,6 +32,10 @@ public class AdminServiceImpl implements AdminService {
     private final CourseRepository courseRepository;
     private final PostRepository postRepository;
     private final HomeMessageRepository homeMessageRepository;
+    private final LessonRepository lessonRepository;
+    private final GeneralService generalService;
+    private final TestImgSourceRepository testImgSourceRepository;
+    private final TestRepository testRepository;
 
     @Value("${upload.folder}")
     private String uploadFolder;
@@ -194,21 +200,6 @@ public class AdminServiceImpl implements AdminService {
             return new ControllerResponse("Hodim muvaffaqqiyatli tahrirlandi.", 200);
         }
         return new ControllerResponse("Hodim topilmadi.", 301);
-    }
-
-    @Override
-    public ControllerResponse deleteEmployee(String id) {
-        Optional<Employee> employeeOptional = employeeRepository.findById(Integer.valueOf(id));
-        if (employeeOptional.isPresent()){
-            File file1 = new File(String.format("%s/%s",
-                    this.uploadFolder,
-                    employeeOptional.get().getImage().getUploadPath()));
-            file1.delete();
-            employeeRepository.deleteById(Integer.valueOf(id));
-            personImageRepository.deleteById(employeeOptional.get().getImage().getId());
-            return new ControllerResponse("Hodim muvaffaqqiyatli o'chirildi.", 200);
-        }
-        return null;
     }
 
     @Override
@@ -403,6 +394,57 @@ public class AdminServiceImpl implements AdminService {
             file.delete();
             postRepository.deleteById(id);
         }
+    }
+
+    @Transactional
+    @Override
+    public ControllerResponse addTest(String question, MultipartFile questionImg, String ans1, MultipartFile ans1Img,
+                                      String ans2, MultipartFile ans2Img, String ans3, MultipartFile ans3Img) {
+        final Optional<Lesson> lessonOptional = lessonRepository.findByLessonType(LessonType.IQ);
+        if (lessonOptional.isPresent()) {
+            final Lesson lesson = lessonOptional.get();
+            Test test = new Test();
+            test.setLesson(lesson);
+            test.setQuestionTxt(question);
+            test.setAnswer1(ans1);
+            test.setAnswer2(ans2);
+            test.setAnswer3(ans3);
+            if (!questionImg.isEmpty())
+                test.setQuestionImg(getSource(questionImg));
+            if (!ans1Img.isEmpty())
+                test.setAnswer1Img(getSource(ans1Img));
+            if (!ans2Img.isEmpty())
+                test.setAnswer2Img(getSource(ans2Img));
+            if (!ans3Img.isEmpty())
+                test.setAnswer3Img(getSource(ans3Img));
+            testRepository.save(test);
+            return new ControllerResponse("Test yaratildi", 200);
+        }
+        return new ControllerResponse("Test ma'lumotlari topilmadi", 208);
+    }
+
+    private TestImageSource getSource(MultipartFile file) {
+        File uploadFolder = new File(String.format("%s/IQ/", this.uploadFolder));
+        if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+            System.out.println(uploadFolder + " path created for test");
+        }
+        TestImageSource testImageSource = new TestImageSource();
+        testImageSource.setContentType(file.getContentType());
+        testImageSource.setName(file.getOriginalFilename());
+        testImageSource.setExtension(generalService.getExtension(file.getOriginalFilename()));
+        testImageSource.setFileSize(file.getSize());
+        testImageSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
+        testImageSource.setUploadPath(String.format("IQ/%s.%s", testImageSource.getHashId(), testImageSource.getExtension()));
+        TestImageSource save = testImgSourceRepository.save(testImageSource);
+
+        uploadFolder = uploadFolder.getAbsoluteFile();
+        File file1 = new File(uploadFolder, String.format("%s.%s", testImageSource.getHashId(), testImageSource.getExtension()));
+        try {
+            file.transferTo(file1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return save;
     }
 
     @Override

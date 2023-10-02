@@ -96,6 +96,7 @@ public class TeacherApiController {
         List<Test> testList = testRepository.findAllByLesson(lessonRepository.findById(UUID.fromString(lessonId)).get());
         map.addAttribute("title", lessonRepository.findById(UUID.fromString(lessonId)).get().getTitle());
         map.addAttribute("lessonId", lessonId);
+
         List<TestDto> testDtoList = new ArrayList<>();
         int i = 1;
         for(Test test : testList){

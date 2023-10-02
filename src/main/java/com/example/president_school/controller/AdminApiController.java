@@ -1,6 +1,7 @@
 package com.example.president_school.controller;
 
 import com.example.president_school.entity.*;
+import com.example.president_school.entity.enums.LessonType;
 import com.example.president_school.entity.enums.Role;
 import com.example.president_school.entity.enums.Science;
 import com.example.president_school.payload.*;
@@ -35,6 +36,7 @@ public class AdminApiController {
     private final GeneralService generalService;
     private final PostRepository postRepository;
     private final HomeMessageRepository homeMessageRepository;
+    private final TestRepository testRepository;
 
     @Value("${default.person.image.path}")
     private String defaultPersonImgPath;
@@ -471,7 +473,33 @@ public class AdminApiController {
         } else {
             map.addAttribute("img", defaultPersonImgPath);
         }
+
+        List<Test> testList = testRepository.findAllByLesson(lessonRepository.findByLessonType(LessonType.IQ).get());
         List<TestDto> testDtoList = new ArrayList<>();
+        int i = 1;
+        for(Test test : testList){
+            TestDto testDto = new TestDto();
+            testDto.setId(test.getId());
+            testDto.setOrder(i);
+            testDto.setQuestion(test.getQuestionTxt());
+            testDto.setAnswer1(test.getAnswer1());
+            testDto.setAnswer2(test.getAnswer2());
+            testDto.setAnswer3(test.getAnswer3());
+            if (test.getQuestionImg() != null){
+                testDto.setQuestionImgUrl("/api/teacher/rest/viewImage/" + test.getQuestionImg().getHashId());
+            }
+            if (test.getAnswer1Img() != null){
+                testDto.setAnswer1ImgUrl("/api/teacher/rest/viewImage/" + test.getAnswer1Img().getHashId());
+            }
+            if (test.getAnswer2Img() != null){
+                testDto.setAnswer2ImgUrl("/api/teacher/rest/viewImage/" + test.getAnswer2Img().getHashId());
+            }
+            if (test.getAnswer3Img() != null){
+                testDto.setAnswer3ImgUrl("/api/teacher/rest/viewImage/" + test.getAnswer3Img().getHashId());
+            }
+            testDtoList.add(testDto);
+            i++;
+        }
         map.addAttribute("testList", testDtoList);
 
         return "admin/iq-test";

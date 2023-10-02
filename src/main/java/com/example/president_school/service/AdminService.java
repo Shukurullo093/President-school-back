@@ -21,8 +21,6 @@ public interface AdminService {
 
     ControllerResponse updateEmployee(String employeeId, String name, String surname, String email, String phone, String science, String role, String grade, Date birthdate, String gender, Date joiningDate, String pass, MultipartFile image);
 
-    ControllerResponse deleteEmployee(String id);
-
     ControllerResponse login(LoginDto loginDto, HttpServletResponse response);
 
     ControllerResponse updateAdmin(String name, String surname, String email, String phone, Date birthdate, String gender, String pass, MultipartFile image);
@@ -40,4 +38,6 @@ public interface AdminService {
     void deletePost(Integer id);
 
     void exportEmployeeToExcel(HttpServletResponse response) throws IOException;
+
+    ControllerResponse addTest(String question, MultipartFile questionImg, String ans1, MultipartFile ans1Img, String ans2, MultipartFile ans2Img, String ans3, MultipartFile ans3Img);
 }
