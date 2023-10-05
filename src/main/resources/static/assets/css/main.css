@@ -31,6 +31,12 @@
   .cube-wrap{
       bottom: 10%;
   }
+  .hero{
+    padding-bottom: 1rem;
+  }
+  .hero .icon-boxes{
+    display: none;
+  }
 }
 /* .cube-wrap:hover .cube{
   animation-play-state: paused;

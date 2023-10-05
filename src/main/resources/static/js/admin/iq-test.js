@@ -107,3 +107,16 @@ $("#saveBtn").click(function (){
         }, 4000);
     }
 });
+
+$("#table").on("click","tbody tr .la-edit",function (){
+    let $tr = $(this).closest('tr');
+    let edit=$tr.children("td").map(function (){
+        return $(this).text();
+    }).get();
+    $('.questionTxt').val(edit[2].trim());
+    $('.v1').val(edit[3].trim());
+    $('.v2').val(edit[4].trim());
+    $('.v3').val(edit[5].trim());
+    $('.btn-primary').text("Tahrirlash");
+    // $('.btn-primary').attr('data-test-id', $(this).attr("data-id"));
+});

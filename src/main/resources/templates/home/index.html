@@ -74,7 +74,6 @@
     </div>
   </header>
   <!-- End Header -->
-  <!-- End Header -->
 
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="hero">
@@ -132,26 +131,26 @@
             </button>
           </div>
           <div class="modal-body mt-0">
-            <form class="w-100">
+            <form id="register-form" class="w-100">
               <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                   <label class="pb-0">Ism-Familiya*</label>
-                  <input type="text" class="form-control text-capitalize" placeholder="fio..." required>
+                  <input type="text" name="name" class="form-control text-capitalize" placeholder="fio..." required>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <label class="form-label mt-lg-4 mt-md-3 mt-sm-1">Telefon*</label>
-                  <input type="tel" class="form-control" placeholder="+998" required>
+                  <input type="tel" name="phone" class="form-control" placeholder="+998" required>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <label class="form-label mt-lg-4 mt-md-3 mt-sm-1">Jins*</label>
-                  <select class="form-control">
+                  <select name="gender" class="form-control">
                     <option value="male">O'g'il</option>
                     <option value="female">Qiz</option>
                   </select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <label class="form-label mt-lg-4 mt-md-3 mt-sm-1">Sinf*</label>
-                  <select class="form-control">
+                  <select name="grade" class="form-control">
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -159,21 +158,24 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <label class="form-label mt-lg-4 mt-md-3 mt-sm-1">Rasm*</label>
-                  <input type="file" class="form-control" accept="image/*" required>
+                  <input type="file" name="photo" class="form-control" accept="image/*" required>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <label class="form-label mt-lg-4 mt-md-3 mt-sm-1">Parol*</label>
-                  <input type="password" class="form-control" required>
+                  <input type="password" name="pass" class="form-control" required>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <label class="form-label mt-lg-4 mt-md-3 mt-sm-1">Parolni takrorlang*</label>
-                  <input type="password" class="form-control" required>
+                  <input type="password" name="c_pass" class="form-control" required>
+                </div>
+                <div class="col-12 mt-1">
+                  <span id="error text-danger" style="display: none;">*</span>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <button type="reset" class="btn btn-danger form-control fs-3 mt-lg-4 mt-md-3 mt-sm-1">Bekor qilish</button>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                  <button type="button" class="btn btn-success form-control fs-3 mt-lg-4 mt-md-3 mt-sm-1">Ro'yhatdan o'tish</button>
+                  <button type="button" id="register" class="btn btn-success form-control fs-3 mt-lg-4 mt-md-3 mt-sm-1">Ro'yhatdan o'tish</button>
                 </div>
                 <div class="col-12 text-center mt-1">
                   <span>Sizda allaqachon hisob bormi? <a href="javascript:void(0);" onclick="document.getElementById('modal-bg-login').style.display = 'block';
@@ -266,6 +268,18 @@
 
   <main id="main">
 
+    <!-- ======= Call To Action Section ======= -->
+    <section id="call-to-action" class="call-to-action sections-bg">
+      <div class="container text-center" data-aos="zoom-out">
+        <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="play-btn"></a>
+        <h3>Saytdan foydalanish yo'riqnomasi</h3>
+        <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <a class="cta-btn" href="#">Ko'rib Chiqish</a>
+      </div>
+    </section>
+    <!-- End Call To Action Section -->
+
     <!-- ======= About Us Section ======= -->
     <section id="about" class="about">
       <div class="container" data-aos="fade-up">
@@ -350,19 +364,8 @@
     </section>
     <!-- End Stats Counter Section -->
 
-    <!-- ======= Call To Action Section ======= -->
-    <section id="call-to-action" class="call-to-action">
-      <div class="container text-center" data-aos="zoom-out">
-        <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="play-btn"></a>
-        <h3>Call To Action</h3>
-        <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <a class="cta-btn" href="#">Call To Action</a>
-      </div>
-    </section>
-    <!-- End Call To Action Section -->
-
     <!-- ======= News Section ======= -->
-    <section id="portfolio" class="portfolio sections-bg">
+    <section id="portfolio" class="portfolio">
       <div class="container" data-aos="fade-up">
 
         <div class="section-header">
@@ -401,7 +404,7 @@
     <!-- End News Section -->
 
     <!-- ======= Our Team Section ======= -->
-    <section id="team" class="team">
+    <section id="team" class="team sections-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-header">
@@ -475,7 +478,7 @@
     <!-- End Our Team Section -->
 
     <!-- ======= Pricing Section ======= -->
-    <section id="pricing" class="pricing sections-bg">
+    <section id="pricing" class="pricing">
       <div class="container" data-aos="fade-up">
 
         <div class="section-header">
@@ -565,7 +568,7 @@
     <!-- End Pricing Section -->
 
     <!-- ======= Frequently Asked Questions Section ======= -->
-    <section id="faq" class="faq">
+    <section id="faq" class="faq sections-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="row gy-4">
@@ -750,7 +753,8 @@
     </section>
     <!-- End Contact Section -->
 
-  </main><!-- End #main -->
+  </main>
+  <!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">

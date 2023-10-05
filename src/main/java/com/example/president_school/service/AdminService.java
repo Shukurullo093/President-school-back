@@ -21,7 +21,7 @@ public interface AdminService {
 
     ControllerResponse updateEmployee(String employeeId, String name, String surname, String email, String phone, String science, String role, String grade, Date birthdate, String gender, Date joiningDate, String pass, MultipartFile image);
 
-    ControllerResponse login(LoginDto loginDto, HttpServletResponse response);
+    ControllerResponse login(LoginDto loginDto);
 
     ControllerResponse updateAdmin(String name, String surname, String email, String phone, Date birthdate, String gender, String pass, MultipartFile image);
 

@@ -10,4 +10,10 @@ import lombok.NoArgsConstructor;
 public class ControllerResponse {
     private String message;
     private int statusCode;
+    private String token;
+
+    public ControllerResponse(String message, int statusCode) {
+        this.message = message;
+        this.statusCode = statusCode;
+    }
 }

@@ -7,12 +7,20 @@ import com.example.president_school.entity.enums.Science;
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.LoginDto;
 import com.example.president_school.repository.*;
+import com.example.president_school.security.JwtProvider;
 import com.example.president_school.service.AdminService;
 import com.example.president_school.service.GeneralService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +50,13 @@ public class AdminServiceImpl implements AdminService {
 
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    JwtProvider jwtProvider;
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     @Transactional
     @Override
@@ -203,19 +218,23 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ControllerResponse login(LoginDto loginDto, HttpServletResponse response) {
-        Optional<Employee> employeeOptional = employeeRepository.findByPhone(loginDto.getPhone());
-        if (employeeOptional.isPresent()){
-//            if (passwordEncoder.matches(loginDto.getPassword(), employeeOptional.get().getPassword())){
-//                var user = employeeRepository.findByPhone(loginDto.getPhone())
-//                        .orElseThrow(()-> new UsernameNotFoundException("Foydalanuvchi topilmadi"));
-//                var jwtToken = jwtService.generateToken(user);
-//                response.setHeader("Authorization","Bearer " + jwtToken);
-//                return new ControllerResponse(String.valueOf(jwtToken), 200);
-//            }
-            return new ControllerResponse("telefon raqam yoki parol xato.", 403);
+    public ControllerResponse login(LoginDto loginDto) {
+        try {
+            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginDto.getPhone(),
+                    loginDto.getPassword()
+            ));
+            Employee employee = (Employee) authenticate.getPrincipal();
+            String token = jwtProvider.generateToken(employee.getPhone());
+            String path = null;
+            switch (employee.getRole()){
+                case ADMIN -> path = "/api/admin/dashboard";
+                case TEACHER -> path = "/api/teacher/dashboard";
+            }
+            return new ControllerResponse(path, 200, token);
+        } catch (Exception e) {
+            return new ControllerResponse("Login yoki parol xato", 401);
         }
-        return new ControllerResponse("telefon raqam yoki parol xato.", 403);
     }
 
     @Override

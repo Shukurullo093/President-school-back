@@ -1,12 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   "use strict";
   document.addEventListener('scroll', function (){
-    if (window.scrollY > 50){
+    if (window.scrollY > 150){
       document.getElementById("exampleModalCenter").style.display = "none";
     }
-    // if (window.scrollY === 0){
-    //   document.getElementById("exampleModalCenter").style.display = "flex";
-    // }
   });
   /**
    * Preloader
@@ -256,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 let baseUrl = window.location.origin;
+
 function sendMessage(){
   let form = $('#form')[0];
   let data = new FormData(form);
@@ -282,3 +280,47 @@ function sendMessage(){
       }
     })
 }
+
+$('#register').click(function (){
+  let form = $('#register-form')[0];
+  let data = new FormData(form);
+  if (data.get('pass').length < 8){
+    $('#error').css('display', 'block');
+    $("#error").text("Parol kamida 8 ta belgidan iborat bo'lishi kerak.");
+    setTimeout(function(){
+      $('#error').css('display', 'none');
+      $("#error").text("");
+    }, 5000);
+  }
+  if (data.get("pass") !== data.get("c_pass")){
+    $('#error').css('display', 'block');
+    $("#error").text("Parollar mos tushmadi. Qaytadan kiriting.");
+    setTimeout(function(){
+      $('#error').css('display', 'none');
+      $("#error").text("");
+    }, 5000);
+  }
+  else {
+    $.ajax({
+      url: baseUrl + "/api/student/rest/register",
+      type: 'POST',
+      enctype: 'multipart/form-data',
+      data: data,
+      processData: false,
+      contentType: false,
+      cache: false,
+      success: function () {
+        $('#error').css('display', 'block');
+        $('#error').text("Ro'yhatdan muvaffaqqiyatli o'tdingiz.")
+        setTimeout(function () {
+          $('#error').css('display', 'none');
+          $('#error').text('')
+          form.reset();
+        }, 4000);
+      },
+      error: function (e) {
+        console.log(e);
+      }
+    })
+  }
+})

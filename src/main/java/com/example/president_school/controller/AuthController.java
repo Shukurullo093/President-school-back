@@ -14,13 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-//    private final AuthService authService;
     private final AdminService employeeService;
 
     @PostMapping("/login")
     public ResponseEntity<ControllerResponse> signIn(@RequestParam("username")String phone,
                                                      @RequestParam("password")String password,
                                                      HttpServletResponse response){
-        return ResponseEntity.ok(employeeService.login(new LoginDto(phone, password), response));
+        return ResponseEntity.ok(employeeService.login(new LoginDto(phone, password)));
     }
 }

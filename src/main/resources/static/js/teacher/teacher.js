@@ -1,52 +1,5 @@
 let baseUrl = window.location.origin;
 
-function login(){
-    let form = $('#form')[0];
-    let dataForm = new FormData(form);
-    $.ajax({
-        url: baseUrl + "/auth/login",
-        type: 'POST',
-        enctype: 'application/json',
-        data: dataForm,
-        processData: false,
-        contentType: false,
-        cache: false,
-        success: function (data) {
-            console.log(data)
-            if(data['statusCode'] === 200){
-                let token = data.message;
-                $.ajax({
-                    url: baseUrl + '/api/admin/dashboard',
-                    type: 'GET',
-                    enctype: 'application/json',
-                    headers: {"Authorization": "Bearer " + token},
-                    success: function(data){
-                        console.log('admin dashboard');
-                        sessionStorage.setItem("Authorization", 'Bearer ' + token);
-                        window.location = '/api/admin/dashboard';
-                        // alert(data);
-                        // $(location).attr('href', baseUrl + '/api/admin/dashboard')
-                    },
-                    error: function (e) {
-                        console.log(e);
-                    }
-                });
-            }
-            else {
-                $(".alert-danger").css('display', 'block');
-                $("#error-alert").text(data['message']);
-                setTimeout(function(){
-                    $(".alert-danger").css('display', 'none');
-                    $("#error-alert").text("");
-                }, 4000);
-            }
-        },
-        error: function (e) {
-            console.log(e);
-        }
-    })
-}
-
 function createLesson(){
     let form = $('#form')[0];
     let dataForm = new FormData(form);
