@@ -4,6 +4,7 @@ import com.example.president_school.entity.*;
 import com.example.president_school.entity.enums.LessonType;
 import com.example.president_school.payload.EmployeeDto;
 import com.example.president_school.payload.LessonDto;
+import com.example.president_school.payload.TaskDto;
 import com.example.president_school.payload.TestDto;
 import com.example.president_school.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class TeacherApiController {
     private final EmployeeRepository employeeRepository;
     private final LessonRepository lessonRepository;
     private final TestRepository testRepository;
-    private final VideoSourceRepository videoSourceRepository;
+    private final TaskRepository taskRepository;
     private final TaskSourceRepository taskSourceRepository;
 
 
@@ -69,17 +70,18 @@ public class TeacherApiController {
         else {
             map.addAttribute("img", defaultPersonImgPath);
         }
-        List<Lesson> lessonListByGrade = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer.valueOf(grade), employeeOptional.get());
+
+        List<Lesson> lessonListByGrade =
+                lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer.valueOf(grade), employeeOptional.get());
         map.addAttribute("lessonCount", lessonListByGrade.size() + 1);
         map.addAttribute("science", employeeOptional.get().getScience().toString());
         map.addAttribute("grade", grade);
         if (lessonListByGrade.size() + 1 <= 2){
             map.addAttribute("lessonType", "Demo");
-        } else if ((lessonListByGrade.size() + 1) % 7 == 0){
-            map.addAttribute("lessonType", "Test");
         } else {
             map.addAttribute("lessonType", "Video");
         }
+
         return "teacher/add-lesson";
     }
 
@@ -205,17 +207,61 @@ public class TeacherApiController {
         else {
             map.addAttribute("img", null);
         }
+
         Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(id));
         Lesson lesson = lessonOptional.get();
-        Optional<VideoSource> video = videoSourceRepository.findByLesson(lesson);
-        Optional<TaskSource> task = taskSourceRepository.findByLesson(lesson);
-        LessonDto lessonDto = new LessonDto();
-        lessonDto.setId(lesson.getId());
-        lessonDto.setTitle(lesson.getTitle());
-        lessonDto.setDescription(lesson.getDescription());
-        lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + video.get().getHashId());
-        lessonDto.setTaskLink("/api/teacher/rest/task/" + task.get().getHashId());
+//        Employee employee = employeeOptional.get();
+//        map.addAttribute("lessonOwner", new EmployeeDto(employee.getId(),
+//                employee.getLastName() + ' ' + employee.getFirstName(),
+//                null, null, null, null,
+//                employee.getScience().toString(), null,
+//                "/api/admin/rest/viewImage/" + employee.getImage().getHashId(),
+//                employee.getRole().toString(), employee.getGrade()));
 
+        LessonDto lessonDto = new LessonDto();
+
+        lessonDto.setTitle(lesson.getTitle());
+        lessonDto.setType(lesson.getLessonType().toString());
+        lessonDto.setDescription(lesson.getDescription());
+
+        DateFormat monthFormat;
+        monthFormat = new SimpleDateFormat("dd-MM-yyyy");
+        lessonDto.setCreatedDate(monthFormat.format(lesson.getCreatedDate()));
+        lessonDto.setLessonName(lesson.getName());
+        lessonDto.setContentType(lesson.getContentType());
+        long fileSize = lesson.getFileSize() / (1024 * 1024);
+        lessonDto.setSize(Long.toString(fileSize));
+        lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + lesson.getHashId());
+//  lesson tasks
+        final List<Task> byLessonIdOrderByOrderNumber = taskRepository.findByLessonIdOrderByOrderNumber(lesson.getId());
+        List<TaskDto> taskDtoList = new ArrayList<>();
+        for (Task task  : byLessonIdOrderByOrderNumber){
+            TaskDto taskDto = new TaskDto();
+            taskDto.setOrder(task.getOrderNumber());
+            taskDto.setTaskBody(task.getTaskBody());
+            taskDto.setTaskImg("/api/teacher/rest/view-task-image/" + task.getTaskImg().getHashId());
+            taskDto.setAnswer(task.getAnswer());
+            taskDto.setExample(task.getExampleBody());
+            taskDto.setExampleImg("/api/teacher/rest/view-task-image/" + task.getExampleImg().getHashId());
+            taskDtoList.add(taskDto);
+        }
+        lessonDto.setTaskDtoList(taskDtoList);
+//  lesson tests
+        final List<Test> testList = testRepository.findAllByLesson(lesson);
+        List<TestDto> testDtoList = new ArrayList<>();
+        for(Test test : testList){
+            TestDto testDto = new TestDto();
+            testDto.setQuestion(test.getQuestionTxt());
+            testDto.setQuestionImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            testDto.setAnswer1(test.getAnswer1());
+            testDto.setAnswer1ImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            testDto.setAnswer2(test.getAnswer2());
+            testDto.setAnswer2ImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            testDto.setAnswer3(test.getAnswer3());
+            testDto.setAnswer3ImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            testDtoList.add(testDto);
+        }
+        lessonDto.setTestDtoList(testDtoList);
         map.addAttribute("lessonInfo", lessonDto);
         return "teacher/lesson-info";
     }

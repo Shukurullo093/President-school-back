@@ -21,8 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import java.awt.*;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -37,11 +35,11 @@ public class TeacherServiceImpl implements TeacherService {
     private final LessonRepository lessonRepository;
     private final CourseRepository courseRepository;
     private final EmployeeRepository employeeRepository;
-    private final VideoSourceRepository videoSourceRepository;
     private final TaskSourceRepository taskSourceRepository;
     private final TestRepository testRepository;
     private final TestImgSourceRepository testImgSourceRepository;
     private final GeneralService generalService;
+    private final TaskRepository taskRepository;
 
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
@@ -51,91 +49,140 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Transactional
     @Override
-    public ControllerResponse addLesson(String title, String description, String type, Integer grade,
-                                        MultipartFile video, MultipartFile task) {
-        if (type.equals("VIDEO") && video.isEmpty()){
+    public ControllerResponse addLesson(Integer order, String title, String description, String type, Integer grade, MultipartFile video) {
+        if (video.isEmpty()){
             return new ControllerResponse("Dars videosi topilmadi.", 301);
         }
-        if (type.equals("VIDEO") && task.isEmpty()){
-            return new ControllerResponse("Dars topshirig'i topilmadi.", 301);
-        }
         Lesson lesson = new Lesson();
-        Optional<Course> courseOptional = courseRepository.findByGradeAndEmployee(grade,
-                employeeRepository.findByPhone("+998930024547").get());
+        Optional<Course> courseOptional = courseRepository
+                .findByGradeAndEmployee(grade, employeeRepository.findByPhone("+998930024547").get());
         lesson.setCourse(courseOptional.get());
         lesson.setTitle(title);
         lesson.setDescription(description);
         lesson.setLessonType(LessonType.valueOf(type.toUpperCase()));
-
-        Lesson lesson1 = lessonRepository.save(lesson);
-        if (!LessonType.valueOf(type.toUpperCase()).equals(LessonType.TEST)){
+        lesson.setOrderNumber(order);
             // *********** save video ****************
-            File uploadFolder = new File(String.format("%s/%d/%s/VIDEO/",
-                    this.uploadFolder,
-                    lesson.getCourse().getId(),
-                    LessonType.VIDEO));
-            if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
-                System.out.println(uploadFolder);
+        File uploadFolder = new File(String.format("%s/%d/%d/",
+                this.uploadFolder,
+                lesson.getCourse().getId(),
+                lesson.getOrderNumber()));
+        if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+            System.out.println("CFF lesson video ===\t" + uploadFolder);
+        }
+        lesson.setContentType(video.getContentType());
+        lesson.setName(video.getOriginalFilename());
+        lesson.setExtension(generalService.getExtension(video.getOriginalFilename()));
+        lesson.setFileSize(video.getSize());
+        lesson.setHashId(UUID.randomUUID().toString());
+        lesson.setUploadPath(String.format("%d/%d/%s.%s",
+                lesson.getCourse().getId(),
+                lesson.getOrderNumber(),
+                lesson.getHashId(),
+                lesson.getExtension()));
+
+        uploadFolder = uploadFolder.getAbsoluteFile();
+        File file1 = new File(uploadFolder, String.format("%s.%s",
+                lesson.getHashId(),
+                lesson.getExtension()));
+        try {
+            video.transferTo(file1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final Lesson save = lessonRepository.save(lesson);
+        return new ControllerResponse("Dars muvaffaqqiyatli yaratildi.", 200, save.getId().toString());
+    }
+
+    @Transactional
+    @Override
+    public ControllerResponse addTask(UUID lessonId, String taskBody, MultipartFile taskImg, String answer, String exampleBody,
+                                      MultipartFile exampleImg) {
+        final Optional<Lesson> lessonOptional = lessonRepository.findById(lessonId);
+        if (lessonOptional.isPresent()) {
+            final Lesson lesson = lessonOptional.get();
+            Task task = new Task();
+            task.setLesson(lesson);
+            task.setOrderNumber(taskRepository.countAllByLesson(lesson)  + 1);
+            task.setTaskBody(taskBody);
+            if (!taskImg.isEmpty()) {
+                task.setTaskImg(getTaskSource(taskImg, lesson.getCourse().getId(), lesson.getOrderNumber()));
             }
-            VideoSource videoSource = new VideoSource();
-            videoSource.setLesson(lesson1);
-            videoSource.setContentType(video.getContentType());
-            videoSource.setName(video.getOriginalFilename());
-            videoSource.setExtension(generalService.getExtension(video.getOriginalFilename()));
-            videoSource.setFileSize(video.getSize());
-            videoSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
-            videoSource.setUploadPath(String.format("%d/%s/VIDEO/%s.%s",
-                    lesson.getCourse().getId(),
-                    LessonType.VIDEO,
-                    videoSource.getHashId(),
-                    videoSource.getExtension()));
-            videoSourceRepository.save(videoSource);
-
-            uploadFolder = uploadFolder.getAbsoluteFile();
-            File file1 = new File(uploadFolder, String.format("%s.%s",
-                    videoSource.getHashId(),
-                    videoSource.getExtension()));
-            try {
-                video.transferTo(file1);
-            } catch (IOException e) {
-                e.printStackTrace();
+            task.setAnswer(answer);
+            task.setExampleBody(exampleBody);
+            if (!exampleImg.isEmpty()) {
+                task.setExampleImg(getTaskSource(exampleImg, lesson.getCourse().getId(), lesson.getOrderNumber()));
             }
+            taskRepository.save(task);
+            return new ControllerResponse("Dars uchun topshiriq qo'shildi", 200, getTasksByLesson(lessonId));
+        }
+        return new ControllerResponse("Dars topilmadi", 208);
+    }
 
-            // *********** save task ****************
+    @Override
+    public Lesson getLessonByHashId(String hashId) {
+        return lessonRepository.findByHashId(hashId).get();
+    }
 
-            File uploadTaskFolder = new File(String.format("%s/%d/%s/TASK/",
-                    this.uploadFolder,
-                    lesson.getCourse().getId(),
-                    LessonType.VIDEO));
-            if (!uploadTaskFolder.exists() && uploadTaskFolder.mkdirs()) {
-                System.out.println(uploadTaskFolder);
-            }
-            TaskSource taskSource = new TaskSource();
-            taskSource.setLesson(lesson1);
-            taskSource.setContentType(task.getContentType());
-            taskSource.setName(task.getOriginalFilename());
-            taskSource.setExtension(generalService.getExtension(task.getOriginalFilename()));
-            taskSource.setFileSize(task.getSize());
-            taskSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
-            taskSource.setUploadPath(String.format("%d/%s/TASK/%s.%s",
-                    lesson.getCourse().getId(),
-                    LessonType.VIDEO,
-                    taskSource.getHashId(),
-                    taskSource.getExtension()));
-            taskSourceRepository.save(taskSource);
+    @Transactional(readOnly = true)
+    @Override
+    public TaskSource viewTaskImg(String hashId) {
+        return taskSourceRepository.findByHashId(hashId).get();
+    }
 
-            uploadTaskFolder = uploadTaskFolder.getAbsoluteFile();
-            File file12 = new File(uploadTaskFolder, String.format("%s.%s",
-                    taskSource.getHashId(),
-                    taskSource.getExtension()));
-            try {
-                task.transferTo(file12);
-            } catch (IOException e) {
-                e.printStackTrace();
+    private String getTasksByLesson(UUID lesson) {
+        final Optional<Lesson> lessonOptional = lessonRepository.findById(lesson);
+        StringBuilder result = new StringBuilder();
+        if (lessonOptional.isPresent()){
+            final List<Task> taskList = taskRepository.findByLessonIdOrderByOrderNumber(lesson);
+            for(Task task : taskList){
+                result.append("<tr>");
+                    result.append("<td>").append(task.getOrderNumber()).append("</td>");
+                    result.append("<td class='text-justify'>")
+                            .append("<img src='/api/teacher/rest/view-task-img/" + task.getTaskImg().getHashId() + "' style='height: 200px;' onclick='scaleImg(this)'>").append("<br>")
+                            .append("<span>").append(task.getTaskBody()).append("</span>")
+                            .append("</td>");
+                    result.append("<td class='text-justify'>").append(task.getAnswer()).append("</td>");
+                    result.append("<td class='text-justify'>")
+                            .append("<img src='/api/teacher/rest/view-task-img/" + task.getTaskImg().getHashId() + "' style='height: 200px;' onclick='scaleImg(this)'>").append("<br>")
+                            .append("<span>").append(task.getTaskBody()).append("</span>")
+                            .append("</td>");
+                result.append("</tr>");
             }
         }
+        return result.toString();
+    }
 
-        return new ControllerResponse("Dars muvaffaqqiyatli yaratildi.", 200);
+    private TaskSource getTaskSource(MultipartFile file, int course, int order){
+        File uploadFolder = new File(String.format("%s/%d/%d/",
+                this.uploadFolder,
+                course,
+                order));
+        if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+            System.out.println("CFF task source ==\t" + uploadFolder);
+        }
+        TaskSource taskSource = new TaskSource();
+        taskSource.setContentType(file.getContentType());
+        taskSource.setName(file.getOriginalFilename());
+        taskSource.setExtension(generalService.getExtension(file.getOriginalFilename()));
+        taskSource.setFileSize(file.getSize());
+        taskSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
+        taskSource.setUploadPath(String.format("%d/%d/%s.%s",
+                course,
+                order,
+                taskSource.getHashId(),
+                taskSource.getExtension()));
+        TaskSource save = taskSourceRepository.save(taskSource);
+
+        uploadFolder = uploadFolder.getAbsoluteFile();
+        File file1 = new File(uploadFolder, String.format("%s.%s",
+                taskSource.getHashId(),
+                taskSource.getExtension()));
+        try {
+            file.transferTo(file1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return save;
     }
 
     @Transactional
@@ -143,22 +190,23 @@ public class TeacherServiceImpl implements TeacherService {
     public ControllerResponse addTest(String lessonId, String question, MultipartFile questionImg, String ans1, MultipartFile ans1Img,
                                       String ans2, MultipartFile ans2Img, String ans3, MultipartFile ans3Img) {
         Test test = new Test();
-        test.setLesson(lessonRepository.findById(UUID.fromString(lessonId)).get());
+        final Lesson lesson = lessonRepository.findById(UUID.fromString(lessonId)).get();
+        test.setLesson(lesson);
         test.setQuestionTxt(question);
         test.setAnswer1(ans1);
         test.setAnswer2(ans2);
         test.setAnswer3(ans3);
         if (!questionImg.isEmpty())
-            test.setQuestionImg(getSource(questionImg, lessonId,
+            test.setQuestionImg(getSource(questionImg, lesson.getOrderNumber(),
                 lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
         if (!ans1Img.isEmpty())
-            test.setAnswer1Img(getSource(ans1Img, lessonId,
+            test.setAnswer1Img(getSource(ans1Img, lesson.getOrderNumber(),
                     lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
         if (!ans2Img.isEmpty())
-            test.setAnswer2Img(getSource(ans2Img, lessonId,
+            test.setAnswer2Img(getSource(ans2Img, lesson.getOrderNumber(),
                     lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
         if (!ans3Img.isEmpty())
-            test.setAnswer3Img(getSource(ans3Img, lessonId,
+            test.setAnswer3Img(getSource(ans3Img, lesson.getOrderNumber(),
                     lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
         testRepository.save(test);
         return new ControllerResponse("Test yaratildi", 200);
@@ -175,20 +223,20 @@ public class TeacherServiceImpl implements TeacherService {
             test.setAnswer2(ans2);
             test.setAnswer3(ans3);
             if (!questionImg.isEmpty()){
-                int id = test.getQuestionImg() == null ? 0 : test.getQuestionImg().getId();
-                test.setQuestionImg(updateSource(questionImg, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
+//                int id = test.getQuestionImg() == null ? 0 : test.getQuestionImg().getId();
+//                test.setQuestionImg(updateSource(questionImg, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
             }
             if (!ans1Img.isEmpty()) {
-                int id = test.getAnswer1Img() == null ? 0 : test.getAnswer1Img().getId();
-                test.setAnswer1Img(updateSource(ans1Img, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
+//                int id = test.getAnswer1Img() == null ? 0 : test.getAnswer1Img().getId();
+//                test.setAnswer1Img(updateSource(ans1Img, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
             }
             if (!ans2Img.isEmpty()) {
-                int id = test.getAnswer2Img() == null ? 0 : test.getAnswer2Img().getId();
-                test.setAnswer2Img(updateSource(ans2Img, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
+//                int id = test.getAnswer2Img() == null ? 0 : test.getAnswer2Img().getId();
+//                test.setAnswer2Img(updateSource(ans2Img, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
             }
             if (!ans3Img.isEmpty()) {
-                int id = test.getAnswer3Img() == null ? 0 : test.getAnswer3Img().getId();
-                test.setAnswer3Img(updateSource(ans3Img, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
+//                int id = test.getAnswer3Img() == null ? 0 : test.getAnswer3Img().getId();
+//                test.setAnswer3Img(updateSource(ans3Img, id, lessonId, lessonRepository.findById(UUID.fromString(lessonId)).get().getCourse().getId()));
             }
             testRepository.save(test);
             return new ControllerResponse("Test tahrirlandi", 200);
@@ -196,11 +244,11 @@ public class TeacherServiceImpl implements TeacherService {
         return new ControllerResponse("Test topilmadi", 208);
     }
 
-    private TestImageSource getSource(MultipartFile file, String sourceType, Integer course) {
-        File uploadFolder = new File(String.format("%s/%d/TEST/%s/",
+    private TestImageSource getSource(MultipartFile file, int order, Integer course) {
+        File uploadFolder = new File(String.format("%s/%d/%d/",
                 this.uploadFolder,
                 course,
-                sourceType));
+                order));
         if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
             System.out.println(uploadFolder + " path created for test");
         }
@@ -210,9 +258,9 @@ public class TeacherServiceImpl implements TeacherService {
         testImageSource.setExtension(generalService.getExtension(file.getOriginalFilename()));
         testImageSource.setFileSize(file.getSize());
         testImageSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
-        testImageSource.setUploadPath(String.format("%d/TEST/%s/%s.%s",
+        testImageSource.setUploadPath(String.format("%d/%d/%s.%s",
                 course,
-                sourceType,
+                order,
                 testImageSource.getHashId(),
                 testImageSource.getExtension()));
         TestImageSource save = testImgSourceRepository.save(testImageSource);
@@ -270,12 +318,12 @@ public class TeacherServiceImpl implements TeacherService {
         return save;
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public VideoSource getVideo(String hashId) {
-        Optional<VideoSource> byHashId = videoSourceRepository.findByHashId(hashId);
-        return byHashId.get();
-    }
+//    @Transactional(readOnly = true)
+//    @Override
+//    public VideoSource getVideo(String hashId) {
+//        Optional<VideoSource> byHashId = videoSourceRepository.findByHashId(hashId);
+//        return byHashId.get();
+//    }
 
     @Transactional(readOnly = true)
     @Override
@@ -294,87 +342,87 @@ public class TeacherServiceImpl implements TeacherService {
         lesson.setDescription(description);
         Lesson save = lessonRepository.save(lesson);
 
-        if (!video.isEmpty()){
-            VideoSource videoSource = videoSourceRepository
-                    .findById(videoSourceRepository.findByLessonId(lesson.getId()).get().getId()).get();
-            File file1 = new File(String.format("%s/%s",
-                    this.uploadFolder,
-                    videoSource.getUploadPath()));
-            if (file1.delete()) {
-                System.out.println("deleted old test file mp4");
-            }
-            videoSource.setLesson(save);
-            File uploadFolder = new File(String.format("%s/%d/%s/VIDEO/",
-                    this.uploadFolder,
-                    lesson.getCourse().getId(),
-                    LessonType.VIDEO));
-            if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
-                System.out.println(uploadFolder);
-            }
-            videoSource.setContentType(video.getContentType());
-            videoSource.setName(video.getOriginalFilename());
-            videoSource.setExtension(generalService.getExtension(video.getOriginalFilename()));
-            videoSource.setFileSize(video.getSize());
-            videoSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
-            videoSource.setUploadPath(String.format("%d/%s/VIDEO/%s.%s",
-                    lesson.getCourse().getId(),
-                    LessonType.VIDEO,
-                    videoSource.getHashId(),
-                    videoSource.getExtension()));
-            videoSourceRepository.save(videoSource);
-
-            uploadFolder = uploadFolder.getAbsoluteFile();
-            File file12 = new File(uploadFolder, String.format("%s.%s",
-                    videoSource.getHashId(),
-                    videoSource.getExtension()));
-            try {
-                video.transferTo(file12);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (!task.isEmpty()){
-            TaskSource taskSource = taskSourceRepository.findById(taskSourceRepository.findByLessonId(save.getId()).get().getId()).get();
-
-            File file1 = new File(String.format("%s/%s",
-                    this.uploadFolder,
-                    taskSource.getUploadPath()));
-            if (file1.delete()) {
-                System.out.println("deleted old test file task pdf");
-            }
-
-            File uploadTaskFolder = new File(String.format("%s/%d/%s/TASK/",
-                    this.uploadFolder,
-                    lesson.getCourse().getId(),
-                    LessonType.VIDEO));
-            if (!uploadTaskFolder.exists() && uploadTaskFolder.mkdirs()) {
-                System.out.println(uploadTaskFolder);
-            }
-//            TaskSource taskSource = new TaskSource();
-            taskSource.setLesson(save);
-            taskSource.setContentType(task.getContentType());
-            taskSource.setName(task.getOriginalFilename());
-            taskSource.setExtension(generalService.getExtension(task.getOriginalFilename()));
-            taskSource.setFileSize(task.getSize());
-            taskSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
-            taskSource.setUploadPath(String.format("%d/%s/TASK/%s.%s",
-                    lesson.getCourse().getId(),
-                    LessonType.VIDEO,
-                    taskSource.getHashId(),
-                    taskSource.getExtension()));
-            taskSourceRepository.save(taskSource);
-
-            uploadTaskFolder = uploadTaskFolder.getAbsoluteFile();
-            File file12 = new File(uploadTaskFolder, String.format("%s.%s",
-                    taskSource.getHashId(),
-                    taskSource.getExtension()));
-            try {
-                task.transferTo(file12);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (!video.isEmpty()){
+//            VideoSource videoSource = videoSourceRepository
+//                    .findById(videoSourceRepository.findByLessonId(lesson.getId()).get().getId()).get();
+//            File file1 = new File(String.format("%s/%s",
+//                    this.uploadFolder,
+//                    videoSource.getUploadPath()));
+//            if (file1.delete()) {
+//                System.out.println("deleted old test file mp4");
+//            }
+//            videoSource.setLesson(save);
+//            File uploadFolder = new File(String.format("%s/%d/%s/VIDEO/",
+//                    this.uploadFolder,
+//                    lesson.getCourse().getId(),
+//                    LessonType.VIDEO));
+//            if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+//                System.out.println(uploadFolder);
+//            }
+//            videoSource.setContentType(video.getContentType());
+//            videoSource.setName(video.getOriginalFilename());
+//            videoSource.setExtension(generalService.getExtension(video.getOriginalFilename()));
+//            videoSource.setFileSize(video.getSize());
+//            videoSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
+//            videoSource.setUploadPath(String.format("%d/%s/VIDEO/%s.%s",
+//                    lesson.getCourse().getId(),
+//                    LessonType.VIDEO,
+//                    videoSource.getHashId(),
+//                    videoSource.getExtension()));
+//            videoSourceRepository.save(videoSource);
+//
+//            uploadFolder = uploadFolder.getAbsoluteFile();
+//            File file12 = new File(uploadFolder, String.format("%s.%s",
+//                    videoSource.getHashId(),
+//                    videoSource.getExtension()));
+//            try {
+//                video.transferTo(file12);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if (!task.isEmpty()){
+//            TaskSource taskSource = taskSourceRepository.findById(taskSourceRepository.findByLessonId(save.getId()).get().getId()).get();
+//
+//            File file1 = new File(String.format("%s/%s",
+//                    this.uploadFolder,
+//                    taskSource.getUploadPath()));
+//            if (file1.delete()) {
+//                System.out.println("deleted old test file task pdf");
+//            }
+//
+//            File uploadTaskFolder = new File(String.format("%s/%d/%s/TASK/",
+//                    this.uploadFolder,
+//                    lesson.getCourse().getId(),
+//                    LessonType.VIDEO));
+//            if (!uploadTaskFolder.exists() && uploadTaskFolder.mkdirs()) {
+//                System.out.println(uploadTaskFolder);
+//            }
+////            TaskSource taskSource = new TaskSource();
+//            taskSource.setLesson(save);
+//            taskSource.setContentType(task.getContentType());
+//            taskSource.setName(task.getOriginalFilename());
+//            taskSource.setExtension(generalService.getExtension(task.getOriginalFilename()));
+//            taskSource.setFileSize(task.getSize());
+//            taskSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
+//            taskSource.setUploadPath(String.format("%d/%s/TASK/%s.%s",
+//                    lesson.getCourse().getId(),
+//                    LessonType.VIDEO,
+//                    taskSource.getHashId(),
+//                    taskSource.getExtension()));
+//            taskSourceRepository.save(taskSource);
+//
+//            uploadTaskFolder = uploadTaskFolder.getAbsoluteFile();
+//            File file12 = new File(uploadTaskFolder, String.format("%s.%s",
+//                    taskSource.getHashId(),
+//                    taskSource.getExtension()));
+//            try {
+//                task.transferTo(file12);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         return new ControllerResponse("Dars tahrirlandi", 200);
     }
@@ -472,15 +520,15 @@ public class TeacherServiceImpl implements TeacherService {
             createCell(row, columnIndex++, dateFormat.format(lesson.getCreatedDate()), cellStyle);
             createCell(row, columnIndex++, lesson.getCourse().getGrade(), cellStyle);
             createCell(row, columnIndex++, lesson.getLessonType().name(), cellStyle);
-            if (!lesson.getLessonType().equals(LessonType.TEST)){
-                final Optional<VideoSource> videoSourceOptional = videoSourceRepository.findByLessonId(lesson.getId());
-                final VideoSource videoSource = videoSourceOptional.get();
-                createCell(row, columnIndex++, videoSource.getName(), cellStyle);
-                createCell(row, columnIndex++, videoSource.getFileSize() / 1024 / 1024 + "MB", cellStyle);
-            } else {
-                createCell(row, columnIndex++, "", cellStyle);
-                createCell(row, columnIndex++, "", cellStyle);
-            }
+//            if (!lesson.getLessonType().equals(LessonType.TEST)){
+//                final Optional<VideoSource> videoSourceOptional = videoSourceRepository.findByLessonId(lesson.getId());
+//                final VideoSource videoSource = videoSourceOptional.get();
+//                createCell(row, columnIndex++, videoSource.getName(), cellStyle);
+//                createCell(row, columnIndex++, videoSource.getFileSize() / 1024 / 1024 + "MB", cellStyle);
+//            } else {
+//                createCell(row, columnIndex++, "", cellStyle);
+//                createCell(row, columnIndex++, "", cellStyle);
+//            }
         }
     }
 
@@ -578,16 +626,15 @@ public class TeacherServiceImpl implements TeacherService {
             table.addCell(dateFormat.format(lesson.getCreatedDate()));
             table.addCell(lesson.getCourse().getGrade().toString());
             table.addCell(lesson.getLessonType().name());
-            if (!lesson.getLessonType().equals(LessonType.TEST)){
-                final Optional<VideoSource> videoSourceOptional = videoSourceRepository.findByLessonId(lesson.getId());
-                final VideoSource videoSource = videoSourceOptional.get();
-                table.addCell(videoSource.getName());
-                table.addCell(videoSource.getFileSize() / 1024 / 1024 + "MB");
-            } else {
-                table.addCell("");
-                table.addCell("");
-            }
-
+//            if (!lesson.getLessonType().equals(LessonType.TEST)){
+//                final Optional<VideoSource> videoSourceOptional = videoSourceRepository.findByLessonId(lesson.getId());
+//                final VideoSource videoSource = videoSourceOptional.get();
+//                table.addCell(videoSource.getName());
+//                table.addCell(videoSource.getFileSize() / 1024 / 1024 + "MB");
+//            } else {
+//                table.addCell("");
+//                table.addCell("");
+//            }
         }
     }
 

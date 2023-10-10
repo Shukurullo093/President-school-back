@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ControllerResponse {
     private String message;
     private int statusCode;
-    private String token;
+    private String object;
 
     public ControllerResponse(String message, int statusCode) {
         this.message = message;

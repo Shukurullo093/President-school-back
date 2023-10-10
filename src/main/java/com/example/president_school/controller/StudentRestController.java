@@ -48,12 +48,12 @@ public class StudentRestController {
         return null;
     }
 
-    @PostMapping("/send/{lessonId}/{taskOrder}")
-    public ResponseEntity<?> sendMsg(@PathVariable String lessonId, @PathVariable Integer taskOrder,
-                                     @RequestParam("messageTxt")String text, @RequestParam("messageImg") MultipartFile photo){
-        final Optional<Student> byPhone = studentRepository.findByPhone("+998901234568");
-        return ResponseEntity.ok(studentService.sendMsg(byPhone.get(), lessonId, taskOrder, text, photo));
-    }
+//    @PostMapping("/send/{lessonId}/{taskOrder}")
+//    public ResponseEntity<?> sendMsg(@PathVariable String lessonId, @PathVariable Integer taskOrder,
+//                                     @RequestParam("messageTxt")String text, @RequestParam("messageImg") MultipartFile photo){
+//        final Optional<Student> byPhone = studentRepository.findByPhone("+998901234568");
+//        return ResponseEntity.ok(studentService.sendMsg(byPhone.get(), lessonId, taskOrder, text, photo));
+//    }
 
     @AllArgsConstructor
     @NoArgsConstructor

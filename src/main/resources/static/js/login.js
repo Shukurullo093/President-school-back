@@ -16,7 +16,22 @@ function login(){
             if(data['statusCode'] === 200){
                 let token = data.token;
                 document.cookie = "Authorization=Bearer " + token;
-                document.location.href = data.message;
+                // $.ajax({
+                //     url: baseUrl + data.message,
+                //     type: 'GET',
+                //     headers: {'Authorization': 'Bearer ' + token},
+                //     enctype: 'application/json',
+                //     data: null,
+                //     processData: false,
+                //     contentType: false,
+                //     cache: false,
+                //     success: function (data) {
+                //
+                //     },
+                //     error: function (e) {
+                //         console.log(e);
+                //     }
+                // })
             }
             else {
                 $(".alert-danger").css('display', 'block');

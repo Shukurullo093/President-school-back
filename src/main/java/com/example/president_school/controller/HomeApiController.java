@@ -69,8 +69,8 @@ public class HomeApiController {
             PostDto postDto = new PostDto();
             postDto.setId(post.getId());
             postDto.setTitle(post.getTitle());
-            postDto.setType(post.getType());
-            postDto.setDate(post.getCreatedAt().toString().split(" ")[0]);
+//            postDto.setType(post.getType().equals("News") ? "Yangilik" : "Qonun");
+            postDto.setDate(post.getCreatedAt().toString());
             postDto.setDescription((post.getDescription().length() > 80) ? post.getDescription().substring(0, 80) + "..." : post.getDescription());
             postDto.setImagePath("/api/admin/rest/post/image/" + post.getHashId());
             postDtoList.add(postDto);
@@ -95,7 +95,7 @@ public class HomeApiController {
         postDto.setTitle(post.getTitle());
         postDto.setDescription(post.getDescription());
         postDto.setDate(post.getCreatedAt().toString().split(" ")[0]);
-        postDto.setType(post.getType());
+        postDto.setType(post.getType().equals("News") ? "Yangilik" : "Qonun");
         postDto.setImagePath("/api/admin/rest/post/image/" + post.getHashId());
 
         map.addAttribute("post", postDto);
@@ -107,10 +107,8 @@ public class HomeApiController {
             PostDto postDto1 = new PostDto();
             postDto1.setId(post1.getId());
             postDto1.setTitle(post1.getTitle());
-            postDto1.setType(post1.getType());
-            DateFormat monthFormat;
-            monthFormat = new SimpleDateFormat("MMM dd, yyyy");
-            postDto1.setDate(monthFormat.format(post1.getCreatedAt()));
+            postDto1.setType(post1.getType().equals("News") ? "Yangilik" : "Qonun");
+            postDto1.setDate(post1.getCreatedAt().toString());
             postDto1.setImagePath("/api/admin/rest/post/image/" + post1.getHashId());
             postDtoList.add(postDto1);
         }

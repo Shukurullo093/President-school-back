@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Edumin - Bootstrap Admin Dashboard </title>
+    <title>Admin About Lesson</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -181,7 +181,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="card">
-									<div class="text-center p-3 overlay-box" style="background-image: url('/images/big/img1.jpg');">
+									<div class="text-center p-3 overlay-box">
 										<div class="profile-photo">
 											<img th:src="@{${lessonOwner.imageHashId}}" width="100" class="img-fluid rounded-circle" alt="">
 										</div>
@@ -208,11 +208,20 @@
                                     <div class="custom-tab-1">
                                         <ul class="nav nav-tabs">
                                             <li class="nav-item"><a href="#about-me" data-toggle="tab" class="nav-link active show">Ma'lumot</a></li>
-                                            <li class="nav-item"><a href="#my-posts" data-toggle="tab" class="nav-link" th:text="${lessonInfo.type == 'VIDEO' ? 'Video' : 'Test'}">Manba</a></li>
+                                            <li class="nav-item"><a href="#lesson-task" data-toggle="tab" class="nav-link">Topshiriq</a></li>
+                                            <li class="nav-item"><a href="#lesson-test" data-toggle="tab" class="nav-link">Test</a></li>
                                         </ul>
                                         <div class="tab-content">
                                             <div id="about-me" class="tab-pane fade active show">
                                                 <div class="profile-personal-info pt-4">
+                                                    <div class="profile-lang py-1 border-bottom-1">
+                                                        <h4 class="text-primary mb-2" th:text="${'Dars mavzusi : ' + lessonInfo.title}"></h4>
+                                                    </div>
+                                                    <div class="profile-about-me">
+                                                        <div class="border-bottom-1 pb-1">
+                                                            <p th:text="${lessonInfo.description}"></p>
+                                                        </div>
+                                                    </div>
                                                     <h4 class="text-primary mb-4">Dars ma'lumotlari</h4>
                                                     <div class="row mb-4">
                                                         <div class="col-lg-3 col-md-4 col-sm-6 col-6">
@@ -253,21 +262,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-												<div class="profile-skills pt-2 border-bottom-1 pb-2">
-                                                    <h4 class="text-primary mb-2" th:text="${lessonInfo.type == 'VIDEO' ? 'Topshiriq fayli' : 'Test fayli'}"></h4>
-                                                    <a th:href="${lessonInfo.type == 'VIDEO' ? lessonInfo.taskLink + '#toolbar=1' : lessonInfo.testLink + '#toolbar=1'}" class="btn btn-outline-dark btn-rounded px-4 my-3 my-sm-0 mr-3 m-b-10">
-                                                        <i class="la la-download"></i> Yuklash</a>
-                                                </div>
-                                                <div class="profile-lang py-1 border-bottom-1">
-                                                    <h4 class="text-primary mb-2" th:text="${'Dars mavzusi : ' + lessonInfo.title}"></h4>
-                                                </div>
-												<div class="profile-about-me">
-                                                    <div class="border-bottom-1 pb-1">
-                                                        <p th:text="${lessonInfo.description}"></p>
-                                                    </div>
-                                                </div>
+<!--												<div class="profile-skills pt-2 border-bottom-1 pb-2">-->
+<!--                                                    <h4 class="text-primary mb-2" th:text="${lessonInfo.type == 'VIDEO' ? 'Topshiriq fayli' : 'Test fayli'}"></h4>-->
+<!--                                                    <a th:href="${lessonInfo.type == 'VIDEO' ? lessonInfo.taskLink + '#toolbar=1' : lessonInfo.testLink + '#toolbar=1'}" class="btn btn-outline-dark btn-rounded px-4 my-3 my-sm-0 mr-3 m-b-10">-->
+<!--                                                        <i class="la la-download"></i> Yuklash</a>-->
+<!--                                                </div>-->
                                             </div>
-											<div id="my-posts" class="tab-pane fade">
+											<div id="lesson-task" class="tab-pane fade">
                                                 <div class="my-post-content pt-3">
                                                     <style>
                                                         .video-container{
@@ -286,30 +287,44 @@
                                                             width: 100%;
                                                             object-fit: contain;
                                                             background-color: #000;
-                                                        }                        
+                                                        }
                                                     </style>
-                                                    <div class="video-container" th:if="${lessonInfo.type == 'VIDEO'}">
+                                                    <div class="video-container">
                                                         <div class="video">
-                                                           <video th:src="@{${lessonInfo.videoLink}}" controls poster="/images/thumb-1.png" id="video"></video>
+                                                           <video th:src="@{${lessonInfo.videoLink}}" controls controlsList="nodownload" poster="/images/thumb-1.png" id="video"></video>
                                                         </div>
                                                     </div>
-                                                    <div th:if="${lessonInfo.type == 'VIDEO'}" style="width: 100%; padding: 0">
-<!--                                                        -->
-                                                        <object th:data="${lessonInfo.type == 'VIDEO' ? lessonInfo.taskLink + '#toolbar=0' : lessonInfo.testLink + '#toolbar=0'}" type="application/pdf" width="100%" height="800px">
-                                                            <p class="font-weight-bold" style="font-size: 18px;">Faylni ochib bo'lmadi.
-                                                                <a th:href="${lessonInfo.type == 'VIDEO' ? lessonInfo.taskLink + '#toolbar=1' : lessonInfo.testLink + '#toolbar=1'}" class="text-primary">Boshqa sahifada ko'rish</a>
-                                                            </p>
-                                                        </object>
-                                                    </div>
-                                                    <div th:if="${lessonInfo.type == 'TEST'}" style="width: 100%; padding: 0">
-                                                        <span class="d-block" style="font-size: 18px;">Test javoblari:</span>
-                                                        <span class="mb-4 d-block" th:text="${lessonInfo.testAnswer}" style="letter-spacing: 2px; font-size: 16px; text-transform: lowercase"></span>
-                                                        <object th:data="${lessonInfo.testLink + '#toolbar=0&scrollbar=0'}" type="application/pdf" width="100%" height="800px">
-                                                            <p class="font-weight-bold" style="font-size: 18px;">Faylni ochib bo'lmadi(test).
-                                                                <a th:href="${lessonInfo.testLink + '#toolbar=0&scrollbar=0'}" class="text-primary">Boshqa sahifada ko'rish</a></p>
-                                                        </object>
-                                                    </div>
+                                                    <ul class="w-100">
+                                                        <li th:each="task : ${lessonInfo.taskDtoList}" class="text-justify border-top border-5">
+                                                            <strong class="text-primary" style="font-size: 18px!important;">Topshiriqning matni: </strong>
+                                                                <span th:text="'{#' + ${task.order} + '}  ' + ${task.taskBody}"></span><br><br>
+                                                            <img th:src="${task.taskImg}" class="w-100 img-fluid rounded"><br><br>
+                                                            <strong class="text-primary" style="font-size: 18px!important;">Topshiriqning javobi: </strong>
+                                                                <span th:text="${task.answer}"></span><br><br>
+                                                            <strong class="text-primary" style="font-size: 18px!important;">Topshiriqni yechish uchun ko'rsatma: </strong>
+                                                                <span th:text="${task.example}"></span><br><br>
+                                                            <img th:src="${task.exampleImg}" class="w-100 img-fluid rounded"><br><br>
+                                                        </li>
+                                                    </ul>
                                                 </div>
+                                            </div>
+                                            <div id="lesson-test" class="tab-pane fade">
+                                                <ul class="w-100">
+                                                    <li th:each="test : ${lessonInfo.testDtoList}" class="text-justify border-top border-5">
+                                                        <strong class="text-primary" style="font-size: 18px!important;">Test savoli: </strong>
+                                                            <span th:text="${test.question}"></span><br><br>
+                                                        <img th:src="${test.questionImgUrl}" class="w-100 img-fluid rounded"><br><br>
+                                                        <strong class="text-primary" style="font-size: 18px!important;">1-variant: </strong>
+                                                            <span th:text="${test.answer1}"></span><br><br>
+                                                        <img th:src="${test.answer1ImgUrl}" class="w-100 img-fluid rounded"><br><br>
+                                                        <strong class="text-primary" style="font-size: 18px!important;">2-variant: </strong>
+                                                        <span th:text="${test.answer2}"></span><br><br>
+                                                        <img th:src="${test.answer2ImgUrl}" class="w-100 img-fluid rounded"><br><br>
+                                                        <strong class="text-primary" style="font-size: 18px!important;">3-variant: </strong>
+                                                        <span th:text="${test.answer3}"></span><br><br>
+                                                        <img th:src="${test.answer3ImgUrl}" class="w-100 img-fluid rounded"><br><br>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -329,11 +344,11 @@
         <!--**********************************
             Footer start
         ***********************************-->
-        <div class="footer">
-            <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
-            </div>
-        </div>
+<!--        <div class="footer">-->
+<!--            <div class="copyright">-->
+<!--                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>-->
+<!--            </div>-->
+<!--        </div>-->
         <!--**********************************
             Footer end
         ***********************************-->

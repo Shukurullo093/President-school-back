@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 //import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -23,8 +23,8 @@ import java.util.Date;
 public class DataLoader implements ApplicationRunner {
     private final EmployeeRepository employeeRepository;
     private final LessonRepository lessonRepository;
-    @Autowired
-    PasswordEncoder passwordEncoder;
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
 
 
     @Value(value = "${spring.sql.init.mode}")
@@ -35,8 +35,9 @@ public class DataLoader implements ApplicationRunner {
         if (initMode.equals("always")){
             if (!employeeRepository.existsByRole(Role.ADMIN)){
                 employeeRepository.save(new Employee(
-                        "admin@gmail.com", "+998901234567", passwordEncoder.encode("1111"), Role.ADMIN, new Date()
+                        "admin@gmail.com", "+998901234567", "1111", Role.ADMIN, new Date()
                 ));
+//                employeeRepository.save(new Employee("john", "doe", "johndoe@teacher.com", new Date(), "male", "+998930024547", "1111", new Date(), ));
             }
             if (!lessonRepository.existsByLessonType(LessonType.IQ)){
                 lessonRepository.save(new Lesson("IQ test", "description for iq", LessonType.IQ));

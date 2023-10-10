@@ -27,7 +27,7 @@ public class StudentServiceImpl implements StudentService {
     private final CourseRepository courseRepository;
     private final AccessCourseRepository accessCourseRepository;
     private final LessonRepository lessonRepository;
-    private final ChatRepository chatRepository;
+//    private final ChatRepository chatRepository;
 
     @Value("${upload.folder}")
     private String uploadFolder;
@@ -99,44 +99,44 @@ public class StudentServiceImpl implements StudentService {
 
     }
 
-    @Override
-    public ControllerResponse sendMsg(Student student, String lessonId, Integer taskOrder, String text, MultipartFile image) {
-        Chat chat = new Chat();
-        chat.setStudent(student);
-        chat.setMessage(text);
-        chat.setMessageOwner(Role.STUDENT);
-        final Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(lessonId));
-        chat.setLesson(lessonOptional.get());
-        chat.setTaskOrder(taskOrder);
-        if (!image.isEmpty()){
-            File uploadFolder = new File(String.format("%s/CHAT/",
-                    this.uploadFolder));
-            if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
-                System.out.println("Created folders. for chat images");
-            }
-
-            chat.setContentType(image.getContentType());
-            chat.setName(image.getOriginalFilename());
-            chat.setExtension(getExtension(image.getOriginalFilename()));
-            chat.setFileSize(image.getSize());
-            chat.setHashId(UUID.randomUUID().toString().substring(0, 10));
-            chat.setUploadPath(String.format("CHAT/%s.%s",
-                    chat.getHashId(),
-                    chat.getExtension()));
-
-            uploadFolder = uploadFolder.getAbsoluteFile();
-            File file = new File(uploadFolder, String.format("%s.%s",
-                    chat.getHashId(),
-                    chat.getExtension()));
-            try {
-                image.transferTo(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        chatRepository.save(chat);
-        return new ControllerResponse("Xabar jo'natildi", 200);
-    }
+//    @Override
+//    public ControllerResponse sendMsg(Student student, String lessonId, Integer taskOrder, String text, MultipartFile image) {
+//        Chat chat = new Chat();
+//        chat.setStudent(student);
+//        chat.setMessage(text);
+//        chat.setMessageOwner(Role.STUDENT);
+//        final Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(lessonId));
+//        chat.setLesson(lessonOptional.get());
+//        chat.setTaskOrder(taskOrder);
+//        if (!image.isEmpty()){
+//            File uploadFolder = new File(String.format("%s/CHAT/",
+//                    this.uploadFolder));
+//            if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+//                System.out.println("Created folders. for chat images");
+//            }
+//
+//            chat.setContentType(image.getContentType());
+//            chat.setName(image.getOriginalFilename());
+//            chat.setExtension(getExtension(image.getOriginalFilename()));
+//            chat.setFileSize(image.getSize());
+//            chat.setHashId(UUID.randomUUID().toString().substring(0, 10));
+//            chat.setUploadPath(String.format("CHAT/%s.%s",
+//                    chat.getHashId(),
+//                    chat.getExtension()));
+//
+//            uploadFolder = uploadFolder.getAbsoluteFile();
+//            File file = new File(uploadFolder, String.format("%s.%s",
+//                    chat.getHashId(),
+//                    chat.getExtension()));
+//            try {
+//                image.transferTo(file);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        chatRepository.save(chat);
+//        return new ControllerResponse("Xabar jo'natildi", 200);
+//    }
 
     private String getExtension(String fileName) {
         String ext = null;

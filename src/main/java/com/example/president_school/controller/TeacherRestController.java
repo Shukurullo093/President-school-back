@@ -1,9 +1,11 @@
 package com.example.president_school.controller;
 
+import com.example.president_school.entity.Lesson;
+import com.example.president_school.entity.Task;
 import com.example.president_school.entity.TaskSource;
 import com.example.president_school.entity.TestImageSource;
-import com.example.president_school.entity.VideoSource;
 import com.example.president_school.payload.ControllerResponse;
+import com.example.president_school.repository.TaskSourceRepository;
 import com.example.president_school.repository.TestImgSourceRepository;
 import com.example.president_school.service.TeacherService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/teacher/rest")
@@ -25,19 +28,37 @@ import java.net.URLEncoder;
 public class TeacherRestController {
     private final TeacherService teacherService;
     private final TestImgSourceRepository testImgSourceRepository;
+    private final TaskSourceRepository taskSourceRepository;
 
 
     @Value("${upload.folder}")
     private String uploadFolder;
 
     @PostMapping("/add/lesson")
-    public ResponseEntity<ControllerResponse> addLesson(@RequestParam("title")String title,
+    public ResponseEntity<ControllerResponse> addLesson(@RequestParam("lessonCount")Integer order,
+                                                        @RequestParam("title")String title,
                                                         @RequestParam("description")String description,
                                                         @RequestParam("lessonType")String type,
                                                         @RequestParam("class")String grade,
-                                                        @RequestParam("source")MultipartFile source,
-                                                        @RequestParam("task")MultipartFile task){
-        return ResponseEntity.ok(teacherService.addLesson(title, description, type, Integer.valueOf(grade), source, task));
+                                                        @RequestParam("source")MultipartFile video){
+        return ResponseEntity.ok(teacherService.addLesson(order, title, description, type, Integer.valueOf(grade), video));
+    }
+
+    @GetMapping("/view-task-img/{hashId}")
+    public ResponseEntity<?> viewTaskImage(@PathVariable String hashId) throws IOException {
+        TaskSource image = taskSourceRepository.findByHashId(hashId).get();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + URLEncoder.encode(image.getName()))
+                .contentType(MediaType.parseMediaType(image.getContentType()))
+                .contentLength(image.getFileSize())
+                .body(new FileUrlResource(String.format("%s/%s", uploadFolder, image.getUploadPath())));
+    }
+
+    @PostMapping("/add/{lessonId}/task")
+    public ResponseEntity<ControllerResponse> addTask(@PathVariable UUID lessonId, @RequestParam("task-description")String taskBody,
+                                                      @RequestParam("task-img-source")MultipartFile taskImg, @RequestParam("task-answer")String answer,
+                                                      @RequestParam("task-example-description")String exampleBody, @RequestParam("task-example-img-source")MultipartFile exampleImg){
+        return ResponseEntity.ok(teacherService.addTask(lessonId, taskBody, taskImg, answer, exampleBody, exampleImg));
     }
 
     @PostMapping("/add/test/{lessonId}")
@@ -69,7 +90,7 @@ public class TeacherRestController {
         return ResponseEntity.ok(teacherService.editTest(lessonId, testId, question, questionImg, ans1, ans1Img, ans2, ans2Img, ans3, ans3Img));
     }
 
-    @GetMapping("/viewImage/{hashId}")
+    @GetMapping("/view-test-image/{hashId}")
     public ResponseEntity<?> viewImage(@PathVariable String hashId) throws IOException {
         TestImageSource image = testImgSourceRepository.findByHashId(hashId).get();
         return ResponseEntity.ok()
@@ -91,12 +112,22 @@ public class TeacherRestController {
 
     @GetMapping("/viewVideo/{hashId}")
     public ResponseEntity<?> viewVideo(@PathVariable String hashId) throws IOException {
-        VideoSource video = teacherService.getVideo(hashId);
+        final Lesson lesson = teacherService.getLessonByHashId(hashId);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + URLEncoder.encode(video.getName()))
-                .contentType(MediaType.parseMediaType(video.getContentType()))
-                .contentLength(video.getFileSize())
-                .body(new FileUrlResource(String.format("%s/%s", uploadFolder, video.getUploadPath())));
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + URLEncoder.encode(lesson.getName()))
+                .contentType(MediaType.parseMediaType(lesson.getContentType()))
+                .contentLength(lesson.getFileSize())
+                .body(new FileUrlResource(String.format("%s/%s", uploadFolder, lesson.getUploadPath())));
+    }
+
+    @GetMapping("/view-task-image/{hashId}")
+    public ResponseEntity<?> viewTaskImg(@PathVariable String hashId) throws IOException {
+        final TaskSource taskSource = teacherService.viewTaskImg(hashId);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + URLEncoder.encode(taskSource.getName()))
+                .contentType(MediaType.parseMediaType(taskSource.getContentType()))
+                .contentLength(taskSource.getFileSize())
+                .body(new FileUrlResource(String.format("%s/%s", uploadFolder, taskSource.getUploadPath())));
     }
 
     @GetMapping("/task/{hashId}")

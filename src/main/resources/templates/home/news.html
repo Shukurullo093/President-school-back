@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://.thymeleaf.org">
 
 <head>
   <meta charset="utf-8">
@@ -63,7 +63,7 @@
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
     </div>
-  </header><!-- End Header -->
+  </header>
   <!-- End Header -->
 
   <main id="main">
@@ -86,7 +86,7 @@
       <nav>
         <div class="container">
           <ol>
-            <li><a th:href="@{/api/home}">Uy</a></li>
+            <li><a th:href="@{/api/home} + '#portfolio'">Uy</a></li>
             <li>Yangiliklar</li>
           </ol>
         </div>
@@ -117,7 +117,7 @@
               </div>
               <!-- End meta top -->
 
-              <div class="content" th:utext="${post.description}">
+              <div class="content" th:utext="'&emsp;&emsp;' + ${post.description}">
               </div><!-- End post content -->
 
             </article><!-- End blog post -->

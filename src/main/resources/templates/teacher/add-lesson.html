@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Bootstrap Admin Dashboard </title>
+    <title>Teacher Add Lesson</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -153,21 +153,22 @@
 							<div class="card-header">
 								<h4 class="card-title">Dars ma'lumotlari</h4>
 							</div>
-                            <div class="alert alert-success alert-dismissible fade show mx-2" role="alert">
-                                <span class="text-dark"></span>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <style>
-                                .alert-success,
-                                .alert-danger{
-                                    display: none;
-                                }
-                            </style>
+
 							<div class="card-body">
 								<form id="form" method="post">
 									<div class="row">
+                                        <div class="alert col-11 alert-success alert-dismissible fade show mx-2" role="alert">
+                                            <span class="text-dark"></span>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <style>
+                                            .alert-success,
+                                            .alert-danger{
+                                                display: none;
+                                            }
+                                        </style>
                                         <div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="form-label">No.</label>
@@ -205,16 +206,10 @@
 												<textarea name="description" class="form-control" rows="5"></textarea>
 											</div>
 										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12" id="v1">
+										<div class="col-lg-12 col-md-12 col-sm-12" id="v1">
 											<div class="form-group">
 												<label class="form-label">Dars videosi:</label>
 												<input type="file" name="source" accept="video/*" class="form-control">
-											</div>
-										</div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12" id="t1">
-											<div class="form-group">
-												<label class="form-label">Topshiriq(Faqat pdf fayl):</label>
-												<input type="file" name="task" accept="application/pdf" class="form-control">
 											</div>
 										</div>
                                         <div class="col-lg-11 col-md-11 col-sm-11 alert alert-danger alert-dismissible fade show mx-2" role="alert">
@@ -224,12 +219,182 @@
                                             </button>
                                         </div>
 										<div class="col-lg-12 col-md-12 col-sm-12">
-											<button type="button" onclick="createLesson()" class="btn btn-primary">Saqlash</button>
+											<button type="button" id="lessonBtn" class="btn btn-primary">Saqlash</button>
 											<button type="reset" class="btn btn-light">Bekor qilish</button>
 										</div>
 									</div>
 								</form>
 							</div>
+<!--                            lesson task     -->
+                            <div class="card-header border-top">
+                                <h4 class="card-title">Dars topshiriqlari</h4>
+                            </div>
+
+                            <div class="card-body">
+                                <form id="task-form" method="post">
+                                    <div class="row">
+                                        <div class="alert col-11 alert-success alert-dismissible fade show mx-2" role="alert">
+                                            <span class="text-dark"></span>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <style>
+                                            .alert-success,
+                                            .alert-danger{
+                                                display: none;
+                                            }
+                                        </style>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Topshiriq matni:</label>
+                                                <textarea name="task-description" class="form-control" rows="5" disabled></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Topshiriq rasmi:</label>
+                                                <input type="file" name="task-img-source" accept="image/*" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Topshiriq javobi:</label>
+                                                <input type="text" name="task-answer" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Topshiriqni yechish uchun ko'rsatma:</label>
+                                                <textarea name="task-example-description" class="form-control" rows="5" disabled></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Topshiriqni yechish uchun ko'rsatma rasmi:</label>
+                                                <input type="file" name="task-example-img-source" accept="image/*" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-11 col-md-11 col-sm-11 alert alert-danger alert-dismissible fade show mx-2" role="alert">
+                                            <span class="text-dark" id="task-error-alert"></span>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <button type="button" id="taskBtn" class="btn btn-primary" disabled>Saqlash</button>
+                                            <button type="reset" class="btn btn-light">Bekor qilish</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="col-lg-12 col-md-12 col-sm-12 mt-5" style="width: 100%; overflow-x: scroll;">
+                                    <table id="task-table" class="table table-bordered table-striped rounded">
+                                        <thead>
+                                        <tr class="text-capitalize text-center">
+                                            <th>No.</th>
+                                            <th>Topshiriq</th>
+                                            <th>Javob</th>
+                                            <th>Ko'rsatma</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+<!--                            lesson tests    -->
+                            <div class="card-header border-top">
+                                <h4 class="card-title">Dars uchun test</h4>
+                            </div>
+
+                            <div class="card-body">
+                                <form id="test-form" method="post">
+                                    <div class="row">
+                                        <div class="alert col-12 alert-success alert-dismissible fade show mx-2" role="alert">
+                                            <span class="text-dark"></span>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <style>
+                                            .alert-success,
+                                            .alert-danger{
+                                                display: none;
+                                            }
+                                        </style>
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <label class="form-label">Test savoli</label>
+                                            <textarea name="questionTxt" class="form-control questionTxt" style="resize: none;" rows="5" disabled></textarea>
+                                            <input type="file" name="questionImg" class="form-control mt-2" accept="image/*" disabled>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <label class="form-label">Variant(#1)[To'g'ri javob]</label>
+                                            <textarea name="v1" class="form-control v1" style="resize: none;" rows="5" disabled></textarea>
+                                            <input type="file" name="v1img" class="form-control mt-2" accept="image/*" disabled>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <label class="form-label">Variant(#2)</label>
+                                            <textarea name="v2" class="form-control v2" style="resize: none;" rows="5" disabled></textarea>
+                                            <input type="file" name="v2img" class="form-control mt-2" accept="image/*" disabled>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <label class="form-label">Variant(#3)</label>
+                                            <textarea name="v3" class="form-control v3" style="resize: none;" rows="5" disabled></textarea>
+                                            <input type="file" name="v3img" class="form-control mt-2" accept="image/*" disabled>
+                                        </div>
+                                        <div class="col-lg-11 col-md-11 col-sm-11 alert alert-danger alert-dismissible fade show mx-2" role="alert">
+                                            <span class="text-dark" id="test-error-alert"></span>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
+                                            <button type="button" id="testBtn" class="btn btn-primary" disabled>Saqlash</button>
+                                            <button type="reset" class="btn btn-light">Bekor qilish</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="col-lg-12 col-md-12 col-sm-12 mt-5" style="width: 100%; overflow-x: scroll;">
+                                    <table id="table" class="table table-bordered table-striped rounded">
+                                        <thead>
+                                        <tr class="text-capitalize text-center">
+                                            <th>No.</th>
+                                            <th></th>
+                                            <th>Savol</th>
+                                            <th>Variant(#1)*</th>
+                                            <th>Variant(#2)</th>
+                                            <th>Variant(#3)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each = "test : ${testList}" class="text-center" style="word-break: break-word">
+                                            <td th:text="${test.order}" style="width: 4%;"></td>
+                                            <td style="width: 4%; font-size: 18px; font-weight: 600;">
+                                                <i th:data-id="${test.id}" class="la la-edit bg-primary btn text-light py-1 px-2 rounded"></i>
+                                                <i th:data-id="${test.id}" onclick="deleteTest(this)" class="la la-trash bg-danger btn text-light py-1 px-2 rounded mt-2"></i>
+                                            </td>
+                                            <td style="width: 23%;">
+                                                <img th:if="${test.questionImgUrl != null}" th:src="${test.questionImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
+                                                <span th:text="${test.question}"></span>
+                                            </td>
+                                            <td style="width: 23%;">
+                                                <img th:if="${test.answer1ImgUrl != null}" th:src="${test.answer1ImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
+                                                <span th:text="${test.answer1}"></span>
+                                            </td>
+                                            <td style="width: 23%;">
+                                                <img th:if="${test.answer2ImgUrl != null}" th:src="${test.answer2ImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
+                                                <span th:text="${test.answer2}"></span>
+                                            </td>
+                                            <td style="width: 23%;">
+                                                <img th:if="${test.answer3ImgUrl != null}" th:src="${test.answer3ImgUrl}" style="height: 200px;" onclick="scaleImg(this)"><br>
+                                                <span th:text="${test.answer3}"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 						</div>
 					</div>
 				</div>
@@ -244,11 +409,11 @@
         <!--**********************************
             Footer start
         ***********************************-->
-        <div class="footer">
-            <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
-            </div>
-        </div>
+<!--        <div class="footer">-->
+<!--            <div class="copyright">-->
+<!--                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>-->
+<!--            </div>-->
+<!--        </div>-->
         <!--**********************************
             Footer end
         ***********************************-->

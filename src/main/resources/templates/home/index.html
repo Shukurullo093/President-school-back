@@ -223,46 +223,44 @@
     </div>
 
     <div class="icon-boxes position-relative">
-      <div class="container position-relative">
-        <div class="row gy-4 mt-5">
+        <div class="container position-relative">
+          <div class="row gy-4 mt-5">
 
-          <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="icon-box">
-              <div class="icon"><i class="bi bi-easel"></i></div>
-              <h4 class="title"><a href="javascript:void(0);" class="stretched-link">Matematika</a></h4>
+            <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+              <div class="icon-box">
+                <div class="icon"><i class="bi bi-easel"></i></div>
+                <h4 class="title"><a href="javascript:void(0);" class="stretched-link">Matematika</a></h4>
+              </div>
             </div>
-          </div>
-          <!--End Icon Box -->
+            <!--End Icon Box -->
 
-          <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="icon-box">
-              <div class="icon"><i class="bi bi-gem"></i></div>
-              <h4 class="title"><a href="javascript:void(0);" class="stretched-link">Ingliz tili</a></h4>
+            <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+              <div class="icon-box">
+                <div class="icon"><i class="bi bi-gem"></i></div>
+                <h4 class="title"><a href="javascript:void(0);" class="stretched-link">Ingliz tili</a></h4>
+              </div>
             </div>
-          </div>
-          <!--End Icon Box -->
+            <!--End Icon Box -->
 
-          <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="icon-box">
-              <div class="icon"><i class="bi bi-geo-alt"></i></div>
-              <h4 class="title"><a href="javascript:void(0);" class="stretched-link">Tanqidiy fikrlash</a></h4>
+            <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+              <div class="icon-box">
+                <div class="icon"><i class="bi bi-geo-alt"></i></div>
+                <h4 class="title"><a href="javascript:void(0);" class="stretched-link">Tanqidiy fikrlash</a></h4>
+              </div>
             </div>
-          </div>
-          <!--End Icon Box -->
+            <!--End Icon Box -->
 
-          <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="500">
-            <div class="icon-box">
-              <div class="icon"><i class="bi bi-command"></i></div>
-              <h4 class="title"><a href="javascript:void(0);" class="stretched-link">Muammoni yechish</a></h4>
+            <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="500">
+              <div class="icon-box">
+                <div class="icon"><i class="bi bi-command"></i></div>
+                <h4 class="title"><a href="javascript:void(0);" class="stretched-link">Muammoni yechish</a></h4>
+              </div>
             </div>
-          </div>
-          <!--End Icon Box -->
+            <!--End Icon Box -->
 
+          </div>
         </div>
       </div>
-    </div>
-
-    </div>
   </section>
   <!-- End Hero Section -->
 
@@ -365,7 +363,7 @@
     <!-- End Stats Counter Section -->
 
     <!-- ======= News Section ======= -->
-    <section id="portfolio" class="portfolio">
+    <section th:if="${postList.size() != 0}" id="portfolio" class="portfolio">
       <div class="container" data-aos="fade-up">
 
         <div class="section-header">
@@ -387,8 +385,8 @@
                 </a>
                 <div class="portfolio-info">
                   <a th:href="'/api/home/news/' + ${post.id}">
-                    <h4 title="More Details" th:text="${post.title}"></h4>
-                    <p th:text="${post.description}"></p>
+                    <h4 title="More Details" th:text="'&emsp;&emsp;' + ${post.title}"></h4>
+<!--                    <div th:utext="${post.description}"></div>-->
                   </a>
                 </div>
               </div>
@@ -404,7 +402,7 @@
     <!-- End News Section -->
 
     <!-- ======= Our Team Section ======= -->
-    <section id="team" class="team sections-bg">
+    <section th:if="${employeeList.size() != 0}" id="team" class="team sections-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-header">
@@ -417,7 +415,7 @@
           <div class="col-xl-3 col-md-6 d-flex mb-2" th:each="employee : ${employeeList}" data-aos="fade-up" data-aos-delay="100">
             <div class="member w-100">
               <img th:src="${employee.imageHashId}" class="img-fluid w-100">
-              <h4 th:text="${employee.fullName}"></h4>
+              <h4 th:text="${employee.fullName}" class="text-capitalize"></h4>
               <span th:text="${employee.role}"></span>
               <span th:text="${employee.science}"></span>
               <div class="social">
@@ -427,50 +425,8 @@
                 <a href="javascript:void(0);"><i class="bi bi-linkedin"></i></a>
               </div>
             </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
-            <div class="member">
-              <img src="/assets/img/team/team-2.jpg" class="img-fluid" alt="">
-              <h4>Sarah Jhinson</h4>
-              <span>Marketing</span>
-              <div class="social">
-                <a href=""><i class="bi bi-twitter"></i></a>
-                <a href=""><i class="bi bi-facebook"></i></a>
-                <a href=""><i class="bi bi-instagram"></i></a>
-                <a href=""><i class="bi bi-linkedin"></i></a>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
-            <div class="member">
-              <img src="/assets/img/team/team-3.jpg" class="img-fluid" alt="">
-              <h4>William Anderson</h4>
-              <span>Content</span>
-              <div class="social">
-                <a href=""><i class="bi bi-twitter"></i></a>
-                <a href=""><i class="bi bi-facebook"></i></a>
-                <a href=""><i class="bi bi-instagram"></i></a>
-                <a href=""><i class="bi bi-linkedin"></i></a>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
-            <div class="member">
-              <img src="/assets/img/team/team-4.jpg" class="img-fluid" alt="">
-              <h4>Amanda Jepson</h4>
-              <span>Accountant</span>
-              <div class="social">
-                <a href=""><i class="bi bi-twitter"></i></a>
-                <a href=""><i class="bi bi-facebook"></i></a>
-                <a href=""><i class="bi bi-instagram"></i></a>
-                <a href=""><i class="bi bi-linkedin"></i></a>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
+          </div>
+          <!-- End Team Member -->
         </div>
 
       </div>

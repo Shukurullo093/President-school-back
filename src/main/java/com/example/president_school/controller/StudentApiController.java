@@ -25,11 +25,11 @@ public class StudentApiController {
     private final LessonRepository lessonRepository;
     private final AccessCourseRepository accessCourseRepository;
     private final AccessLessonRepository accessLessonRepository;
-    private final VideoSourceRepository videoSourceRepository;
+//    private final VideoSourceRepository videoSourceRepository;
     private final TaskSourceRepository taskSourceRepository;
     private final TestRepository testRepository;
     private final StudentTestRepository studentTestRepository;
-    private final ChatRepository chatRepository;
+//    private final ChatRepository chatRepository;
 
     @GetMapping("/register")
     public String register(){
@@ -172,10 +172,10 @@ public class StudentApiController {
             if (b || lesson.getLessonType().equals(LessonType.DEMO)){
                 LessonDto lessonDto =new LessonDto();
                 lessonDto.setId(lesson.getId());
-                lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + videoSourceRepository.findByLessonId(lesson.getId()).get().getHashId());
+//                lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + videoSourceRepository.findByLessonId(lesson.getId()).get().getHashId());
                 lessonDto.setTitle(lesson.getTitle());
                 lessonDto.setDescription(lesson.getDescription());
-                lessonDto.setTaskLink("/api/admin/rest/pdf/" + taskSourceRepository.findByLessonId(lesson.getId()).get().getHashId());
+//                lessonDto.setTaskLink("/api/admin/rest/pdf/" + taskSourceRepository.findByLessonId(lesson.getId()).get().getHashId());
                 if (lesson.getLessonType().equals(LessonType.DEMO) && !b){
                     lessonDto.setChat(false);
                 } else { lessonDto.setChat(true); }
@@ -186,44 +186,44 @@ public class StudentApiController {
             }
         }
 //        ******************************************
-        final List<Chat> chatList = chatRepository
-                .findByStudentIdAndLessonIdAndTaskOrderOrderByCreatedAtAsc(1L, UUID.fromString(lessonId), 1);
-        List<ChatDto> chatDtoList = new ArrayList<>();
-        if (chatList.size() > 0){
-            chatDtoList.add(new ChatDto("date", generalService.getDateFormat(chatList.get(0).getCreatedAt(), "dd MMM, yyy"), generalService.getDateFormat(chatList.get(0).getCreatedAt(), "dd_MMM_yyy")));
-            String scrollId = null;
-            for(int i = 0; i < chatList.size(); i++){
-                if (i == 0){
-                    scrollId = generalService.getDateFormat(chatList.get(0).getCreatedAt(), "dd_MMM_yyy");
-                }
-                if (i > 0 && generalService.after(chatList.get(i-1).getCreatedAt(), chatList.get(i).getCreatedAt())){
-                    chatDtoList.add(new ChatDto("date",
-                            generalService.getDateFormat(chatList.get(i).getCreatedAt(), "dd MMM, yyy"),
-                            generalService.getDateFormat(chatList.get(i).getCreatedAt(), "dd_MMM_yyy")));
-                    scrollId = generalService.getDateFormat(chatList.get(i).getCreatedAt(), "dd_MMM_yyy");
-                }
-                if (i > 0 && !generalService.after(chatList.get(i-1).getCreatedAt(), chatList.get(i).getCreatedAt())){
-                    scrollId = generalService.getDateFormat(chatList.get(i-1).getCreatedAt(), "dd_MMM_yyy");
-                }
-                ChatDto chatDto = new ChatDto();
-                chatDto.setId(Long.valueOf(chatList.get(i).getId()));
-                String whoMsg = null;
-                switch (chatList.get(i).getMessageOwner()){
-                    case STUDENT -> whoMsg = "my-message";
-                    case ASSISTANT -> whoMsg = "other-message";
-                }
-                chatDto.setMessageOwnerRole(whoMsg);
-                chatDto.setMessage(chatList.get(i).getMessage());
-                final String s = chatList.get(i).getHashId() == null ? null : "/api/assistant/rest/message/image/" + chatList.get(i).getHashId();
-                chatDto.setMessageImagePath(s);
-                chatDto.setDate(generalService.getDateFormat(chatList.get(i).getCreatedAt(), "HH:mm"));
-                chatDto.setScrollId(scrollId);
-                chatDtoList.add(chatDto);
-            }
-            Collections.reverse(chatDtoList);
-        }
+//        final List<Chat> chatList = chatRepository
+//                .findByStudentIdAndLessonIdAndTaskOrderOrderByCreatedAtAsc(1L, UUID.fromString(lessonId), 1);
+//        List<ChatDto> chatDtoList = new ArrayList<>();
+//        if (chatList.size() > 0){
+//            chatDtoList.add(new ChatDto("date", generalService.getDateFormat(chatList.get(0).getCreatedAt(), "dd MMM, yyy"), generalService.getDateFormat(chatList.get(0).getCreatedAt(), "dd_MMM_yyy")));
+//            String scrollId = null;
+//            for(int i = 0; i < chatList.size(); i++){
+//                if (i == 0){
+//                    scrollId = generalService.getDateFormat(chatList.get(0).getCreatedAt(), "dd_MMM_yyy");
+//                }
+//                if (i > 0 && generalService.after(chatList.get(i-1).getCreatedAt(), chatList.get(i).getCreatedAt())){
+//                    chatDtoList.add(new ChatDto("date",
+//                            generalService.getDateFormat(chatList.get(i).getCreatedAt(), "dd MMM, yyy"),
+//                            generalService.getDateFormat(chatList.get(i).getCreatedAt(), "dd_MMM_yyy")));
+//                    scrollId = generalService.getDateFormat(chatList.get(i).getCreatedAt(), "dd_MMM_yyy");
+//                }
+//                if (i > 0 && !generalService.after(chatList.get(i-1).getCreatedAt(), chatList.get(i).getCreatedAt())){
+//                    scrollId = generalService.getDateFormat(chatList.get(i-1).getCreatedAt(), "dd_MMM_yyy");
+//                }
+//                ChatDto chatDto = new ChatDto();
+//                chatDto.setId(Long.valueOf(chatList.get(i).getId()));
+//                String whoMsg = null;
+//                switch (chatList.get(i).getMessageOwner()){
+//                    case STUDENT -> whoMsg = "my-message";
+//                    case ASSISTANT -> whoMsg = "other-message";
+//                }
+//                chatDto.setMessageOwnerRole(whoMsg);
+//                chatDto.setMessage(chatList.get(i).getMessage());
+//                final String s = chatList.get(i).getHashId() == null ? null : "/api/assistant/rest/message/image/" + chatList.get(i).getHashId();
+//                chatDto.setMessageImagePath(s);
+//                chatDto.setDate(generalService.getDateFormat(chatList.get(i).getCreatedAt(), "HH:mm"));
+//                chatDto.setScrollId(scrollId);
+//                chatDtoList.add(chatDto);
+//            }
+//            Collections.reverse(chatDtoList);
+//        }
 
-        map.addAttribute("historyList", chatDtoList);
+//        map.addAttribute("historyList", chatDtoList);
 
         return "student/watch-video";
     }

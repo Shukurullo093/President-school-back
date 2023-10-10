@@ -12,23 +12,20 @@ import java.util.Date;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbsFileInfoEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     private String name;
 
     private String extension;
 
     private Long fileSize;
 
+    @Column(unique = true)
     private String hashId;
 
     private String contentType;
 
     private String uploadPath;
 
-    @Column(nullable = false, updatable = false)
-    @CreationTimestamp
-    private Date createdAt;
+//    @Column(nullable = false, updatable = false)
+//    @CreationTimestamp
+//    private Date createdAt;
 }

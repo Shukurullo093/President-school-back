@@ -1,6 +1,7 @@
 package com.example.president_school.entity;
 
 import com.example.president_school.entity.enums.LessonType;
+import com.example.president_school.entity.templates.AbsFileInfoEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,12 +18,14 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "lesson")
-public class Lesson {
+public class Lesson extends AbsFileInfoEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @Type(type = "org.hibernate.type.PostgresUUIDType")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
+
+    private Integer orderNumber;
 
     private String title;
 
@@ -36,7 +39,7 @@ public class Lesson {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false)
     @CreationTimestamp
     private Date createdDate;
 

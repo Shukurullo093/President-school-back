@@ -1157,7 +1157,8 @@ section {
 .portfolio .portfolio-wrap .portfolio-info h4 {
   font-size: 18px;
   font-weight: 600;
-  padding-right: 50px;
+  text-align: justify;
+  /*padding-right: 50px;*/
 }
 
 .portfolio .portfolio-wrap .portfolio-info a h4 {

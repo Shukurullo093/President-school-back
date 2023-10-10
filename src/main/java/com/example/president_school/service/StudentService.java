@@ -16,5 +16,5 @@ public interface StudentService {
 
     void exportTestResultToPdf(HttpServletResponse response);
 
-    ControllerResponse sendMsg(Student student, String lessonId, Integer taskOrder, String text, MultipartFile photo);
+//    ControllerResponse sendMsg(Student student, String lessonId, Integer taskOrder, String text, MultipartFile photo);
 }

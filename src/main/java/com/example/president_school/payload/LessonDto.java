@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -23,8 +24,8 @@ public class LessonDto {
     private String testAnswer;
 
     private String videoLink;
-    private String taskLink;
-    private String testLink;
+    private List<TaskDto> taskDtoList;
+    private List<TestDto> testDtoList;
     private String lessonInfoLink;
 
     private String access;

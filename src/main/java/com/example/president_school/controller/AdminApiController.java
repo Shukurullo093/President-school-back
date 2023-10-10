@@ -6,7 +6,9 @@ import com.example.president_school.entity.enums.Role;
 import com.example.president_school.entity.enums.Science;
 import com.example.president_school.payload.*;
 import com.example.president_school.repository.*;
+//import com.example.president_school.security.JwtProvider;
 import com.example.president_school.service.GeneralService;
+//import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,12 +34,12 @@ public class AdminApiController {
     private final LessonRepository lessonRepository;
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
-    private final VideoSourceRepository videoSourceRepository;
     private final TaskSourceRepository taskSourceRepository;
     private final GeneralService generalService;
     private final PostRepository postRepository;
     private final HomeMessageRepository homeMessageRepository;
     private final TestRepository testRepository;
+    private final TaskRepository taskRepository;
 
     @Value("${default.person.image.path}")
     private String defaultPersonImgPath;
@@ -44,51 +47,57 @@ public class AdminApiController {
 
     @GetMapping("/dashboard")
     public String getDashboard(Model map){
+//        try {
+//            System.out.println(token);
 //        System.out.println(path);
 //        path = path.replace("%20", " ");
 //        final int target = path.indexOf("target");
 //        System.out.println(path.substring(0, target));
-
-        Optional<Employee> employeeOptional1 = employeeRepository.findByPhone("+998901234567");
-        Employee employee12 = employeeOptional1.get();
-        if (employee12.getImage() != null){
-            map.addAttribute("img", employeeOptional1.get().getImage().getHashId());
-        }
-        else {
-            map.addAttribute("img", null);
-        }
-//        ********************************************
-        final List<HomeMessage> messageList = homeMessageRepository.findByMessageStatus(true);
-        List<MessageDto> messageDtoList = new ArrayList<>();
-        messageList.forEach(homeMessage -> {
-            MessageDto messageDto = new MessageDto();
-            messageDto.setId(homeMessage.getId());
-            messageDto.setFullName(homeMessage.getOwnerName());
-            messageDto.setPhone(homeMessage.getOwnerPhone());
-            messageDto.setMessage(homeMessage.getMessage());
-            messageDto.setStatus(homeMessage.isMessageStatus());
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            messageDto.setDate(dateFormat.format(homeMessage.getCreatedDate()));
-            messageDtoList.add(messageDto);
-        });
-        map.addAttribute("messageList", messageDtoList);
-//        ********************************************
-
-        final List<Student> studentList = studentRepository.findAll();
-        map.addAttribute("totalSize", studentList.size());
-
-        final List<Student> newStudents = new ArrayList<>();
-        studentList.forEach(student -> {
-            if (student.getCreatedDate().getMonth() == new Date().getMonth() && student.getCreatedDate().getYear() == new Date().getYear()){
-                newStudents.add(student);
+//            String username = jwtProvider.getPhoneFromToken(token);
+//            System.out.println(username);
+            Optional<Employee> employeeOptional1 = employeeRepository.findByPhone("+998901234567");
+            Employee employee12 = employeeOptional1.get();
+            if (employee12.getImage() != null){
+                map.addAttribute("img", employeeOptional1.get().getImage().getHashId());
             }
-        });
-        map.addAttribute("newStudentList", newStudents);
-        map.addAttribute("newStudentSize", newStudents.size());
+            else {
+                map.addAttribute("img", null);
+            }
+//        ********************************************
+            final List<HomeMessage> messageList = homeMessageRepository.findByMessageStatus(true);
+            List<MessageDto> messageDtoList = new ArrayList<>();
+            messageList.forEach(homeMessage -> {
+                MessageDto messageDto = new MessageDto();
+                messageDto.setId(homeMessage.getId());
+                messageDto.setFullName(homeMessage.getOwnerName());
+                messageDto.setPhone(homeMessage.getOwnerPhone());
+                messageDto.setMessage(homeMessage.getMessage());
+                messageDto.setStatus(homeMessage.isMessageStatus());
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                messageDto.setDate(dateFormat.format(homeMessage.getCreatedDate()));
+                messageDtoList.add(messageDto);
+            });
+            map.addAttribute("messageList", messageDtoList);
+//        ********************************************
 
-        final List<Course> courseList = courseRepository.findAll();
-        map.addAttribute("courseSize", courseList.size());
-        return "admin/dashboard";
+            final List<Student> studentList = studentRepository.findAll();
+            map.addAttribute("totalSize", studentList.size());
+
+            final List<Student> newStudents = new ArrayList<>();
+            studentList.forEach(student -> {
+                if (student.getCreatedDate().getMonth() == new Date().getMonth() && student.getCreatedDate().getYear() == new Date().getYear()){
+                    newStudents.add(student);
+                }
+            });
+            map.addAttribute("newStudentList", newStudents);
+            map.addAttribute("newStudentSize", newStudents.size());
+
+            final List<Course> courseList = courseRepository.findAll();
+            map.addAttribute("courseSize", courseList.size());
+            return "admin/dashboard";
+//        } catch (ExpiredJwtException ex){
+//            return "redirect:/login";
+//        }
     }
 
     @GetMapping("/add/employee")
@@ -337,17 +346,41 @@ public class AdminApiController {
         DateFormat monthFormat;
         monthFormat = new SimpleDateFormat("dd-MM-yyyy");
         lessonDto.setCreatedDate(monthFormat.format(lesson.getCreatedDate()));
-        final Optional<VideoSource> videoSource = videoSourceRepository.findByLessonId(UUID.fromString(id));
-        final VideoSource video = videoSource.get();
-        lessonDto.setLessonName(video.getName());
-        lessonDto.setContentType(video.getContentType());
-        long fileSize = video.getFileSize() / (1024 * 1024);
+        lessonDto.setLessonName(lesson.getName());
+        lessonDto.setContentType(lesson.getContentType());
+        long fileSize = lesson.getFileSize() / (1024 * 1024);
         lessonDto.setSize(Long.toString(fileSize));
-        lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + video.getHashId());
-        final TaskSource taskSource = taskSourceRepository.findByLessonId(UUID.fromString(id)).get();
-        lessonDto.setTaskLink("/api/admin/rest/pdf/" + taskSource.getHashId());
-        lessonDto.setTestLink("javascript:void(0);");
-
+        lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + lesson.getHashId());
+//  lesson tasks
+        final List<Task> byLessonIdOrderByOrderNumber = taskRepository.findByLessonIdOrderByOrderNumber(lesson.getId());
+        List<TaskDto> taskDtoList = new ArrayList<>();
+        for (Task task  : byLessonIdOrderByOrderNumber){
+            TaskDto taskDto = new TaskDto();
+            taskDto.setOrder(task.getOrderNumber());
+            taskDto.setTaskBody(task.getTaskBody());
+            taskDto.setTaskImg("/api/teacher/rest/view-task-image/" + task.getTaskImg().getHashId());
+            taskDto.setAnswer(task.getAnswer());
+            taskDto.setExample(task.getExampleBody());
+            taskDto.setExampleImg("/api/teacher/rest/view-task-image/" + task.getExampleImg().getHashId());
+            taskDtoList.add(taskDto);
+        }
+        lessonDto.setTaskDtoList(taskDtoList);
+//  lesson tests
+        final List<Test> testList = testRepository.findAllByLesson(lesson);
+        List<TestDto> testDtoList = new ArrayList<>();
+        for(Test test : testList){
+            TestDto testDto = new TestDto();
+            testDto.setQuestion(test.getQuestionTxt());
+            testDto.setQuestionImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            testDto.setAnswer1(test.getAnswer1());
+            testDto.setAnswer1ImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            testDto.setAnswer2(test.getAnswer2());
+            testDto.setAnswer2ImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            testDto.setAnswer3(test.getAnswer3());
+            testDto.setAnswer3ImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            testDtoList.add(testDto);
+        }
+        lessonDto.setTestDtoList(testDtoList);
         map.addAttribute("lessonInfo", lessonDto);
         return "admin/about-lesson";
     }
@@ -372,7 +405,7 @@ public class AdminApiController {
             postDto.setType(post.getType());
             DateFormat monthFormat;
             monthFormat = new SimpleDateFormat("dd/MM/yyyy");
-            postDto.setDate(monthFormat.format(post.getCreatedAt()));
+//            postDto.setDate(monthFormat.format(post.getCreatedAt()));
             postDto.setImagePath("/api/admin/rest/post/image/" + post.getHashId());
             postDtoList.add(postDto);
         }
@@ -411,7 +444,7 @@ public class AdminApiController {
             postDto.setDescription(post.getDescription());
             postDto.setType(post.getType());
             DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
-            postDto.setDate(dateFormat.format(post.getCreatedAt()));
+//            postDto.setDate(dateFormat.format(post.getCreatedAt()));
             postDto.setImagePath("/api/admin/rest/post/image/" + post.getHashId());
         }
         map.addAttribute("post", postDto);

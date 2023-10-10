@@ -19,4 +19,5 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
     int countAllByCourse(Course course);
     boolean existsByLessonType(LessonType lessonType);
     Optional<Lesson> findByLessonType(LessonType lessonType);
+    Optional<Lesson> findByHashId(String hashId);
 }

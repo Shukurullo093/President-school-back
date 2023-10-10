@@ -12,6 +12,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TestImageSource extends AbsFileInfoEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @ManyToOne
     @JoinColumn(name = "test_id")
     private Test test;
