@@ -31,4 +31,10 @@ public class StudentTaskStatus {
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Date createdDate;
+
+    public StudentTaskStatus(Student student, Lesson lesson, int taskOrder) {
+        this.student = student;
+        this.lesson = lesson;
+        this.taskOrder = taskOrder;
+    }
 }

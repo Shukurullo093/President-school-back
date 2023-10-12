@@ -72,17 +72,18 @@
 <section id="watch" class="watch-video" th:if="${lesson != null}">
    <div class="video-container">
       <div class="video">
-         <video th:src="${lesson.videoLink}" controls poster="/user/images/post-1-1.png" id="video"></video>
+         <span>+998901234567</span>
+         <video th:src="${lesson.videoLink}" controls controlsList="nodownload" poster="/user/images/post-1-1.png" id="video"></video>
       </div>
       <h3 class="title" th:text="${lesson.title}"></h3>
       <div class="flex">
-         <a th:href="${lesson.taskLink}" class="inline-btn">topshiriq</a>
+         <a th:href="'/api/user/' + ${lesson.id} + '/task'" class="inline-btn">topshiriq</a>
       </div>
       <p class="description" th:text="${lesson.description}"></p>
    </div>
 </section>
 
-<section class="comments" th:if="${lesson != null && lesson.chat}">
+<!--<section class="comments" th:if="${lesson != null && lesson.chat}">
 
    <h1 class="heading">Chat</h1>
 
@@ -127,7 +128,7 @@
       </div>
    </div>
 
-</section>
+</section>-->
 
 <!--<footer class="footer">-->
 <!--   &copy; copyright @ 2023 by <span></span> | all rights reserved!-->

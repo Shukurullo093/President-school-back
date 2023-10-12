@@ -210,13 +210,6 @@ public class TeacherApiController {
 
         Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(id));
         Lesson lesson = lessonOptional.get();
-//        Employee employee = employeeOptional.get();
-//        map.addAttribute("lessonOwner", new EmployeeDto(employee.getId(),
-//                employee.getLastName() + ' ' + employee.getFirstName(),
-//                null, null, null, null,
-//                employee.getScience().toString(), null,
-//                "/api/admin/rest/viewImage/" + employee.getImage().getHashId(),
-//                employee.getRole().toString(), employee.getGrade()));
 
         LessonDto lessonDto = new LessonDto();
 

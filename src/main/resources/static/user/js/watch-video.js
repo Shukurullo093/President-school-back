@@ -1,33 +1,38 @@
 let baseUrl = window.location.origin;
-let dataIdBtn = 1;
 
-$(".fa-paper-plane").click(function (){
-   let form = $('#form')[0];
+function checkTask(th){
+   let id = $(th).attr('data-id');
+   let form = $('#form' + id)[0];
    let data = new FormData(form);
 
    $.ajax({
-      url: baseUrl + "/api/student/rest/send/" + $('.fa-paper-plane').attr('data-lesson-id')  + "/" + $('.fa-paper-plane').attr('data-id'),
+      url: baseUrl + "/api/student/rest/check-task/" + id,
       type: 'POST',
       enctype: 'multipart/form-data',
       data: data,
       processData: false,
       contentType: false,
       cache: false,
-      success: function () {
-         form.reset();
-         // refresh();
+      success: function (data) {
+         if (data.statusCode === 200){
+            $('#form' + id + ' .alert').css('display', 'block');
+            $('#form' + id + ' .alert').css('background-color', 'green');
+            $('#form' + id + ' .alert .alert-txt').text(data.message);
+         } else {
+            $('#form' + id + ' .alert').css('display', 'block');
+            $('#form' + id + ' .alert').css('background-color', 'red');
+            $('#form' + id + ' .alert .alert-txt').text(data.message);
+            $('.vis' + id).css('display', 'block');
+            setTimeout(function (){
+               $('#form' + id + ' .alert').css('display', 'none');
+               form.reset();
+            }, 5000);
+         }
       },
       error: function (e) {
          console.log(e);
       }
    })
-});
-
-function taskBtn(th){
-   $('button[data-id=' + dataIdBtn + ']').attr('class', 'btn');
-   dataIdBtn = $(th).attr('data-id');
-   $('.fa-paper-plane').attr('data-id', dataIdBtn);
-   $(th).attr('class', 'option-btn');
 }
 
 let toggleBtn = document.getElementById('toggle-btn');

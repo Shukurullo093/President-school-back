@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>watch</title>
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/user/css/style.css">
+</head>
+<body>
+
+<header class="header">
+   <section class="flex">
+
+      <a href="home.html" class="logo">President school</a>
+
+      <!-- <form action="search.html" method="post" class="search-form">
+         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
+         <button type="submit" class="fas fa-search"></button>
+      </form> -->
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <!-- <div id="search-btn" class="fas fa-search"></div> -->
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+         <img th:src="${profile.imageHashId}" class="image" alt="">
+         <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
+         <!-- <p class="role">studen</p> -->
+         <a th:href="@{/api/user/update/profile}" class="btn">Profile</a>
+         <div class="flex-btn">
+            <a th:href="@{/api/user/login}" class="option-btn">chiqish</a>
+            <!-- <a href="register.html" class="option-btn">sign up</a> -->
+         </div>
+      </div>
+   </section>
+</header>   
+
+<div class="side-bar">
+
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+      <img th:src="${profile.imageHashId}" class="image" alt="">
+      <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
+      <!-- <a href="profile.html" class="btn">view profile</a> -->
+   </div>
+
+   <nav class="navbar">
+      <a th:href="@{/api/user/dashboard}"><i class="fas fa-home"></i><span>dashboard</span></a>
+      <!-- <a href="dashboard.html"><i class="fas fa-question"></i><span>kurslar</span></a> -->
+      <a th:href="@{/api/user/my/course}"><i class="fas fa-graduation-cap"></i><span>mening kurslarim</span></a>
+      <!--      <a href="top-students.html"><i class="fas fa-chalkboard-user"></i><span>reyting</span></a>-->
+      <!-- <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a> -->
+   </nav>
+</div>
+
+<section id="watch" class="watch-video">
+   <div class="video-container">
+      <ul>
+         <li th:each="task : ${taskList}">
+            <strong style="font-size: 18px!important;" th:text="'{#' + ${task.order} + '}  Topshiriqning matni: '"></strong>
+            <span th:text="${task.taskBody}"></span><br><br>
+            <img th:src="${task.taskImg}"><br><br>
+            <strong th:class="'vis' + ${task.id}" style="font-size: 18px!important; display: none;">Topshiriqni yechish uchun ko'rsatma: </strong>
+            <span th:class="'vis' + ${task.id}" style="display: none;" th:text="${task.example}"></span><br><br>
+            <img th:class="'vis' + ${task.id}" style="display: none;" th:src="${task.exampleImg}"><br><br>
+            <form th:id="'form' + ${task.id}">
+               <textarea name="answer" class="form-control" placeholder="Javobni kiriting..."></textarea>
+               <div class="alert" >
+                  <span class="alert-txt">*</span>
+               </div>
+               <button type="button" th:data-id="${task.id}" class="btn" onclick="checkTask(this)">Tekshirish</button>
+            </form>
+         </li>
+      </ul>
+      <button type="button" class="option-btn">Keyingi ></button>
+   </div>
+</section>
+
+   <!-- custom js file link  -->
+   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+   <script src="/user/js/watch-video.js"></script>
+</body>
+</html>

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskDto {
+    private int id;
     private int order;
     private String taskBody;
     private String taskImg;

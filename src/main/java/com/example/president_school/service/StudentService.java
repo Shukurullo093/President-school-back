@@ -4,7 +4,6 @@ import com.example.president_school.entity.Student;
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.StudentDto;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,5 +15,5 @@ public interface StudentService {
 
     void exportTestResultToPdf(HttpServletResponse response);
 
-//    ControllerResponse sendMsg(Student student, String lessonId, Integer taskOrder, String text, MultipartFile photo);
+    ControllerResponse checkTask(Student student, Integer taskId, String answer);
 }

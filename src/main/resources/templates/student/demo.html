@@ -137,7 +137,7 @@
 <!--'/api/user/watch/' + ${lesson.id}-->
       <a th:if="${lesson1 == null}" class="box" th:each="lesson : ${lessonList}" th:href="${lesson.lessonInfoLink}">
          <span class="lesson-type" th:text="${lesson.type}"></span>
-         <span class="lesson-order-number" th:text="${'#' + lesson.orderNumber}"></span>
+         <span th:if="${lesson.orderNumber != 0}" class="lesson-order-number" th:text="${'#' + lesson.orderNumber}"></span>
          <span class="score" th:if="${lesson.star}">
             <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
             <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
@@ -154,11 +154,9 @@
 
 </section>
 
-<footer class="footer">
-
-   &copy; copyright @ 2023 by <span></span> | all rights reserved!
-
-</footer>
+<!--<footer class="footer">-->
+<!--   &copy; copyright @ 2023 by <span></span> | all rights reserved!-->
+<!--</footer>-->
 
 <!-- custom js file link  -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>

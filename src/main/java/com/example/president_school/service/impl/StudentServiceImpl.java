@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,8 +24,10 @@ public class StudentServiceImpl implements StudentService {
     private final PersonImageRepository personImageRepository;
     private final CourseRepository courseRepository;
     private final AccessCourseRepository accessCourseRepository;
+    private final AccessLessonRepository accessLessonRepository;
+    private final StudentTaskStatusRepository studentTaskStatusRepository;
     private final LessonRepository lessonRepository;
-//    private final ChatRepository chatRepository;
+    private final TaskRepository taskRepository;
 
     @Value("${upload.folder}")
     private String uploadFolder;
@@ -98,45 +98,22 @@ public class StudentServiceImpl implements StudentService {
     public void exportTestResultToPdf(HttpServletResponse response) {
 
     }
-
-//    @Override
-//    public ControllerResponse sendMsg(Student student, String lessonId, Integer taskOrder, String text, MultipartFile image) {
-//        Chat chat = new Chat();
-//        chat.setStudent(student);
-//        chat.setMessage(text);
-//        chat.setMessageOwner(Role.STUDENT);
-//        final Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(lessonId));
-//        chat.setLesson(lessonOptional.get());
-//        chat.setTaskOrder(taskOrder);
-//        if (!image.isEmpty()){
-//            File uploadFolder = new File(String.format("%s/CHAT/",
-//                    this.uploadFolder));
-//            if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
-//                System.out.println("Created folders. for chat images");
-//            }
-//
-//            chat.setContentType(image.getContentType());
-//            chat.setName(image.getOriginalFilename());
-//            chat.setExtension(getExtension(image.getOriginalFilename()));
-//            chat.setFileSize(image.getSize());
-//            chat.setHashId(UUID.randomUUID().toString().substring(0, 10));
-//            chat.setUploadPath(String.format("CHAT/%s.%s",
-//                    chat.getHashId(),
-//                    chat.getExtension()));
-//
-//            uploadFolder = uploadFolder.getAbsoluteFile();
-//            File file = new File(uploadFolder, String.format("%s.%s",
-//                    chat.getHashId(),
-//                    chat.getExtension()));
-//            try {
-//                image.transferTo(file);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        chatRepository.save(chat);
-//        return new ControllerResponse("Xabar jo'natildi", 200);
-//    }
+//  ************************
+    @Override
+    public ControllerResponse checkTask(Student student, Integer taskId, String answer) {
+        final Optional<Task> taskOptional = taskRepository.findById(taskId);
+        if (taskOptional.isPresent()) {
+            final Task task = taskOptional.get();
+            if (task.getAnswer().equals(answer)){
+                studentTaskStatusRepository.save(new StudentTaskStatus(student, task.getLesson(), task.getOrderNumber()));
+                return new ControllerResponse("Ajoyib, To'g'ri javob berdingiz.", 200);
+            }
+            else {
+                return new ControllerResponse("Afsus, Biroq javobingiz xato, namuna bilan tanishib qaytadan urinib ko'ring.", 208);
+            }
+        }
+        return new ControllerResponse("topshiriq topilmadi", 404);
+    }
 
     private String getExtension(String fileName) {
         String ext = null;

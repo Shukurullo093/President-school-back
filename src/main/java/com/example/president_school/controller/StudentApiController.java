@@ -25,11 +25,10 @@ public class StudentApiController {
     private final LessonRepository lessonRepository;
     private final AccessCourseRepository accessCourseRepository;
     private final AccessLessonRepository accessLessonRepository;
-//    private final VideoSourceRepository videoSourceRepository;
     private final TaskSourceRepository taskSourceRepository;
+    private final TaskRepository taskRepository;
     private final TestRepository testRepository;
     private final StudentTestRepository studentTestRepository;
-//    private final ChatRepository chatRepository;
 
     @GetMapping("/register")
     public String register(){
@@ -138,8 +137,7 @@ public class StudentApiController {
                 List<LessonDto> lessonDtoList = new ArrayList<>();
                 for (int i = 0; i < lessonList.size(); i++) {
                     if (accessLessonRepository.existsByLessonAndStudent(lessonList.get(i), studentRepository.findByPhone("+998901234568").get()) || i <= 1) {
-                        String lessonLink = lessonList.get(i).getLessonType() == LessonType.TEST ? "/api/user/test/" + lessonList.get(i).getId()
-                                : "/api/user/watch/" + lessonList.get(i).getId();
+                        String lessonLink = "/api/user/watch/" + lessonList.get(i).getId();
                         boolean star = true;
                         if (i >= 1 && i <= lessonList.size() - 2){
                             if (!accessLessonRepository.existsByLessonAndStudent(lessonList.get(i+1), studentRepository.findByPhone("+998901234568").get())){
@@ -149,9 +147,20 @@ public class StudentApiController {
 
                         lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), i + 1,
                                 lessonList.get(i).getTitle(), lessonList.get(i).getLessonType().toString().toLowerCase(), "true", lessonLink, star));
+
+                        if ((i+1) % 6 == 0){
+                            lessonLink = "/api/user/test/" + lessonList.get(i).getCourse().getId() + "/" + (i + 2);
+                            lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), 0,
+                                    lessonList.get(i).getTitle(), LessonType.TEST.toString().toLowerCase(), "true", lessonLink, false));
+                        }
                     } else {
                         lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), i + 1,
                                 lessonList.get(i).getTitle(), lessonList.get(i).getLessonType().toString().toLowerCase(), "false", "javascript:void(0);", false));
+
+                        if ((i+1) % 6 == 0){
+                            lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), 0,
+                                    lessonList.get(i).getTitle(), LessonType.TEST.toString().toLowerCase(), "false", "javascript:void(0);", false));
+                        }
                     }
                 }
                 map.addAttribute("lessonList", lessonDtoList);
@@ -172,10 +181,9 @@ public class StudentApiController {
             if (b || lesson.getLessonType().equals(LessonType.DEMO)){
                 LessonDto lessonDto =new LessonDto();
                 lessonDto.setId(lesson.getId());
-//                lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + videoSourceRepository.findByLessonId(lesson.getId()).get().getHashId());
+                lessonDto.setVideoLink("/api/teacher/rest/viewVideo/" + lesson.getHashId());
                 lessonDto.setTitle(lesson.getTitle());
                 lessonDto.setDescription(lesson.getDescription());
-//                lessonDto.setTaskLink("/api/admin/rest/pdf/" + taskSourceRepository.findByLessonId(lesson.getId()).get().getHashId());
                 if (lesson.getLessonType().equals(LessonType.DEMO) && !b){
                     lessonDto.setChat(false);
                 } else { lessonDto.setChat(true); }
@@ -226,6 +234,30 @@ public class StudentApiController {
 //        map.addAttribute("historyList", chatDtoList);
 
         return "student/watch-video";
+    }
+
+    @GetMapping("/{lesson}/task")
+    public String task(@PathVariable UUID lesson, Model map){
+        map.addAttribute("profile", generalService.getProfile("+998901234568"));
+
+        final Optional<Lesson> lessonOptional = lessonRepository.findById(lesson);
+        List<TaskDto> taskDtoList = new ArrayList<>();
+
+        if (lessonOptional.isPresent()){
+            final List<Task> byLessonIdOrderByOrderNumber = taskRepository.findByLessonIdOrderByOrderNumber(lessonOptional.get().getId());
+            for (Task task  : byLessonIdOrderByOrderNumber){
+                TaskDto taskDto = new TaskDto();
+                taskDto.setId(task.getId());
+                taskDto.setOrder(task.getOrderNumber());
+                taskDto.setTaskBody(task.getTaskBody());
+                taskDto.setTaskImg("/api/teacher/rest/view-task-image/" + task.getTaskImg().getHashId());
+                taskDto.setExample(task.getExampleBody());
+                taskDto.setExampleImg("/api/teacher/rest/view-task-image/" + task.getExampleImg().getHashId());
+                taskDtoList.add(taskDto);
+            }
+        }
+        map.addAttribute("taskList", taskDtoList);
+        return "student/task";
     }
 
     @GetMapping("/test/{lessonId}")

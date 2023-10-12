@@ -15,11 +15,6 @@ public enum RolesPermissions {
     TEACHER_UPDATE("teacher:update"),
     TEACHER_DELETE("teacher:delete"),
 
-    ASSISTANT_READ("assistant:read"),
-    ASSISTANT_CREATE("assistant:create"),
-    ASSISTANT_UPDATE("assistant:update"),
-    ASSISTANT_DELETE("assistant:delete"),
-
     STUDENT_READ("student:read"),
     STUDENT_CREATE("student:create"),
     STUDENT_UPDATE("student:update"),
