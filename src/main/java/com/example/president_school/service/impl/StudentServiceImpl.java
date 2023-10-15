@@ -9,11 +9,13 @@ import com.example.president_school.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -99,6 +101,7 @@ public class StudentServiceImpl implements StudentService {
 
     }
 //  ************************
+    @Transactional
     @Override
     public ControllerResponse checkTask(Student student, Integer taskId, String answer) {
         final Optional<Task> taskOptional = taskRepository.findById(taskId);
@@ -106,7 +109,19 @@ public class StudentServiceImpl implements StudentService {
             final Task task = taskOptional.get();
             if (task.getAnswer().equals(answer)){
                 studentTaskStatusRepository.save(new StudentTaskStatus(student, task.getLesson(), task.getOrderNumber()));
-                return new ControllerResponse("Ajoyib, To'g'ri javob berdingiz.", 200);
+                final List<StudentTaskStatus> byStudentAndLesson = studentTaskStatusRepository.findByStudentAndLesson(student, task.getLesson());
+                final Integer taskCountByLesson = taskRepository.countAllByLesson(task.getLesson());
+                if (byStudentAndLesson.size() == taskCountByLesson){
+                    final List<StudentTaskStatus> allByStudentIdAndLessonId = studentTaskStatusRepository.findAllByStudentIdAndLessonId(student.getId(), task.getLesson().getId());
+                    studentTaskStatusRepository.deleteAll(allByStudentIdAndLessonId);
+                    final Optional<Lesson> byCourseIdAndOrderNumber = lessonRepository.findByCourseIdAndOrderNumber(task.getLesson().getCourse().getId(), task.getLesson().getOrderNumber() + 1);
+                    if (byCourseIdAndOrderNumber.isPresent()) {
+                        accessLessonRepository.save(new AccessLesson(student, byCourseIdAndOrderNumber.get()));
+                    }
+                    return new ControllerResponse("Tabriklaymiz! Siz barcha topshiriqlarni bajardingiz. Keyingi darsga o'tishingiz mumkin.", 200, "true");
+                } else {
+                    return new ControllerResponse("Ajoyib, To'g'ri javob berdingiz.", 200, "false");
+                }
             }
             else {
                 return new ControllerResponse("Afsus, Biroq javobingiz xato, namuna bilan tanishib qaytadan urinib ko'ring.", 208);

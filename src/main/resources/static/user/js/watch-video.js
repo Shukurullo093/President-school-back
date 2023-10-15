@@ -18,6 +18,19 @@ function checkTask(th){
             $('#form' + id + ' .alert').css('display', 'block');
             $('#form' + id + ' .alert').css('background-color', 'green');
             $('#form' + id + ' .alert .alert-txt').text(data.message);
+            $('#form' + id + ' textarea').attr('disabled', true);
+            if (data.object === "true"){
+               $('#nextLessonBtn').css('display', 'block');
+            }
+            setTimeout(function (){
+               $('#li' + id + ' .task-body').css('display', 'none');
+               $('#li' + id + ' .bg-success').css('display', 'flex');
+
+               // $('#form' + id + ' .alert').css('display', 'none');
+               // form.reset();
+               // $(th).attr('disabled', true);
+               // $(th).css('background-color', 'var(--black)');
+            }, 3000);
          } else {
             $('#form' + id + ' .alert').css('display', 'block');
             $('#form' + id + ' .alert').css('background-color', 'red');

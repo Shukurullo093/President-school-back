@@ -41,7 +41,7 @@
             Nav header start
         ***********************************-->
         <div class="nav-header">
-            <a href="index.html" class="brand-logo">
+            <a href="javascript:void(0);" class="brand-logo">
                 <img class="logo-abbr" src="/images/logo-white.png" alt="">
                 <img class="logo-compact" src="/images/logo-text-white.png" alt="">
                 <img class="brand-title" src="/images/logo-text-white.png" alt="">
@@ -77,7 +77,7 @@
                                         <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span class="ml-2">Profile </span>
                                     </a>
-                                    <a href="page-login.html" class="dropdown-item ai-icon">
+                                    <a href="javascript:void(0);" class="dropdown-item ai-icon">
                                         <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                                         <span class="ml-2">Chiqish </span>
                                     </a>
@@ -152,8 +152,6 @@
         <!--**********************************
             Sidebar end
         ***********************************-->
-
-		
 		
         <!--**********************************
             Content body start
@@ -180,8 +178,8 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<ul class="nav nav-pills mb-3">
-							<li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link btn-primary mr-1 show active">Qator</a></li>
-							<li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link btn-primary">Jadval</a></li>
+							<li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link rounded btn-primary mr-1 show active">Qator</a></li>
+							<li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link rounded btn-primary">Jadval</a></li>
 							<li class="nav-item mr-4 ml-auto">
 								<a href="/api/admin/rest/export/student/excel" class="btn btn-primary">
 									<i class="la la-download"></i>
@@ -196,18 +194,69 @@
 								<div class="card">
 									<div class="card-header">
 										<h4 class="card-title">Barcha o'quvchilar</h4>
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+											<i class="fa fa-user-plus" aria-hidden="true"></i> Yangi O'quvchi
+										</button>
+
+										<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLongTitle">O'quvchi ma'lumotlari</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<form class="w-100">
+															<div class="form-group">
+																<label class="form-label">FIO: </label>
+																<input type="text" class="form-control" placeholder="">
+															</div>
+															<div class="form-group">
+																<label class="form-label">Telefon raqam:</label>
+																<input type="tel" class="form-control" placeholder="">
+															</div>
+															<div class="form-group d-flex">
+																<label class="form-label">Sinf:</label><br>
+																<select class="form-select ml-0">
+																	<option value="2">2</option>
+																	<option value="3">3</option>
+																	<option value="4">4</option>
+																</select>
+																<label class="form-label ml-1">Jins:</label><br>
+																<select class="form-select">
+																	<option value="male">O'g'il</option>
+																	<option value="female">Qiz</option>
+																</select>
+															</div>
+															<div class="form-group">
+																<label class="form-label">Parol</label>
+																<input type="password" class="form-control" placeholder="">
+															</div>
+														</form>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-primary" data-dismiss="modal">Yopish</button>
+														<button type="button" class="btn btn-secondary">Saqlash</button>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 									<div class="card-body">
 										<div class="table-responsive">
-											<table id="example3" class="display" style="min-width: 845px">
+											<table id="example3" class="display" style="min-width: 845px;">
 												<thead>
-													<tr>
+													<tr class="text-center">
 														<th></th>
 														<th>Fio</th>
 														<th>Telefon</th>
 														<th>Jins</th>
 														<th>Sinf</th>
 														<th>Yaratilgan vaqt</th>
+														<th>Fan</th>
+														<th></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -218,9 +267,176 @@
 														<td th:text="${student.gender}"></td>
 														<td th:text="${student.grade}"></td>
 														<td th:text="${student.createdDate}"></td>
+														<td class="row">
+															<div class="col-12 text-capitalize">
+																<table class="table student-table w-100 p-0">
+																	<tr>
+																		<td>
+																			<strong class="text-primary">Matematika</strong>
+																		</td>
+																		<td>
+																			<span class="bg-success rounded px-2 py-1">to'lov qilingan</span>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<strong class="text-primary">Ingliz tili</strong>
+																		</td>
+																		<td>
+																			<span class="bg-success rounded px-2 py-1">To'lov Qilingan</span>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<strong class="text-primary">Tanqidiy fikrlash</strong>
+																		</td>
+																		<td class="w-50">
+																			<span class="bg-danger rounded px-2 py-1 text-light">to'lov qilinmagan</span>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<strong class="text-primary">Muammoni yechish</strong>
+																		</td>
+																		<td>
+																			<span class="bg-danger rounded px-2 py-1 text-light">to'lov qilinmagan</span>
+																		</td>
+																	</tr>
+																</table>
+															</div>
+														</td>
+														<td>
+															<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">Tahrirlash</button>
+														</td>
+													</tr>
+													<tr th:each="student : ${studentList}">
+														<td><img class="rounded-circle" width="35" th:src="${student.imagePath}"></td>
+														<td th:text="${student.fullName}" class="text-capitalize"></td>
+														<td th:text="${student.phone}"></td>
+														<td th:text="${student.gender}"></td>
+														<td th:text="${student.grade}"></td>
+														<td th:text="${student.createdDate}"></td>
+														<td class="text-center">
+															<span class="bg-success px-2 py-1 rounded text-dark">Matematika</span>
+															<span class="bg-success px-2 py-1 rounded text-dark">Ingliz tili</span><br><br>
+															<span class="bg-danger px-2 py-1 rounded text-light">Tanqidiy fikrlash</span>
+															<span class="bg-danger px-2 py-1 rounded text-light">Muammoni yechish</span>
+														</td>
+														<td>
+															<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">Tahrirlash</button>
+														</td>
 													</tr>
 												</tbody>
 											</table>
+										</div>
+										<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLongTitle1">O'quvchi ma'lumotlari</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body row">
+														<div class="col-lg-4 col-sm-12 text-center">
+															<img src="/images/pic-6.jpg" class="img-fluid rounded border w-100 p-1">
+															<h2 class="text-primary mt-2"><i class="fa fa-diamond" aria-hidden="true"></i> 20</h2>
+														</div>
+														<div class="col-lg-8 col-sm-12">
+															<table class="table student-table">
+																<tr>
+																	<td>
+																		<strong class="text-primary">FIO</strong>
+																	</td>
+																	<td>
+																		<span class="text-uppercase text-right">john doe</span>
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<strong class="text-primary">Telefon</strong>
+																	</td>
+																	<td>
+																		<span>+998901234567</span>
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<strong class="text-primary">Jins</strong>
+																	</td>
+																	<td>
+																		<span class="text-uppercase">o'g'il</span>
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<strong class="text-primary">Sinf</strong>
+																	</td>
+																	<td>
+																		<span>2</span>
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<strong class="text-primary">Qo'shilgan vaqt</strong>
+																	</td>
+																	<td>
+																		<span>01/01/2023</span>
+																	</td>
+																</tr>
+															</table>
+														</div>
+														<div class="col-12 overflow-auto text-capitalize">
+															<table class="table student-table w-100">
+																<tr>
+																	<td>
+																		<strong class="text-primary">Matematika</strong>
+																	</td>
+																	<td style="width: 40%;">
+																		<span class="bg-success rounded px-2 py-1">to'lov qilingan</span>
+																	</td>
+																	<td></td>
+																</tr>
+																<tr>
+																	<td>
+																		<strong class="text-primary">Ingliz tili</strong>
+																	</td>
+																	<td>
+																		<span class="bg-success rounded px-2 py-1">To'lov Qilingan</span>
+																	</td>
+																	<td></td>
+																</tr>
+																<tr>
+																	<td>
+																		<strong class="text-primary">Tanqidiy fikrlash</strong>
+																	</td>
+																	<td>
+																		<span class="bg-danger rounded px-2 py-1 text-light">to'lov qilinmagan</span>
+																	</td>
+																	<td>
+																		<button type="button" class="btn btn-primary w-100">To'lov Qilish</button>
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<strong class="text-primary">Muammoni yechish</strong>
+																	</td>
+																	<td>
+																		<span class="bg-danger rounded px-2 py-1 text-light">to'lov qilinmagan</span>
+																	</td>
+																	<td>
+																		<button type="button" class="btn btn-primary">To'lov Qilish</button>
+																	</td>
+																</tr>
+															</table>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-primary" data-dismiss="modal">Yopish</button>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
                                 </div>
@@ -266,24 +482,14 @@
         <!--**********************************
             Footer start
         ***********************************-->
-        <div class="footer">
-            <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.html" target="_blank"></a> 2023</p>
-            </div>
-        </div>
+<!--        <div class="footer">-->
+<!--            <div class="copyright">-->
+<!--                <p>Copyright © Designed &amp; Developed by <a href="../index.html" target="_blank"></a> 2023</p>-->
+<!--            </div>-->
+<!--        </div>-->
         <!--**********************************
             Footer end
         ***********************************-->
-
-		<!--**********************************
-           Support ticket button start
-        ***********************************-->
-
-        <!--**********************************
-           Support ticket button end
-        ***********************************-->
-
-
     </div>
     <!--**********************************
         Main wrapper end

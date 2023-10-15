@@ -4,7 +4,7 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>watch</title>
+   <title>task</title>
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
@@ -67,24 +67,30 @@
 
 <section id="watch" class="watch-video">
    <div class="video-container">
-      <ul>
-         <li th:each="task : ${taskList}">
-            <strong style="font-size: 18px!important;" th:text="'{#' + ${task.order} + '}  Topshiriqning matni: '"></strong>
-            <span th:text="${task.taskBody}"></span><br><br>
-            <img th:src="${task.taskImg}"><br><br>
-            <strong th:class="'vis' + ${task.id}" style="font-size: 18px!important; display: none;">Topshiriqni yechish uchun ko'rsatma: </strong>
-            <span th:class="'vis' + ${task.id}" style="display: none;" th:text="${task.example}"></span><br><br>
-            <img th:class="'vis' + ${task.id}" style="display: none;" th:src="${task.exampleImg}"><br><br>
-            <form th:id="'form' + ${task.id}">
-               <textarea name="answer" class="form-control" placeholder="Javobni kiriting..."></textarea>
-               <div class="alert" >
-                  <span class="alert-txt">*</span>
-               </div>
-               <button type="button" th:data-id="${task.id}" class="btn" onclick="checkTask(this)">Tekshirish</button>
-            </form>
+      <a th:href="${lesson}" class="btn"><i class="fa-solid fa-backward"></i> Dars videosi</a>
+      <ul style="margin-top: 1rem;">
+         <li th:each="task : ${taskList}" th:id="'li' + ${task.id}">
+            <div th:style="${task.taskDo} ? 'display: flex' : 'display: none'" class="bg-success">
+               <span th:text="${task.order} + '-topshiriq bajarildi.'"></span>
+            </div>
+            <div th:if="!${task.taskDo}" class="task-body">
+               <strong style="font-size: 18px!important;" th:text="'{#' + ${task.order} + '}  Topshiriqning matni: '"></strong>
+               <span th:text="${task.taskBody}"></span><br><br>
+               <img th:src="${task.taskImg}"><br><br>
+               <strong th:class="'vis' + ${task.id}" style="font-size: 18px!important; display: none;">Topshiriqni yechish uchun ko'rsatma: </strong>
+               <span th:class="'vis' + ${task.id}" style="display: none;" th:text="${task.example}"></span><br><br>
+               <img th:class="'vis' + ${task.id}" style="display: none;" th:src="${task.exampleImg}"><br><br>
+               <form th:id="'form' + ${task.id}">
+                  <textarea name="answer" class="form-control" placeholder="Javobni kiriting..."></textarea>
+                  <div class="alert" >
+                     <span class="alert-txt">*</span>
+                  </div>
+                  <button type="button" th:data-id="${task.id}" class="btn" onclick="checkTask(this)">Tekshirish</button>
+               </form>
+            </div>
          </li>
       </ul>
-      <button type="button" class="option-btn">Keyingi ></button>
+      <a th:href="${nextLesson}" id="nextLessonBtn" style="display: none;" class="option-btn">Keyingi dars <i class="fa-solid fa-forward"></i></a>
    </div>
 </section>
 

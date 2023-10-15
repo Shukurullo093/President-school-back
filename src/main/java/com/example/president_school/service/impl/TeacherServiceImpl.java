@@ -60,6 +60,7 @@ public class TeacherServiceImpl implements TeacherService {
         lesson.setTitle(title);
         lesson.setDescription(description);
         lesson.setLessonType(LessonType.valueOf(type.toUpperCase()));
+
         lesson.setOrderNumber(order);
             // *********** save video ****************
         File uploadFolder = new File(String.format("%s/%d/%d/",
@@ -90,6 +91,16 @@ public class TeacherServiceImpl implements TeacherService {
             e.printStackTrace();
         }
         final Lesson save = lessonRepository.save(lesson);
+        if (save.getOrderNumber() % 7 == 1){
+            Lesson lessonTest = new Lesson();
+            String titleTest = save.getOrderNumber() + "-" + (save.getOrderNumber() + 5) + " dars uchun testlar";
+            lessonTest.setTitle(titleTest);
+            lessonTest.setDescription(null);
+            lessonTest.setCourse(save.getCourse());
+            lessonTest.setLessonType(LessonType.TEST);
+            lessonTest.setOrderNumber(save.getOrderNumber() + 6);
+            final Lesson save1 = lessonRepository.save(lessonTest);
+        }
         return new ControllerResponse("Dars muvaffaqqiyatli yaratildi.", 200, save.getId().toString());
     }
 
@@ -459,13 +470,13 @@ public class TeacherServiceImpl implements TeacherService {
             for (int i = 2; i < 5; i++){
                 final Optional<Course> courseOptional = courseRepository.findByGradeAndEmployee(i, employee);
                 final List<Lesson> allByCourseOrderByCreatedDateAsc =
-                        lessonRepository.findAllByCourseOrderByCreatedDateAsc(courseOptional.get());
+                        lessonRepository.findAllByCourseOrderByOrderNumberAsc(courseOptional.get());
                 lessonList.addAll(allByCourseOrderByCreatedDateAsc);
             }
             exportToExcel(lessonList, response);
         } else {
             final Optional<Course> courseOptional = courseRepository.findByGradeAndEmployee(Integer.valueOf(employee.getGrade()), employee);
-            final List<Lesson> allByCourseOrderByCreatedDateAsc = lessonRepository.findAllByCourseOrderByCreatedDateAsc(courseOptional.get());
+            final List<Lesson> allByCourseOrderByCreatedDateAsc = lessonRepository.findAllByCourseOrderByOrderNumberAsc(courseOptional.get());
             exportToExcel(allByCourseOrderByCreatedDateAsc, response);
         }
     }
@@ -575,13 +586,13 @@ public class TeacherServiceImpl implements TeacherService {
             for (int i = 2; i < 5; i++){
                 final Optional<Course> courseOptional = courseRepository.findByGradeAndEmployee(i, employee);
                 final List<Lesson> allByCourseOrderByCreatedDateAsc =
-                        lessonRepository.findAllByCourseOrderByCreatedDateAsc(courseOptional.get());
+                        lessonRepository.findAllByCourseOrderByOrderNumberAsc(courseOptional.get());
                 lessonList.addAll(allByCourseOrderByCreatedDateAsc);
             }
             exportToPdf(lessonList, response);
         } else {
             final Optional<Course> courseOptional = courseRepository.findByGradeAndEmployee(Integer.valueOf(employee.getGrade()), employee);
-            final List<Lesson> allByCourseOrderByCreatedDateAsc = lessonRepository.findAllByCourseOrderByCreatedDateAsc(courseOptional.get());
+            final List<Lesson> allByCourseOrderByCreatedDateAsc = lessonRepository.findAllByCourseOrderByOrderNumberAsc(courseOptional.get());
             exportToPdf(allByCourseOrderByCreatedDateAsc, response);
         }
     }

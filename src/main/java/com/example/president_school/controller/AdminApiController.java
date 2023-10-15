@@ -304,7 +304,7 @@ public class AdminApiController {
         String science1 = grade + "-sinf " + Science.valueOf(science.toUpperCase()) + " darslari ro'yhati";
         map.addAttribute("science", science1);
         Course course = courseRepository.findByScienceAndGrade(Science.valueOf(science.toUpperCase()), Integer.parseInt(grade)).get();
-        List<Lesson> all = lessonRepository.findAllByCourseOrderByCreatedDateAsc(course);
+        List<Lesson> all = lessonRepository.findAllByCourseOrderByOrderNumberAsc(course);
         List<LessonDto> lessonDtoList = new ArrayList<>();
         int i=1;
         for (Lesson lesson : all) {

@@ -26749,7 +26749,15 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
       color: #fff; }
 
 /*# sourceMappingURL=style.css.map */
-
-#theme_version:last-child{
-  display: none;
+.student-table tr td:first-child{
+  position: relative;
+}
+.student-table tr td:first-child strong:after{
+  content: ':';
+  position: absolute;
+  right: .5rem;
+}
+.modal-body .table tr td,
+.modal-body .table tr td button{
+  letter-spacing: 1px;
 }

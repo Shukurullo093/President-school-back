@@ -44,17 +44,17 @@ public class TeacherApiController {
         }
         map.addAttribute("grade", employeeOptional.get().getGrade());
         if (employeeOptional.get().getGrade().equals("Hammasi")){
-            List<Lesson> lessonList2 = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(2, employeeOptional.get());
+            List<Lesson> lessonList2 = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByOrderNumberAsc(2, employeeOptional.get());
             map.addAttribute("grade2Count", lessonList2.size());
 
-            List<Lesson> lessonList3 = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(3, employeeOptional.get());
+            List<Lesson> lessonList3 = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByOrderNumberAsc(3, employeeOptional.get());
             map.addAttribute("grade3Count", lessonList3.size());
 
-            List<Lesson> lessonList4 = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(4, employeeOptional.get());
+            List<Lesson> lessonList4 = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByOrderNumberAsc(4, employeeOptional.get());
             map.addAttribute("grade4Count", lessonList4.size());
         } else {
             List<Lesson> lessonList2 = lessonRepository
-                    .findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer.parseInt(employeeOptional.get().getGrade()), employeeOptional.get());
+                    .findAllByCourseGradeAndCourseEmployeeOrderByOrderNumberAsc(Integer.parseInt(employeeOptional.get().getGrade()), employeeOptional.get());
             map.addAttribute("grade" + employeeOptional.get().getGrade() + "Count", lessonList2.size());
         }
 
@@ -72,8 +72,12 @@ public class TeacherApiController {
         }
 
         List<Lesson> lessonListByGrade =
-                lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer.valueOf(grade), employeeOptional.get());
-        map.addAttribute("lessonCount", lessonListByGrade.size() + 1);
+                lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByOrderNumberAsc(Integer.valueOf(grade), employeeOptional.get());
+        if (lessonListByGrade.size() % 7 == 0){
+            map.addAttribute("lessonCount", lessonListByGrade.size() + 1);
+        } else {
+            map.addAttribute("lessonCount", lessonListByGrade.size() / 7 + lessonListByGrade.size() % 7);
+        }
         map.addAttribute("science", employeeOptional.get().getScience().toString());
         map.addAttribute("grade", grade);
         if (lessonListByGrade.size() + 1 <= 2){
@@ -138,7 +142,7 @@ public class TeacherApiController {
             map.addAttribute("img", null);
         }
 
-        List<Lesson> lessonList = lessonRepository.findAllByCourseEmployeeOrderByCreatedDateAsc(employeeOptional.get());
+        List<Lesson> lessonList = lessonRepository.findAllByCourseEmployeeOrderByOrderNumberAsc(employeeOptional.get());
         List<LessonDto> lessonDtoList2 = new ArrayList<>();
         List<LessonDto> lessonDtoList3 = new ArrayList<>();
         List<LessonDto> lessonDtoList4 = new ArrayList<>();
@@ -181,15 +185,16 @@ public class TeacherApiController {
             map.addAttribute("img", null);
         }
 
-        List<Lesson> lessonList = lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer.valueOf(grade), employeeOptional.get());
+        List<Lesson> lessonList =
+                lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByOrderNumberAsc(Integer.valueOf(grade), employeeOptional.get());
         List<LessonDto> lessonDtoList = new ArrayList<>();
 
         int i = 1;
         for (Lesson lesson : lessonList) {
             String lessonPath = !lesson.getLessonType().equals(LessonType.TEST) ? "/api/teacher/lesson/info/" + lesson.getId() :
                     "/api/teacher/add/test/" + lesson.getId();
-            lessonDtoList.add(new LessonDto(lesson.getId(), i, lesson.getTitle(),
-                    lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath));
+            lessonDtoList.add(new LessonDto(lesson.getId(), lesson.getOrderNumber(), lesson.getTitle(),
+                    lesson.getDescription(), lesson.getLessonType().name(), "true", lessonPath));
             i++;
         }
         map.addAttribute("gradeStatus", grade);

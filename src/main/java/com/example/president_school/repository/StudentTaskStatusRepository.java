@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface StudentTaskStatusRepository extends JpaRepository<StudentTaskStatus, Integer> {
     List<StudentTaskStatus> findByStudentAndLesson(Student student, Lesson lesson);
     boolean existsByStudentAndLessonAndTaskOrder(Student student, Lesson lesson, int order);
+    List<StudentTaskStatus> findAllByStudentIdAndLessonId(Long studentId, UUID lessonId);
 }

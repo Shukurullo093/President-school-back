@@ -15,4 +15,5 @@ public class TaskDto {
     private String answer;
     private String example;
     private String exampleImg;
+    private boolean taskDo;
 }

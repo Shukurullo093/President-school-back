@@ -92,7 +92,7 @@ public class AdminServiceImpl implements AdminService {
                 employee.setPassword(pass);
 
                 if (!image.isEmpty()) {
-                    File uploadFolder = new File(String.format("%s/person_images/",
+                    File uploadFolder = new File(String.format("%s/EMPLOYEE/",
                             this.uploadFolder));
                     if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
 //                System.out.println("Created folders.");
@@ -103,7 +103,7 @@ public class AdminServiceImpl implements AdminService {
                     personImage.setExtension(getExtension(image.getOriginalFilename()));
                     personImage.setFileSize(image.getSize());
                     personImage.setHashId(UUID.randomUUID().toString().substring(0, 10));
-                    personImage.setUploadPath(String.format("person_images/%s.%s",
+                    personImage.setUploadPath(String.format("EMPLOYEE/%s.%s",
                             personImage.getHashId(),
                             personImage.getExtension()));
                     PersonImage personImage1 = personImageRepository.save(personImage);
@@ -166,7 +166,7 @@ public class AdminServiceImpl implements AdminService {
             employee.setRole(Role.valueOf(role.toUpperCase()));
             employee.setGrade(grade);
             if(!image.isEmpty()) {
-                File uploadFolder = new File(String.format("%s/person_images/",
+                File uploadFolder = new File(String.format("%s/EMPLOYEE/",
                         this.uploadFolder));
                 if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
 //                System.out.println("Created folders.");
@@ -177,7 +177,7 @@ public class AdminServiceImpl implements AdminService {
                 image1.setFileSize(image.getSize());
                 image1.setExtension(getExtension(image.getOriginalFilename()));
                 image1.setHashId(UUID.randomUUID().toString().substring(0, 10));
-                image1.setUploadPath(String.format("person_images/%s.%s",
+                image1.setUploadPath(String.format("EMPLOYEE/%s.%s",
                         image1.getHashId(),
                         image1.getExtension()));
                 PersonImage personImage1 = personImageRepository.save(image1);
@@ -576,3 +576,5 @@ public class AdminServiceImpl implements AdminService {
         return personImageRepository.findByHashId(hashId);
     }
 }
+
+// bixag79159@czilou.com

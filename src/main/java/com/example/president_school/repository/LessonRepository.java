@@ -13,11 +13,12 @@ import java.util.UUID;
 
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, UUID> {
-    List<Lesson> findAllByCourseEmployeeOrderByCreatedDateAsc(Employee employee);
-    List<Lesson> findAllByCourseGradeAndCourseEmployeeOrderByCreatedDateAsc(Integer grade, Employee employee);
-    List<Lesson> findAllByCourseOrderByCreatedDateAsc(Course course);
+    List<Lesson> findAllByCourseEmployeeOrderByOrderNumberAsc(Employee employee);
+    List<Lesson> findAllByCourseGradeAndCourseEmployeeOrderByOrderNumberAsc(Integer grade, Employee employee);
+    List<Lesson> findAllByCourseOrderByOrderNumberAsc(Course course);
     int countAllByCourse(Course course);
     boolean existsByLessonType(LessonType lessonType);
     Optional<Lesson> findByLessonType(LessonType lessonType);
     Optional<Lesson> findByHashId(String hashId);
+    Optional<Lesson> findByCourseIdAndOrderNumber(Integer course, Integer order);
 }
