@@ -67,10 +67,15 @@
 
 <section id="watch" class="watch-video">
    <div class="video-container">
-      <a th:href="${lesson}" class="btn"><i class="fa-solid fa-backward"></i> Dars videosi</a>
       <ul style="margin-top: 1rem;">
          <li th:each="task : ${taskList}" th:id="'li' + ${task.id}">
             <div th:style="${task.taskDo} ? 'display: flex' : 'display: none'" class="bg-success">
+               <div class="success-animation">
+                  <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                     <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                     <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                  </svg>
+               </div>
                <span th:text="${task.order} + '-topshiriq bajarildi.'"></span>
             </div>
             <div th:if="!${task.taskDo}" class="task-body">
@@ -90,7 +95,10 @@
             </div>
          </li>
       </ul>
-      <a th:href="${nextLesson}" id="nextLessonBtn" style="display: none;" class="option-btn">Keyingi dars <i class="fa-solid fa-forward"></i></a>
+      <div>
+         <a th:href="${lesson}" class="btn"><i class="fa-solid fa-backward"></i> Dars videosi</a>
+         <a th:href="${nextLesson}" id="nextLessonBtn" style="display: none;" class="option-btn">Keyingi dars <i class="fa-solid fa-forward"></i></a>
+      </div>
    </div>
 </section>
 

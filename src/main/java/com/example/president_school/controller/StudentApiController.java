@@ -139,7 +139,9 @@ public class StudentApiController {
                 List<LessonDto> lessonDtoList = new ArrayList<>();
                 for (int i = 0; i < lessonList.size(); i++) {
                     if (accessLessonRepository.existsByLessonAndStudent(lessonList.get(i), studentRepository.findByPhone("+998901234568").get()) || i <= 1) {
-                        String lessonLink = "/api/user/watch/" + lessonList.get(i).getId();
+                        String lessonLink = lessonList.get(i).getOrderNumber() % 7 != 0 ? "/api/user/watch/" + lessonList.get(i).getId()
+                                : "/api/user/test/" + lessonList.get(i).getId();
+
                         boolean star = true;
                         if (i >= 1 && i <= lessonList.size() - 2){
                             if (!accessLessonRepository.existsByLessonAndStudent(lessonList.get(i+1), studentRepository.findByPhone("+998901234568").get())){
@@ -149,20 +151,9 @@ public class StudentApiController {
 
                         lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), lessonList.get(i).getOrderNumber(),
                                 lessonList.get(i).getTitle(), lessonList.get(i).getLessonType().toString().toLowerCase(), "true", lessonLink, star));
-
-//                        if ((i+1) % 6 == 0){
-//                            lessonLink = "/api/user/test/" + lessonList.get(i).getCourse().getId() + "/" + (i + 2);
-//                            lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), 0,
-//                                    lessonList.get(i).getTitle(), LessonType.TEST.toString().toLowerCase(), "true", lessonLink, false));
-//                        }
                     } else {
                         lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), lessonList.get(i).getOrderNumber(),
                                 lessonList.get(i).getTitle(), lessonList.get(i).getLessonType().toString().toLowerCase(), "false", "javascript:void(0);", false));
-
-//                        if ((i+1) % 6 == 0){
-//                            lessonDtoList.add(new LessonDto(lessonList.get(i).getId(), 0,
-//                                    lessonList.get(i).getTitle(), LessonType.TEST.toString().toLowerCase(), "false", "javascript:void(0);", false));
-//                        }
                     }
                 }
                 map.addAttribute("lessonList", lessonDtoList);
@@ -284,95 +275,107 @@ public class StudentApiController {
         map.addAttribute("title", lesson.getTitle());
         map.addAttribute("description", lesson.getDescription());
 
-        final List<Test> testList = testRepository.findAllByLesson(lesson);
-        List<Integer> arr = new ArrayList<>();
-        Random random = new Random();
-        do {
-            int i1 = random.nextInt(0, testList.size());
-            if (!arr.contains(i1)) arr.add(i1);
-        } while (arr.size() != testList.size());
-
         List<TestDto> testDtoList = new ArrayList<>();
-        for(int i = 0; i < arr.size(); i++){
-            TestDto testDto = new TestDto();
-            testDto.setOrder(i+1);
-            testDto.setId(testList.get(arr.get(i)).getId());
-            testDto.setQuestion(testList.get(arr.get(i)).getQuestionTxt());
-            String questionImgPath = testList.get(arr.get(i)).getQuestionImg() == null ? null : "/api/teacher/rest/viewImage/" + testList.get(arr.get(i)).getQuestionImg().getHashId();
-            testDto.setQuestionImgUrl(questionImgPath);
-            List<Integer> ans = new ArrayList<>();
-            do {
-                int i1 = random.nextInt(1, 4);
-                if (!ans.contains(i1)) ans.add(i1);
-            } while (ans.size() != 3);
+        int testOrder = 1;
+        for (int i = lesson.getOrderNumber() - 6; i <= lesson.getOrderNumber() - 1; i++){
+            final Optional<Lesson> byCourseIdAndOrderNumber = lessonRepository.findByCourseIdAndOrderNumber(lesson.getCourse().getId(), i);
+            final List<Test> allByLesson = testRepository.findAllByLesson(byCourseIdAndOrderNumber.get());
+            if (allByLesson.size() >= 3){
+                List<Integer> arr = new ArrayList<>();
+                Random random = new Random();
+                do {
+                    int i1 = random.nextInt(0, allByLesson.size());
+                    if (!arr.contains(i1)) arr.add(i1);
+                } while (arr.size() != 3);
 
-            String answer1ImgPath = testList.get(arr.get(i)).getAnswer1Img() == null ? null : "/api/teacher/rest/viewImage/" + testList.get(arr.get(i)).getAnswer1Img().getHashId();
-            String answer2ImgPath = testList.get(arr.get(i)).getAnswer2Img() == null ? null : "/api/teacher/rest/viewImage/" + testList.get(arr.get(i)).getAnswer2Img().getHashId();
-            String answer3ImgPath = testList.get(arr.get(i)).getAnswer3Img() == null ? null : "/api/teacher/rest/viewImage/" + testList.get(arr.get(i)).getAnswer3Img().getHashId();
+                for(int j = 0; j < 3; j++){
+                    TestDto testDto = new TestDto();
+                    testDto.setOrder(testOrder);
+                    testOrder++;
+                    testDto.setId(allByLesson.get(arr.get(j)).getId());
+                    testDto.setQuestion(allByLesson.get(arr.get(j)).getQuestionTxt());
+                    String questionImgPath = allByLesson.get(arr.get(j)).getQuestionImg() == null ? null
+                            : "/api/teacher/rest/view-test-image/" + allByLesson.get(arr.get(j)).getQuestionImg().getHashId();
+                    testDto.setQuestionImgUrl(questionImgPath);
+                    List<Integer> ans = new ArrayList<>();
+                    do {
+                        int i1 = random.nextInt(1, 4);
+                        if (!ans.contains(i1)) ans.add(i1);
+                    } while (ans.size() != 3);
+
+                    String answer1ImgPath = allByLesson.get(arr.get(j)).getAnswer1Img() == null ? null
+                            : "/api/teacher/rest/view-test-image/" + allByLesson.get(arr.get(j)).getAnswer1Img().getHashId();
+                    String answer2ImgPath = allByLesson.get(arr.get(j)).getAnswer2Img() == null ? null
+                            : "/api/teacher/rest/view-test-image/" + allByLesson.get(arr.get(j)).getAnswer2Img().getHashId();
+                    String answer3ImgPath = allByLesson.get(arr.get(j)).getAnswer3Img() == null ? null
+                            : "/api/teacher/rest/view-test-image/" + allByLesson.get(arr.get(j)).getAnswer3Img().getHashId();
 
 
-            switch (ans.get(0)) {
-                case 1 -> {
-                    testDto.setAnswer1(testList.get(arr.get(i)).getAnswer1());
-                    testDto.setAnswer1ImgUrl(answer1ImgPath);
-                    testDto.setAnswer1Id(1);
+                    switch (ans.get(0)) {
+                        case 1 -> {
+                            testDto.setAnswer1(allByLesson.get(arr.get(j)).getAnswer1());
+                            testDto.setAnswer1ImgUrl(answer1ImgPath);
+                            testDto.setAnswer1Id(1);
+                        }
+                        case 2 -> {
+                            testDto.setAnswer1(allByLesson.get(arr.get(j)).getAnswer2());
+                            testDto.setAnswer1ImgUrl(answer2ImgPath);
+                            testDto.setAnswer1Id(2);
+                        }
+                        case 3 -> {
+                            testDto.setAnswer1(allByLesson.get(arr.get(j)).getAnswer3());
+                            testDto.setAnswer1ImgUrl(answer3ImgPath);
+                            testDto.setAnswer1Id(3);
+                        }
+                    }
+                    switch (ans.get(1)) {
+                        case 1 -> {
+                            testDto.setAnswer2(allByLesson.get(arr.get(j)).getAnswer1());
+                            testDto.setAnswer2ImgUrl(answer1ImgPath);
+                            testDto.setAnswer2Id(1);
+                        }
+                        case 2 -> {
+                            testDto.setAnswer2(allByLesson.get(arr.get(j)).getAnswer2());
+                            testDto.setAnswer2ImgUrl(answer2ImgPath);
+                            testDto.setAnswer2Id(2);
+                        }
+                        case 3 -> {
+                            testDto.setAnswer2(allByLesson.get(arr.get(j)).getAnswer3());
+                            testDto.setAnswer2ImgUrl(answer3ImgPath);
+                            testDto.setAnswer2Id(3);
+                        }
+                    }
+                    switch (ans.get(2)) {
+                        case 1 -> {
+                            testDto.setAnswer3(allByLesson.get(arr.get(j)).getAnswer1());
+                            testDto.setAnswer3ImgUrl(answer1ImgPath);
+                            testDto.setAnswer3Id(1);
+                        }
+                        case 2 -> {
+                            testDto.setAnswer3(allByLesson.get(arr.get(j)).getAnswer2());
+                            testDto.setAnswer3ImgUrl(answer2ImgPath);
+                            testDto.setAnswer3Id(2);
+                        }
+                        case 3 -> {
+                            testDto.setAnswer3(allByLesson.get(arr.get(j)).getAnswer3());
+                            testDto.setAnswer3ImgUrl(answer3ImgPath);
+                            testDto.setAnswer3Id(3);
+                        }
+                    }
+
+                    testDtoList.add(testDto);
                 }
-                case 2 -> {
-                    testDto.setAnswer1(testList.get(arr.get(i)).getAnswer2());
-                    testDto.setAnswer1ImgUrl(answer2ImgPath);
-                    testDto.setAnswer1Id(2);
-                }
-                case 3 -> {
-                    testDto.setAnswer1(testList.get(arr.get(i)).getAnswer3());
-                    testDto.setAnswer1ImgUrl(answer3ImgPath);
-                    testDto.setAnswer1Id(3);
+                for(TestDto testDto : testDtoList){
+                    final Optional<Student> studentOptional = studentRepository.findByPhone("+998901234568");
+                    final Student student = studentOptional.get();
+                    final Optional<Test> testOptional = testRepository.findById(testDto.getId());
+                    final Test test = testOptional.get();
+                    studentTestRepository.save(new StudentTest(student, test));
                 }
             }
-            switch (ans.get(1)) {
-                case 1 -> {
-                    testDto.setAnswer2(testList.get(arr.get(i)).getAnswer1());
-                    testDto.setAnswer2ImgUrl(answer1ImgPath);
-                    testDto.setAnswer2Id(1);
-                }
-                case 2 -> {
-                    testDto.setAnswer2(testList.get(arr.get(i)).getAnswer2());
-                    testDto.setAnswer2ImgUrl(answer2ImgPath);
-                    testDto.setAnswer2Id(2);
-                }
-                case 3 -> {
-                    testDto.setAnswer2(testList.get(arr.get(i)).getAnswer3());
-                    testDto.setAnswer2ImgUrl(answer3ImgPath);
-                    testDto.setAnswer2Id(3);
-                }
-            }
-            switch (ans.get(2)) {
-                case 1 -> {
-                    testDto.setAnswer3(testList.get(arr.get(i)).getAnswer1());
-                    testDto.setAnswer3ImgUrl(answer1ImgPath);
-                    testDto.setAnswer3Id(1);
-                }
-                case 2 -> {
-                    testDto.setAnswer3(testList.get(arr.get(i)).getAnswer2());
-                    testDto.setAnswer3ImgUrl(answer2ImgPath);
-                    testDto.setAnswer3Id(2);
-                }
-                case 3 -> {
-                    testDto.setAnswer3(testList.get(arr.get(i)).getAnswer3());
-                    testDto.setAnswer3ImgUrl(answer3ImgPath);
-                    testDto.setAnswer3Id(3);
-                }
-            }
-
-            testDtoList.add(testDto);
         }
-        for(TestDto testDto : testDtoList){
-            final Optional<Student> studentOptional = studentRepository.findByPhone("+998901234568");
-            final Student student = studentOptional.get();
-            final Optional<Test> testOptional = testRepository.findById(testDto.getId());
-            final Test test = testOptional.get();
-            studentTestRepository.save(new StudentTest(student, test));
-        }
-        map.addAttribute("testList", testDtoList);
+        
+        map.addAttribute("allByLesson", testDtoList);
         return "student/test";
     }
 

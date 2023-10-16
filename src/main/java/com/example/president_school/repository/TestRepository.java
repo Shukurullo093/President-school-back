@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface TestRepository extends JpaRepository<Test, Integer> {
     List<Test> findAllByLesson(Lesson lesson);
+
 }

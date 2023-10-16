@@ -76,7 +76,7 @@ public class TeacherApiController {
         if (lessonListByGrade.size() % 7 == 0){
             map.addAttribute("lessonCount", lessonListByGrade.size() + 1);
         } else {
-            map.addAttribute("lessonCount", lessonListByGrade.size() / 7 + lessonListByGrade.size() % 7);
+            map.addAttribute("lessonCount", lessonListByGrade.size());
         }
         map.addAttribute("science", employeeOptional.get().getScience().toString());
         map.addAttribute("grade", grade);
@@ -217,7 +217,7 @@ public class TeacherApiController {
         Lesson lesson = lessonOptional.get();
 
         LessonDto lessonDto = new LessonDto();
-
+        lessonDto.setId(lesson.getId());
         lessonDto.setTitle(lesson.getTitle());
         lessonDto.setType(lesson.getLessonType().toString());
         lessonDto.setDescription(lesson.getDescription());

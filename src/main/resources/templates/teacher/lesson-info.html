@@ -169,7 +169,8 @@
                                                             <p th:text="'&emsp;&emsp;' + ${lessonInfo.description}"></p>
                                                         </div>
                                                     </div>
-                                                    <h4 class="text-primary mb-4">Dars ma'lumotlari</h4>
+                                                    <a th:href="'/api/teacher/edit/lesson/' + ${lessonInfo.id}" class="btn-primary p-2 rounded"><i class="la la-edit"></i> Tahrirlash</a>
+                                                    <h4 class="text-primary my-4">Dars ma'lumotlari</h4>
                                                     <div class="row mb-4">
                                                         <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                                                             <h5 class="f-w-500">Nomi <span class="pull-right">:</span>
@@ -286,23 +287,14 @@
         <!--**********************************
             Footer start
         ***********************************-->
-        <div class="footer">
-            <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>
-            </div>
-        </div>
+<!--        <div class="footer">-->
+<!--            <div class="copyright">-->
+<!--                <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank"></a> 2023</p>-->
+<!--            </div>-->
+<!--        </div>-->
         <!--**********************************
             Footer end
         ***********************************-->
-
-		<!--**********************************
-           Support ticket button start
-        ***********************************-->
-
-        <!--**********************************
-           Support ticket button end
-        ***********************************-->
-
 
     </div>
     <!--**********************************

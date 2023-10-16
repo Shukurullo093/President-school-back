@@ -6,6 +6,7 @@ import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.StudentDto;
 import com.example.president_school.repository.StudentRepository;
 import com.example.president_school.service.StudentService;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,24 +43,27 @@ public class StudentRestController {
         studentService.exportTestResultToPdf(response);
     }
 
-    @PostMapping("/check/test")
-    public ResponseEntity<?> checkTest(@RequestBody String[] result1){
-        System.out.println(result1);
-        return null;
-    }
-
     @PostMapping("/check-task/{taskId}")
     public ResponseEntity<?> checkTask(@PathVariable Integer taskId, @RequestParam("answer")String answer){
         final Optional<Student> byPhone = studentRepository.findByPhone("+998901234568");
         return ResponseEntity.ok(studentService.checkTask(byPhone.get(), taskId, answer));
     }
 
+    @PostMapping("/check/test")
+    public ResponseEntity<?> checkTest(@RequestBody TestResultDto[] result1){
+        System.out.println(result1);
+        return null;
+    }
+
     @AllArgsConstructor
     @NoArgsConstructor
     @Data
     class TestResultDto{
-        private int test_id;
-        private int data_id;
+        @JsonProperty("test_id")
+        private String test_id;
+
+        @JsonProperty("data_id")
+        private String data_id;
 
     }
 }

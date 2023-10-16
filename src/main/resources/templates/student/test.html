@@ -80,18 +80,18 @@
       <div id="ul">
          <form id="form">
             <ul style="list-style: none;">
-               <li style="margin-bottom: 2rem;" th:each="test : ${testList}" th:data-id="${test.id}">
+               <li style="margin-bottom: 2rem;" th:each="test : ${allByLesson}" th:data-id="${test.id}">
                   <div class="flex">
                      <div class="question">
                         <h4 class="question-text" th:text="'{#' + ${test.order} + '} ' + ${test.question}"></h4>
-                        <a th:if="${test.questionImgUrl != null}" th:href="${test.questionImgUrl}">
+                        <a th:if="${test.questionImgUrl != null}" href="javascript:void(0);">
                            <img th:src="${test.questionImgUrl}" alt="question-img">
                         </a>
                      </div>
                      <div class="input-group">
                         <input type="radio" onchange="inputChange(this)" th:test-order="${test.order}" th:test-id="${test.id}" th:data-id="${test.answer1Id}" th:name="'check' + ${test.order}" id="var1">
                         <label for="var1">
-                           <a th:if="${test.answer1ImgUrl != null}" th:href="${test.answer1ImgUrl}">
+                           <a th:if="${test.answer1ImgUrl != null}" href="javascript:void(0);">
                               <img th:src="${test.answer1ImgUrl}" alt="answer-img"><br>
                            </a>
                            <span th:text="${test.answer1}"></span>
@@ -100,7 +100,7 @@
                      <div class="input-group">
                         <input type="radio" onchange="inputChange(this)" th:test-order="${test.order}" th:test-id="${test.id}" th:data-id="${test.answer2Id}" th:name="'check' + ${test.order}" id="var2">
                         <label for="var2">
-                           <a th:if="${test.answer2ImgUrl != null}" th:href="${test.answer2ImgUrl}">
+                           <a th:if="${test.answer2ImgUrl != null}" href="javascript:void(0);">
                               <img th:src="${test.answer2ImgUrl}" alt="answer-img"><br>
                            </a>
                            <span th:text="${test.answer2}"></span>
@@ -109,7 +109,7 @@
                      <div class="input-group">
                         <input type="radio" onchange="inputChange(this)" th:test-order="${test.order}" th:test-id="${test.id}" th:data-id="${test.answer3Id}" th:name="'check' + ${test.order}" id="var3">
                         <label for="var3">
-                           <a th:if="${test.answer3ImgUrl != null}" th:href="${test.answer3ImgUrl}">
+                           <a th:if="${test.answer3ImgUrl != null}" href="javascript:void(0);">
                               <img th:src="${test.answer3ImgUrl}" alt="answer-img">
                               <br>
                            </a>
@@ -138,8 +138,8 @@
                <span class="number-16 ten">16</span>
                <span class="number-17 ten">17</span>
                <span class="number-18 ten">18</span>
-               <span class="number-19 ten">19</span>
-               <span class="number-20 ten">20</span>
+<!--               <span class="number-19 ten">19</span>-->
+<!--               <span class="number-20 ten">20</span>-->
             </div>
             <div class="flex-btn">
                <button type="button" class="option-btn" onclick="checkTest()">Natija</button>
@@ -159,7 +159,7 @@
 
    <!-- custom js file link  -->
    <script src="/user/js/test.js"></script>
-   <script src="/user/js/watch-video.js"></script>
+<!--   <script src="/user/js/watch-video.js"></script>-->
    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 
    <script>

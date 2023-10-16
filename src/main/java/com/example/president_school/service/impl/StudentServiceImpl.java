@@ -116,7 +116,10 @@ public class StudentServiceImpl implements StudentService {
                     studentTaskStatusRepository.deleteAll(allByStudentIdAndLessonId);
                     final Optional<Lesson> byCourseIdAndOrderNumber = lessonRepository.findByCourseIdAndOrderNumber(task.getLesson().getCourse().getId(), task.getLesson().getOrderNumber() + 1);
                     if (byCourseIdAndOrderNumber.isPresent()) {
-                        accessLessonRepository.save(new AccessLesson(student, byCourseIdAndOrderNumber.get()));
+                        final boolean b = accessLessonRepository.existsByLessonAndStudent(byCourseIdAndOrderNumber.get(), student);
+                        if (!b){
+                            accessLessonRepository.save(new AccessLesson(student, byCourseIdAndOrderNumber.get()));
+                        }
                     }
                     return new ControllerResponse("Tabriklaymiz! Siz barcha topshiriqlarni bajardingiz. Keyingi darsga o'tishingiz mumkin.", 200, "true");
                 } else {
