@@ -4,6 +4,7 @@ import com.example.president_school.entity.PersonImage;
 import com.example.president_school.entity.Post;
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.LoginDto;
+import com.example.president_school.payload.StudentDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,4 +41,10 @@ public interface AdminService {
     void exportEmployeeToExcel(HttpServletResponse response) throws IOException;
 
     ControllerResponse addTest(String question, MultipartFile questionImg, String ans1, MultipartFile ans1Img, String ans2, MultipartFile ans2Img, String ans3, MultipartFile ans3Img);
+
+    StudentDto getStudent(Long studentId);
+
+    void setPermissionToCourse(Long studentId, Integer courseId);
+
+    ControllerResponse addStudent(String fullName, String phone, String grade, String gender, String password);
 }

@@ -16,7 +16,7 @@
    
    <section class="flex">
 
-      <a href="home.html" class="logo">President school</a>
+      <a href="#" class="logo">President school</a>
 
       <div class="icons">
          <div id="menu-btn" class="fas fa-bars"></div>
@@ -70,9 +70,8 @@
 
       <div class="box" th:if="${accessCourse == null}">
          <a th:href="@{/api/user/dashboard}" style="text-align: center">
-<!--            <i class="fas fa-minus-circle"></i>-->
-<!--            <img src="/user/images/pic-1.jpg" alt="">-->
-            <h2>Sizda sotib olingan kurs yo'q<br>Pastdagi tugma orqali kurslarni xarid qilishingiz mumkin.</h2>
+            <img src="/user/images/no-result.gif" style="height: 20rem;">
+            <h2>Sizda xarid qilingan kurs mavjud emas!<br>Pastdagi tugma orqali kurslarni xarid qilishingiz mumkin.</h2>
             <button type="button" class="btn btn-block">Xarid qilish</button>
          </a>
       </div>

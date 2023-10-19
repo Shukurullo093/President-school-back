@@ -19,7 +19,7 @@
    
    <section class="flex">
 
-      <a href="home.html" class="logo">President school</a>
+      <a href="#" class="logo">President school</a>
 
       <!-- <form action="search.html" method="post" class="search-form">
          <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
@@ -74,19 +74,12 @@
    <h1 class="heading" th:text="${science}"></h1>
 
    <div class="row">
-
       <div class="column">
-         <!-- <form action="" method="post" class="save-playlist">
-            <button type="submit"><i class="far fa-bookmark"></i> <span>save playlist</span></button>
-         </form> -->
-   
          <div class="thumb">
-            <img th:src="${scienceImg}" alt="">
-            <!-- <span>10 videos</span> -->
+            <img th:src="${scienceImg}">
          </div>
       </div>
       <div class="column">
-
          <div class="details">
             <h3 style="font-size: 30px;" th:text="${science}"></h3>
             <p>Darslar soni: <span th:text="${lessonSize}"></span> ta</p>

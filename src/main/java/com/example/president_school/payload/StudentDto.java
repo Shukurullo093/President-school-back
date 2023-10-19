@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,12 +20,8 @@ public class StudentDto {
     private MultipartFile image;
     private String imagePath;
     private String createdDate;
-
-    public StudentDto(Long id, String fullName, String imagePath) {
-        this.id = id;
-        this.fullName = fullName;
-        this.imagePath = imagePath;
-    }
+    private List<AccessCourseDto> accessCourseDtoList;
+    private String accessCourseDto;
 
     public StudentDto(String fullName, String phone, String gender, String grade, String password, MultipartFile image) {
         this.fullName = fullName;

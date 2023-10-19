@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/student/rest")
@@ -49,21 +50,9 @@ public class StudentRestController {
         return ResponseEntity.ok(studentService.checkTask(byPhone.get(), taskId, answer));
     }
 
-    @PostMapping("/check/test")
-    public ResponseEntity<?> checkTest(@RequestBody TestResultDto[] result1){
-        System.out.println(result1);
-        return null;
-    }
-
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    class TestResultDto{
-        @JsonProperty("test_id")
-        private String test_id;
-
-        @JsonProperty("data_id")
-        private String data_id;
-
+    @PostMapping("/check/test/{lessonId}")
+    public void checkTest(@PathVariable UUID id, @RequestBody Integer result){
+        final Optional<Student> byId = studentRepository.findById(Long.valueOf("+998901234568"));
+        studentService.checkTest(byId.get(), id, result);
     }
 }

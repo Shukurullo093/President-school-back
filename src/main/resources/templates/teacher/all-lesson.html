@@ -150,8 +150,8 @@
 				<div class="row">
                     <div class="col-lg-12">
                         <ul class="nav nav-pills mb-3">
-                            <li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link rounded btn-primary mr-1 show active">Jadval</a></li>
-                            <li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link rounded btn-primary">Karta</a></li>
+                            <li class="nav-item"><a href="#list-view" data-toggle="tab" class="nav-link rounded btn-primary mr-1">Jadval</a></li>
+                            <li class="nav-item"><a href="#grid-view" data-toggle="tab" class="nav-link rounded btn-primary show active">Karta</a></li>
                             <li class="nav-item mr-1 ml-auto">
                                 <a href="/api/teacher/rest/export/lesson/excel" class="btn btn-primary">
                                     <i class="la la-download"></i>
@@ -168,7 +168,7 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="row tab-content">
-                            <div id="list-view" class="tab-pane fade active show col-lg-12">
+                            <div id="list-view" class="tab-pane fade col-lg-12">
                                 <div class="card">
                                     <div class="card-header" th:if="${gradeStatus == 'all' || gradeStatus == '2'}">
                                         <h4 class="card-title">2-sinf uchun darslar</h4>
@@ -267,7 +267,7 @@
                                     </div>
                                 </div >
                             </div>
-                            <div id="grid-view" class="tab-pane fade col-lg-12">
+                            <div id="grid-view" class="tab-pane fade active show col-lg-12">
                                 <div class="row">
                                     <style>
                                         .col-lg-12{
@@ -315,6 +315,19 @@
                                             position: absolute;
                                             margin-top: 10px;
                                             right: .5rem;
+                                            padding: .3rem 1rem;
+                                            border-radius: .5rem;
+                                            background-color: rgba(0,0,0,.3);
+                                            letter-spacing: 1px;
+                                            font-size: 1.2rem;
+                                            color: #fff;
+                                            text-transform: lowercase;
+                                            /* display: none; */
+                                        }
+                                        .box .lesson-completed-status{
+                                            position: absolute;
+                                            right: .5rem;
+                                            bottom: 2rem;
                                             padding: .3rem 1rem;
                                             border-radius: .5rem;
                                             background-color: rgba(0,0,0,.3);
@@ -374,6 +387,7 @@
                                             <a class="box" th:href="${grade.lessonInfoLink}">
                                                 <span class="lesson-type text-lowercase" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
                                                 <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
+                                                <span class="lesson-completed-status" th:if="${!grade.completedStatus}">To'liq emas</span>
                                                 <i class="la la-play"></i>
                                                 <img src="/images/thumb-1.png" alt="">
                                                 <h3 th:text="${grade.title}"></h3>
@@ -394,6 +408,7 @@
                                             <a class="box" th:href="@{'/api/teacher/lesson/info/' + grade.id}">
                                                 <span class="lesson-type" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
                                                 <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
+                                                <span class="lesson-completed-status" th:if="${!grade.completedStatus}">To'liq emas</span>
                                                 <i class="la la-play"></i>
                                                 <img src="/images/thumb-1.png" alt="">
                                                 <h3 th:text="${grade.title}"></h3>
@@ -414,6 +429,7 @@
                                             <a class="box" th:href="@{'/api/teacher/lesson/info/' + grade.id}">
                                                 <span class="lesson-type" th:text="${(grade.orderNumber == 1 || grade.orderNumber == 2) ? 'demo' : grade.type}"></span>
                                                 <span class="lesson-order-number" th:text="${'#' + grade.orderNumber}"></span>
+                                                <span class="lesson-completed-status" th:if="${!grade.completedStatus}">To'liq emas</span>
                                                 <i class="la la-play"></i>
                                                 <img src="/images/thumb-1.png" alt="">
                                                 <h3 th:text="${grade.title}"></h3>

@@ -208,37 +208,40 @@
 														</button>
 													</div>
 													<div class="modal-body">
-														<form class="w-100">
+														<form id="modal-form" class="w-100">
 															<div class="form-group">
 																<label class="form-label">FIO: </label>
-																<input type="text" class="form-control" placeholder="">
+																<input type="text" name="fullName" class="form-control" required>
 															</div>
 															<div class="form-group">
 																<label class="form-label">Telefon raqam:</label>
-																<input type="tel" class="form-control" placeholder="">
+																<input type="tel" name="phone" class="form-control" required>
 															</div>
 															<div class="form-group d-flex">
 																<label class="form-label">Sinf:</label><br>
-																<select class="form-select ml-0">
+																<select class="form-select ml-0" name="grade">
 																	<option value="2">2</option>
 																	<option value="3">3</option>
 																	<option value="4">4</option>
 																</select>
 																<label class="form-label ml-1">Jins:</label><br>
-																<select class="form-select">
+																<select class="form-select" name="gender">
 																	<option value="male">O'g'il</option>
 																	<option value="female">Qiz</option>
 																</select>
 															</div>
 															<div class="form-group">
 																<label class="form-label">Parol</label>
-																<input type="password" class="form-control" placeholder="">
+																<input type="password" name="pass" class="form-control" required>
+															</div>
+															<div style="display: none;" class="msg-div rounded px-2 py-1">
+																<strong class="msg text-light">ddd</strong>
 															</div>
 														</form>
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-primary" data-dismiss="modal">Yopish</button>
-														<button type="button" class="btn btn-secondary">Saqlash</button>
+														<button type="button" id="addStudent" class="btn btn-secondary">Saqlash</button>
 													</div>
 												</div>
 											</div>
@@ -270,60 +273,22 @@
 														<td class="row">
 															<div class="col-12 text-capitalize">
 																<table class="table student-table w-100 p-0">
-																	<tr>
-																		<td>
-																			<strong class="text-primary">Matematika</strong>
+																	<tr th:each="access : ${student.accessCourseDtoList}">
+																		<td class="p-1 m-0">
+																			<strong class="text-primary" th:text="${access.science}"></strong>
 																		</td>
-																		<td>
-																			<span class="bg-success rounded px-2 py-1">to'lov qilingan</span>
+																		<td th:if="${access.status}" class="w-50 p-0 m-0">
+																			<span class="bg-success rounded px-2 py-1 text-nowrap">to'lov qilingan</span>
 																		</td>
-																	</tr>
-																	<tr>
-																		<td>
-																			<strong class="text-primary">Ingliz tili</strong>
-																		</td>
-																		<td>
-																			<span class="bg-success rounded px-2 py-1">To'lov Qilingan</span>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>
-																			<strong class="text-primary">Tanqidiy fikrlash</strong>
-																		</td>
-																		<td class="w-50">
-																			<span class="bg-danger rounded px-2 py-1 text-light">to'lov qilinmagan</span>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>
-																			<strong class="text-primary">Muammoni yechish</strong>
-																		</td>
-																		<td>
-																			<span class="bg-danger rounded px-2 py-1 text-light">to'lov qilinmagan</span>
+																		<td th:unless="${access.status}" class="w-50 p-0 m-0">
+																			<span class="bg-danger rounded px-2 py-1 text-light text-nowrap">to'lov qilinmagan</span>
 																		</td>
 																	</tr>
 																</table>
 															</div>
 														</td>
 														<td>
-															<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">Tahrirlash</button>
-														</td>
-													</tr>
-													<tr th:each="student : ${studentList}">
-														<td><img class="rounded-circle" width="35" th:src="${student.imagePath}"></td>
-														<td th:text="${student.fullName}" class="text-capitalize"></td>
-														<td th:text="${student.phone}"></td>
-														<td th:text="${student.gender}"></td>
-														<td th:text="${student.grade}"></td>
-														<td th:text="${student.createdDate}"></td>
-														<td class="text-center">
-															<span class="bg-success px-2 py-1 rounded text-dark">Matematika</span>
-															<span class="bg-success px-2 py-1 rounded text-dark">Ingliz tili</span><br><br>
-															<span class="bg-danger px-2 py-1 rounded text-light">Tanqidiy fikrlash</span>
-															<span class="bg-danger px-2 py-1 rounded text-light">Muammoni yechish</span>
-														</td>
-														<td>
-															<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">Tahrirlash</button>
+															<button type="button" class="btn btn-primary" th:data-id="${student.id}" onclick="getStudent(this);" data-toggle="modal" data-target="#exampleModalCenter1">Tahrirlash</button>
 														</td>
 													</tr>
 												</tbody>
@@ -340,8 +305,7 @@
 													</div>
 													<div class="modal-body row">
 														<div class="col-lg-4 col-sm-12 text-center">
-															<img src="/images/pic-6.jpg" class="img-fluid rounded border w-100 p-1">
-															<h2 class="text-primary mt-2"><i class="fa fa-diamond" aria-hidden="true"></i> 20</h2>
+															<img src="#" class="img-fluid rounded border w-100 p-1">
 														</div>
 														<div class="col-lg-8 col-sm-12">
 															<table class="table student-table">
@@ -350,7 +314,7 @@
 																		<strong class="text-primary">FIO</strong>
 																	</td>
 																	<td>
-																		<span class="text-uppercase text-right">john doe</span>
+																		<span class="text-capitalize text-right modal-student-name"></span>
 																	</td>
 																</tr>
 																<tr>
@@ -358,7 +322,7 @@
 																		<strong class="text-primary">Telefon</strong>
 																	</td>
 																	<td>
-																		<span>+998901234567</span>
+																		<span class="modal-student-phone"></span>
 																	</td>
 																</tr>
 																<tr>
@@ -366,7 +330,7 @@
 																		<strong class="text-primary">Jins</strong>
 																	</td>
 																	<td>
-																		<span class="text-uppercase">o'g'il</span>
+																		<span class="text-capitalize modal-student-gender"></span>
 																	</td>
 																</tr>
 																<tr>
@@ -374,7 +338,7 @@
 																		<strong class="text-primary">Sinf</strong>
 																	</td>
 																	<td>
-																		<span>2</span>
+																		<span class="modal-student-grade"></span>
 																	</td>
 																</tr>
 																<tr>
@@ -382,54 +346,13 @@
 																		<strong class="text-primary">Qo'shilgan vaqt</strong>
 																	</td>
 																	<td>
-																		<span>01/01/2023</span>
+																		<span class="modal-student-date">01/01/2023</span>
 																	</td>
 																</tr>
 															</table>
 														</div>
-														<div class="col-12 overflow-auto text-capitalize">
-															<table class="table student-table w-100">
-																<tr>
-																	<td>
-																		<strong class="text-primary">Matematika</strong>
-																	</td>
-																	<td style="width: 40%;">
-																		<span class="bg-success rounded px-2 py-1">to'lov qilingan</span>
-																	</td>
-																	<td></td>
-																</tr>
-																<tr>
-																	<td>
-																		<strong class="text-primary">Ingliz tili</strong>
-																	</td>
-																	<td>
-																		<span class="bg-success rounded px-2 py-1">To'lov Qilingan</span>
-																	</td>
-																	<td></td>
-																</tr>
-																<tr>
-																	<td>
-																		<strong class="text-primary">Tanqidiy fikrlash</strong>
-																	</td>
-																	<td>
-																		<span class="bg-danger rounded px-2 py-1 text-light">to'lov qilinmagan</span>
-																	</td>
-																	<td>
-																		<button type="button" class="btn btn-primary w-100">To'lov Qilish</button>
-																	</td>
-																</tr>
-																<tr>
-																	<td>
-																		<strong class="text-primary">Muammoni yechish</strong>
-																	</td>
-																	<td>
-																		<span class="bg-danger rounded px-2 py-1 text-light">to'lov qilinmagan</span>
-																	</td>
-																	<td>
-																		<button type="button" class="btn btn-primary">To'lov Qilish</button>
-																	</td>
-																</tr>
-															</table>
+														<div class="col-12 overflow-auto text-capitalize" id="modal-student-science">
+
 														</div>
 													</div>
 													<div class="modal-footer">
@@ -512,5 +435,6 @@
     <script src="/vendor/svganimation/vivus.min.js"></script>
     <script src="/vendor/svganimation/svg.animation.js"></script>
     <script src="/js/styleSwitcher.js"></script>
+	<script src="/js/admin/admin.js"></script>
 </body>
 </html>

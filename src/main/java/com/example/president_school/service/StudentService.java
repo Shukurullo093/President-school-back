@@ -6,6 +6,7 @@ import com.example.president_school.payload.StudentDto;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 @Service
 public interface StudentService {
@@ -16,4 +17,6 @@ public interface StudentService {
     void exportTestResultToPdf(HttpServletResponse response);
 
     ControllerResponse checkTask(Student student, Integer taskId, String answer);
+
+    void checkTest(Student student, UUID id, Integer result);
 }

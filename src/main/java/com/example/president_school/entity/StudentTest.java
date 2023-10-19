@@ -22,21 +22,19 @@ public class StudentTest {
     @JoinColumn(name = "student_id")
     private Student student;
 
-//    @ManyToOne
-//    @JoinColumn(name = "lesson_id")
-//    private Lesson lesson;
-
     @ManyToOne
-    @JoinColumn(name = "test_id")
-    private Test test;
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
+
+    private int score;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Date createdDate;
 
-    public StudentTest(Student student, Test test) {
+    public StudentTest(Student student, Lesson lesson, int score) {
         this.student = student;
-//        this.lesson = lesson;
-        this.test = test;
+        this.lesson = lesson;
+        this.score = score;
     }
 }

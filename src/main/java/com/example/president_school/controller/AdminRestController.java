@@ -4,6 +4,7 @@ import com.example.president_school.entity.PersonImage;
 import com.example.president_school.entity.Post;
 import com.example.president_school.entity.TaskSource;
 import com.example.president_school.payload.ControllerResponse;
+import com.example.president_school.payload.StudentDto;
 import com.example.president_school.repository.TaskSourceRepository;
 import com.example.president_school.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -156,5 +157,22 @@ public class AdminRestController {
                                      @RequestParam("v3")String ans3,
                                      @RequestParam("v3img")MultipartFile ans3Img){
         return ResponseEntity.ok(adminService.addTest(question, questionImg, ans1, ans1Img, ans2, ans2Img, ans3, ans3Img));
+    }
+
+    @GetMapping("/get/student/{studentId}")
+    public StudentDto getStudent(@PathVariable Long studentId){
+        return adminService.getStudent(studentId);
+    }
+
+    @PostMapping("/set-permission-to-course/{studentId}/{courseId}")
+    public void setPermissionToCourse(@PathVariable Long studentId, @PathVariable Integer courseId){
+        adminService.setPermissionToCourse(studentId, courseId);
+    }
+
+    @PostMapping("/add/student")
+    public ResponseEntity<ControllerResponse> addStudent(@RequestParam("fullName")String fullName, @RequestParam("phone")String phone,
+                                                         @RequestParam("grade")String grade, @RequestParam("gender")String gender,
+                                                         @RequestParam("pass")String password){
+        return ResponseEntity.ok(adminService.addStudent(fullName, phone, grade, gender, password));
     }
 }

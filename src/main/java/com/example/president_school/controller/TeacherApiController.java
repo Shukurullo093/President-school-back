@@ -80,7 +80,8 @@ public class TeacherApiController {
         }
         map.addAttribute("science", employeeOptional.get().getScience().toString());
         map.addAttribute("grade", grade);
-        if (lessonListByGrade.size() + 1 <= 2){
+
+        if (lessonListByGrade.size() <= 2){
             map.addAttribute("lessonType", "Demo");
         } else {
             map.addAttribute("lessonType", "Video");
@@ -151,19 +152,25 @@ public class TeacherApiController {
         for (Lesson lesson : lessonList) {
             String lessonPath = !lesson.getLessonType().equals(LessonType.TEST) ? "/api/teacher/lesson/info/" + lesson.getId() :
                     "/api/teacher/add/test/" + lesson.getId();
+            boolean completedStatus = false;
+            final Integer integer = taskRepository.countAllByLesson(lesson);
+            final Integer integer1 = testRepository.countAllByLessonId(lesson.getId());
+            if (integer > 0 && integer1 >= 3){
+                completedStatus = true;
+            }
             if (lesson.getCourse().getGrade() == 2){
                 lessonDtoList2.add(new LessonDto(lesson.getId(), i2, lesson.getTitle(),
-                        lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath));
+                        lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath, completedStatus));
                 i2++;
             }
             else if (lesson.getCourse().getGrade() == 3){
                 lessonDtoList3.add(new LessonDto(lesson.getId(), i3, lesson.getTitle(),
-                        lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath));
+                        lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath, completedStatus));
                 i3++;
             }
             else {
                 lessonDtoList3.add(new LessonDto(lesson.getId(), i4, lesson.getTitle(),
-                        lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath));
+                        lesson.getDescription(), lesson.getLessonType().toString(), "true", lessonPath, completedStatus));
                 i4++;
             }
         }
@@ -189,13 +196,17 @@ public class TeacherApiController {
                 lessonRepository.findAllByCourseGradeAndCourseEmployeeOrderByOrderNumberAsc(Integer.valueOf(grade), employeeOptional.get());
         List<LessonDto> lessonDtoList = new ArrayList<>();
 
-        int i = 1;
         for (Lesson lesson : lessonList) {
             String lessonPath = !lesson.getLessonType().equals(LessonType.TEST) ? "/api/teacher/lesson/info/" + lesson.getId() :
                     "/api/teacher/add/test/" + lesson.getId();
+            boolean completedStatus = false;
+            final Integer integer = taskRepository.countAllByLesson(lesson);
+            final Integer integer1 = testRepository.countAllByLessonId(lesson.getId());
+            if (integer > 0 && integer1 >= 3){
+                completedStatus = true;
+            }
             lessonDtoList.add(new LessonDto(lesson.getId(), lesson.getOrderNumber(), lesson.getTitle(),
-                    lesson.getDescription(), lesson.getLessonType().name(), "true", lessonPath));
-            i++;
+                    lesson.getDescription(), lesson.getLessonType().name(), "true", lessonPath, completedStatus));
         }
         map.addAttribute("gradeStatus", grade);
         map.addAttribute("grade" + grade, lessonDtoList);

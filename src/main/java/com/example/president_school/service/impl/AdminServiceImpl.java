@@ -4,8 +4,10 @@ import com.example.president_school.entity.*;
 import com.example.president_school.entity.enums.LessonType;
 import com.example.president_school.entity.enums.Role;
 import com.example.president_school.entity.enums.Science;
+import com.example.president_school.payload.AccessCourseDto;
 import com.example.president_school.payload.ControllerResponse;
 import com.example.president_school.payload.LoginDto;
+import com.example.president_school.payload.StudentDto;
 import com.example.president_school.repository.*;
 //import com.example.president_school.security.JwtProvider;
 import com.example.president_school.service.AdminService;
@@ -38,19 +40,16 @@ public class AdminServiceImpl implements AdminService {
     private final GeneralService generalService;
     private final TestImgSourceRepository testImgSourceRepository;
     private final TestRepository testRepository;
+    private final StudentRepository studentRepository;
+    private final AccessCourseRepository accessCourseRepository;
 
     @Value("${upload.folder}")
     private String uploadFolder;
+    @Value("${default.person.image.path}")
+    private String defaultPersonImgPath;
 
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
-
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
-//    @Autowired
-//    JwtProvider jwtProvider;
-//    @Autowired
-//    AuthenticationManager authenticationManager;
 
     @Transactional
     @Override
@@ -434,6 +433,67 @@ public class AdminServiceImpl implements AdminService {
             return new ControllerResponse("Test yaratildi", 200);
         }
         return new ControllerResponse("Test ma'lumotlari topilmadi", 208);
+    }
+
+    @Override
+    public StudentDto getStudent(Long studentId) {
+        StudentDto studentDto = new StudentDto();
+        final Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if (studentOptional.isPresent()){
+            final Student student = studentOptional.get();
+            studentDto.setFullName(student.getFullName());
+            studentDto.setImagePath(student.getImage() != null ? "/api/admin/rest/viewImage/" + student.getImage().getHashId() : defaultPersonImgPath);
+            studentDto.setPhone(student.getPhone());
+            studentDto.setGender(student.getGender().equals("male") ? "O'g'il" : "Qiz");
+            studentDto.setGrade(String.valueOf(student.getGrade()));
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            studentDto.setCreatedDate(dateFormat.format(student.getCreatedDate()));
+
+            String stringBuilder = "<table class=\"table student-table w-100\">";
+            for (Science science : Science.values()){
+                final Optional<Course> byScienceAndGrade = courseRepository.findByScienceAndGrade(science, student.getGrade());
+                if (byScienceAndGrade.isPresent()){
+                    final boolean b = accessCourseRepository.existsByCourseScienceAndStudentId(science, student.getId());
+                    stringBuilder += ("<tr><td>");
+                    stringBuilder += ("<strong class='text-primary'>" + science.toString() + "</strong></td>");
+                    if (b){
+                        stringBuilder += ("<td style='width: 40%;'>");
+                        stringBuilder += ("<span class='bg-success rounded px-2 py-1'>to'lov qilingan</span></td><td></td>");
+                    } else {
+                        stringBuilder += ("<td><span class='bg-danger rounded px-2 py-1 text-light'>to'lov qilinmagan</span></td>");
+                        stringBuilder += ("<td><button type='button' data-id='" + student.getId() + "' data-course='" + byScienceAndGrade.get().getId() + "' onclick='setPermit(this)' class='btn btn-primary w-100'>To'lov Qilish</button></td>");
+                    }
+                    stringBuilder += ("</tr>");
+                }
+            }
+            stringBuilder += "</table>";
+            studentDto.setAccessCourseDto(stringBuilder);
+        }
+        return studentDto;
+    }
+
+    @Override
+    public void setPermissionToCourse(Long studentId, Integer courseId) {
+        final Optional<Student> studentOptional = studentRepository.findById(studentId);
+        final Optional<Course> courseOptional = courseRepository.findById(courseId);
+        accessCourseRepository.save(new AccessCourse(studentOptional.get(), courseOptional.get(), Role.ADMIN));
+    }
+
+    @Override
+    public ControllerResponse addStudent(String fullName, String phone, String grade, String gender, String password) {
+        final boolean b = studentRepository.existsByPhone(phone);
+        if (!b){
+            Student student = new Student();
+            student.setFullName(fullName);
+            student.setPhone(phone);
+            student.setRole(Role.STUDENT);
+            student.setGrade(Integer.parseInt(grade));
+            student.setGender(gender);
+            student.setPassword(password);
+            studentRepository.save(student);
+            return new ControllerResponse("Ro'yhatdan o'tkazildi", 200);
+        }
+        return new ControllerResponse("Telefon raqam ro'yhatdan o'tkazilgan", 208);
     }
 
     private TestImageSource getSource(MultipartFile file) {

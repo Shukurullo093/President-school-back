@@ -119,8 +119,8 @@ public class StudentApiController {
             map.addAttribute("courseId", course.get().getId());
             map.addAttribute("science", Science.valueOf(science.toUpperCase()).toString());
             map.addAttribute("lessonSize", lessonList.size());
-            map.addAttribute("tasksSize", (lessonList.size() - lessonList.size() / 7) * 5);
-            map.addAttribute("testSize", lessonList.size() / 7);
+            map.addAttribute("tasksSize", taskRepository.countAllByLessonCourseId(course.get().getId()));
+            map.addAttribute("testSize", testRepository.countAllByLessonCourseId(course.get().getId()));
             if (!b) {
                 if (lessonList.size() >= 1) {
                     map.addAttribute("lesson1", new LessonDto(lessonList.get(0).getId(), 1, lessonList.get(0).getTitle(), lessonList.get(0).getLessonType().toString(), "true"));
@@ -240,12 +240,11 @@ public class StudentApiController {
         if (lessonOptional.isPresent()){
             map.addAttribute("lesson", "/api/user/watch/" + lessonOptional.get().getId());
             String nextLessonPath;
-            if (lessonOptional.get().getOrderNumber() % 6 == 0) {
-                nextLessonPath = "javascript:void(0);";
-            } else {
-                final Optional<Lesson> byCourseIdAndOrderNumber = lessonRepository.findByCourseIdAndOrderNumber(lessonOptional.get().getCourse().getId(), lessonOptional.get().getOrderNumber() + 1);
-                nextLessonPath = byCourseIdAndOrderNumber.map(value -> "/api/user/watch/" + value.getId()).orElse("javascript:void(0);");
-            }
+            final Optional<Lesson> byCourseIdAndOrderNumber = lessonRepository.findByCourseIdAndOrderNumber(lessonOptional.get().getCourse().getId(), lessonOptional.get().getOrderNumber() + 1);
+            nextLessonPath = byCourseIdAndOrderNumber.map(value -> value.getOrderNumber() % 7 == 0
+                            ? "/api/user/test/" + value.getId() :
+                "/api/user/watch/" + value.getId()
+            ).orElse("javascript:void(0);");
             map.addAttribute("nextLesson", nextLessonPath);
 
             final List<Task> byLessonIdOrderByOrderNumber = taskRepository.findByLessonIdOrderByOrderNumber(lessonOptional.get().getId());
@@ -364,13 +363,6 @@ public class StudentApiController {
                     }
 
                     testDtoList.add(testDto);
-                }
-                for(TestDto testDto : testDtoList){
-                    final Optional<Student> studentOptional = studentRepository.findByPhone("+998901234568");
-                    final Student student = studentOptional.get();
-                    final Optional<Test> testOptional = testRepository.findById(testDto.getId());
-                    final Test test = testOptional.get();
-                    studentTestRepository.save(new StudentTest(student, test));
                 }
             }
         }

@@ -30,6 +30,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentTaskStatusRepository studentTaskStatusRepository;
     private final LessonRepository lessonRepository;
     private final TaskRepository taskRepository;
+    private final StudentTestRepository studentTestRepository;
 
     @Value("${upload.folder}")
     private String uploadFolder;
@@ -49,10 +50,10 @@ public class StudentServiceImpl implements StudentService {
         student.setRole(Role.STUDENT);
 
         if (!studentDto.getImage().isEmpty()){
-            File uploadFolder = new File(String.format("%s/person_images/",
+            File uploadFolder = new File(String.format("%s/EMPLOYEE/",
                     this.uploadFolder));
             if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
-//                System.out.println("Created folders.");
+                System.out.println("CFF\t" + uploadFolder.getAbsolutePath());
             }
             MultipartFile image = studentDto.getImage();
             PersonImage personImage = new PersonImage();
@@ -61,7 +62,7 @@ public class StudentServiceImpl implements StudentService {
             personImage.setExtension(getExtension(image.getOriginalFilename()));
             personImage.setFileSize(image.getSize());
             personImage.setHashId(UUID.randomUUID().toString().substring(0, 10));
-            personImage.setUploadPath(String.format("person_images/%s.%s",
+            personImage.setUploadPath(String.format("EMPLOYEE/%s.%s",
                     personImage.getHashId(),
                     personImage.getExtension()));
             PersonImage personImage1 = personImageRepository.save(personImage);
@@ -96,11 +97,6 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
-    @Override
-    public void exportTestResultToPdf(HttpServletResponse response) {
-
-    }
-//  ************************
     @Transactional
     @Override
     public ControllerResponse checkTask(Student student, Integer taskId, String answer) {
@@ -133,6 +129,16 @@ public class StudentServiceImpl implements StudentService {
         return new ControllerResponse("topshiriq topilmadi", 404);
     }
 
+    @Transactional
+    @Override
+    public void checkTest(Student student, UUID id, Integer result) {
+        final Optional<Lesson> lessonOptional = lessonRepository.findById(id);
+        studentTestRepository.save(new StudentTest(student, lessonOptional.get(), result));
+        final Optional<Lesson> byCourseIdAndOrderNumber =
+                lessonRepository.findByCourseIdAndOrderNumber(lessonOptional.get().getCourse().getId(), lessonOptional.get().getOrderNumber() + 1);
+        accessLessonRepository.save(new AccessLesson(student, byCourseIdAndOrderNumber.get()));
+    }
+
     private String getExtension(String fileName) {
         String ext = null;
         if (fileName != null && !fileName.isEmpty()) {
@@ -142,6 +148,11 @@ public class StudentServiceImpl implements StudentService {
             }
         }
         return ext;
+    }
+//  ************************
+    @Override
+    public void exportTestResultToPdf(HttpServletResponse response) {
+
     }
 
 //    public void exportToPdf(List<Group> groupList, HttpServletResponse response) throws IOException {

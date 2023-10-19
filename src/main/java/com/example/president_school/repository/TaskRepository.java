@@ -14,5 +14,6 @@ import java.util.UUID;
 public interface TaskRepository extends JpaRepository<Task, Integer> {
     Integer countAllByLesson(Lesson lesson);
     List<Task> findByLessonIdOrderByOrderNumber(UUID id);
-    Optional<TaskSource> findByTaskImgHashId(String hashId);
+    int countAllByLessonCourseId(Integer id);
+
 }

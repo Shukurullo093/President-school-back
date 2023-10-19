@@ -6,9 +6,7 @@ import com.example.president_school.entity.enums.Role;
 import com.example.president_school.entity.enums.Science;
 import com.example.president_school.payload.*;
 import com.example.president_school.repository.*;
-//import com.example.president_school.security.JwtProvider;
 import com.example.president_school.service.GeneralService;
-//import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +31,7 @@ public class AdminApiController {
     private final LessonRepository lessonRepository;
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
-    private final TaskSourceRepository taskSourceRepository;
+    private final AccessCourseRepository accessCourseRepository;
     private final GeneralService generalService;
     private final PostRepository postRepository;
     private final HomeMessageRepository homeMessageRepository;
@@ -197,10 +194,11 @@ public class AdminApiController {
            map.addAttribute("img", defaultPersonImgPath);
        }
 
-       final List<Student> all = studentRepository.findAll();
+       final List<Student> all = studentRepository.findAll(Sort.by("createdDate").descending());
        List<StudentDto> studentDtoList = new ArrayList<>();
         for(Student student : all){
             StudentDto studentDto = new StudentDto();
+            studentDto.setId(student.getId());
             studentDto.setFullName(student.getFullName());
             studentDto.setPhone(student.getPhone());
             studentDto.setGender(student.getGender().equals("male") ? "O'g'il" : "Qiz");
@@ -209,6 +207,15 @@ public class AdminApiController {
             DateFormat monthFormat;
             monthFormat = new SimpleDateFormat("yyyy/MM/dd");
             studentDto.setCreatedDate(monthFormat.format(student.getCreatedDate()));
+            List<AccessCourseDto> accessCourseDtoList = new ArrayList<>();
+            for (Science science : Science.values()){
+                final Optional<Course> byScienceAndGrade = courseRepository.findByScienceAndGrade(science, student.getGrade());
+                if (byScienceAndGrade.isPresent()){
+                    final boolean b = accessCourseRepository.existsByCourseScienceAndStudentId(science, student.getId());
+                    accessCourseDtoList.add(new AccessCourseDto(science.toString(), b));
+                }
+            }
+            studentDto.setAccessCourseDtoList(accessCourseDtoList);
             studentDtoList.add(studentDto);
         }
         map.addAttribute("studentList", studentDtoList);

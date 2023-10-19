@@ -15,6 +15,7 @@ public class LessonDto {
     private int orderNumber;
     private String title;
     private String type;
+    private boolean completedStatus;
 
     private String size;
     private String description;
@@ -42,7 +43,7 @@ public class LessonDto {
         this.star = star;
     }
 
-    public LessonDto(UUID id, int orderNumber, String title, String description, String type, String access, String link) {
+    public LessonDto(UUID id, int orderNumber, String title, String description, String type, String access, String link, boolean completedStatus) {
         this.id = id;
         this.orderNumber = orderNumber;
         this.title = title;
@@ -50,6 +51,7 @@ public class LessonDto {
         this.type = type;
         this.access = access;
         this.lessonInfoLink = link;
+        this.completedStatus = completedStatus;
     }
 
     public LessonDto(UUID id, int orderNumber, String title, String type, String access) {
