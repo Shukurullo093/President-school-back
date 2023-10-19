@@ -54,15 +54,18 @@
    <div class="profile">
       <img th:src="${profile.imageHashId}" class="image" alt="">
       <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
-      <!-- <a href="profile.html" class="btn">view profile</a> -->
    </div>
 
    <nav class="navbar">
       <a th:href="@{/api/user/dashboard}"><i class="fas fa-home"></i><span>dashboard</span></a>
-      <!-- <a href="dashboard.html"><i class="fas fa-question"></i><span>kurslar</span></a> -->
       <a th:href="@{/api/user/my/course}"><i class="fas fa-graduation-cap"></i><span>mening kurslarim</span></a>
-      <!--      <a href="top-students.html"><i class="fas fa-chalkboard-user"></i><span>reyting</span></a>-->
-      <!-- <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a> -->
+   </nav>
+
+   <nav class="navbar">
+<!--      <ul>-->
+         <a th:href="@{/api/user/dashboard}" th:each="lesson : ${lessonList}"><i class="fas fa-home"></i><span><li  th:text="${lesson.lessonName}"></li></span></a>
+
+<!--      </ul>-->
    </nav>
 </div>
 
@@ -80,52 +83,6 @@
    </div>
 </section>
 
-<!--<section class="comments" th:if="${lesson != null && lesson.chat}">
-
-   <h1 class="heading">Chat</h1>
-
-   <div class="add-comment">
-      <div class="btn-group">
-         <button type="button" onclick="taskBtn(this)" data-id="1" class="option-btn">Topshiriq(#1)
-               <i class="fas fa-star"></i>
-         </button>
-         <button type="button" onclick="taskBtn(this)" data-id="2" class="btn">Topshiriq(#2)
-               <i class="fas fa-star" style="color: yellow;"></i>
-         </button>
-         <button type="button" onclick="taskBtn(this)" data-id="3" class="btn">Topshiriq(#3)
-               <i class="fas fa-star"></i>
-         </button>
-         <button type="button" onclick="taskBtn(this)" data-id="4" class="btn">Topshiriq(#4)
-               <i class="fas fa-star"></i>
-         </button>
-         <button type="button" onclick="taskBtn(this)" data-id="5" class="btn">Topshiriq(#5)
-               <i class="fas fa-star"></i>
-         </button>
-      </div>
-      <div class="chat">
-         <ul style="list-style: none;">
-            <li th:each="history : ${historyList}" th:class="${history.messageOwnerRole}">
-               <time th:if="${history.messageOwnerRole == 'date'}" th:id="${history.scrollId}" th:text="${history.date}"></time>
-               <div th:unless="${history.messageOwnerRole == 'date'}" class="message-body">
-                  <img th:if="${history.messageImagePath != null}" th:src="${history.messageImagePath}" />
-                  <br th:if="${history.messageImagePath != null}">
-                  <span th:text="${history.message}"></span><br><br>
-                  <a th:href="'#' + ${history.scrollId}" th:text="${history.date}"></a>
-               </div>
-            </li>
-         </ul>
-         <div class="send-message">
-            <form id="form">
-               <label for="image" class="fas fa-image"></label>
-               <input name="messageImg" id="image" type="file" accept="image/*" style="display: none;">
-               <input name="messageTxt" type="text" class="form-control" placeholder="Xabar yozing ...">
-               <i th:data-lesson-id="${lesson.id}" data-id="1" class="fas fa-paper-plane"></i>
-            </form>
-         </div>
-      </div>
-   </div>
-
-</section>-->
 <!--<footer class="footer">-->
 <!--   &copy; copyright @ 2023 by <span></span> | all rights reserved!-->
 <!--</footer>-->

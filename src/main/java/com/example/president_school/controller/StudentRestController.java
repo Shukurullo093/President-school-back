@@ -51,8 +51,8 @@ public class StudentRestController {
     }
 
     @PostMapping("/check/test/{lessonId}")
-    public void checkTest(@PathVariable UUID id, @RequestBody Integer result){
-        final Optional<Student> byId = studentRepository.findById(Long.valueOf("+998901234568"));
-        studentService.checkTest(byId.get(), id, result);
+    public void checkTest(@PathVariable UUID lessonId, @RequestBody Integer result){
+        final Optional<Student> byId = studentRepository.findByPhone("+998901234568");
+        studentService.checkTest(byId.get(), lessonId, result);
     }
 }

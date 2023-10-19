@@ -8,8 +8,6 @@ function inputChange(th){
         'test_id' : $(th).attr('test-id'),
         'data_id' : $(th).attr('data-id')
     }
-    console.log(obj.data_id)
-    console.log(obj.test_id)
     let isExist = false;
 
     result.forEach((product) => {
@@ -20,7 +18,6 @@ function inputChange(th){
     });
 
     if (!isExist){
-        console.log('ok')
         result.push(obj)
     }
 }
@@ -34,7 +31,7 @@ function checkTest(){
             }
         }
         $.ajax({
-            url: baseUrl + "/api/student/rest/check/test/" + window.location.href.toString().split('/')[-1],
+            url: baseUrl + "/api/student/rest/check/test/" + window.location.href.toString().split('/').pop(),
             type: 'POST',
             enctype: 'application/json',
             data: JSON.stringify(trueAns),
@@ -44,6 +41,13 @@ function checkTest(){
             success: function () {
                 $('#success-finish').css('display', 'block');
                 $('#ul').css('display', 'none');
+                if (trueAns >= 2){
+                    $('.m1').css('display', 'block');
+                    $('.m2').css('display', 'none');
+                } else {
+                    $('.m1').css('display', 'none');
+                    $('.m2').css('display', 'block');
+                }
             },
             error: function (e) {
                 console.log(e);
