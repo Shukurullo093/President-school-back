@@ -40,9 +40,10 @@ $("#saveBtn").click(function (){
                                 console.log(e);
                             }
                         })
-                    } else {
+                    }
+                    else {
                         $.ajax({
-                            url: baseUrl + "/api/admin/rest/edit-iq-test",
+                            url: baseUrl + "/api/admin/rest/edit-iq-test/" + $('.btn-primary').attr('data-test-id'),
                             type: 'PUT',
                             enctype: 'multipart/form-data',
                             data: dataForm,
@@ -108,6 +109,26 @@ $("#saveBtn").click(function (){
     }
 });
 
+function deleteTest(th){
+    if (confirm("Test o'chirilsinmi?")) {
+        $.ajax({
+            url: baseUrl + "/api/admin/rest/delete-test/" + $(th).attr('data-id'),
+            type: 'DELETE',
+            enctype: 'application/json',
+            data: null,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function () {
+                alert("O'chirildi");
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        })
+    }
+}
+
 $("#table").on("click","tbody tr .la-edit",function (){
     let $tr = $(this).closest('tr');
     let edit=$tr.children("td").map(function (){
@@ -118,5 +139,5 @@ $("#table").on("click","tbody tr .la-edit",function (){
     $('.v2').val(edit[4].trim());
     $('.v3').val(edit[5].trim());
     $('.btn-primary').text("Tahrirlash");
-    // $('.btn-primary').attr('data-test-id', $(this).attr("data-id"));
+    $('.btn-primary').attr('data-test-id', $(this).attr("data-id"));
 });

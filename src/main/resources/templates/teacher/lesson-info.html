@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Bootstrap Admin Dashboard </title>
+    <title>Teacher Lesson Info</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -43,7 +43,7 @@
             Nav header start
         ***********************************-->
         <div class="nav-header">
-            <a href="index.html" class="brand-logo">
+            <a href="#" class="brand-logo">
                 <img class="logo-abbr" src="/images/logo-white.png" alt="">
                 <img class="logo-compact" src="/images/logo-text-white.png" alt="">
                 <img class="brand-title" src="/images/logo-text-white.png" alt="">
@@ -255,17 +255,17 @@
                                                 <ul class="w-100">
                                                     <li th:each="test : ${lessonInfo.testDtoList}" class="text-justify border-top border-5">
                                                         <strong class="text-primary" style="font-size: 18px!important;">Test savoli: </strong>
-                                                        <span th:text="${test.question}"></span><br><br>
-                                                        <img th:src="${test.questionImgUrl}" class="w-100 img-fluid rounded"><br><br>
-                                                        <strong class="text-primary" style="font-size: 18px!important;">1-variant: </strong>
-                                                        <span th:text="${test.answer1}"></span><br><br>
-                                                        <img th:src="${test.answer1ImgUrl}" class="w-100 img-fluid rounded"><br><br>
-                                                        <strong class="text-primary" style="font-size: 18px!important;">2-variant: </strong>
-                                                        <span th:text="${test.answer2}"></span><br><br>
-                                                        <img th:src="${test.answer2ImgUrl}" class="w-100 img-fluid rounded"><br><br>
-                                                        <strong class="text-primary" style="font-size: 18px!important;">3-variant: </strong>
-                                                        <span th:text="${test.answer3}"></span><br><br>
-                                                        <img th:src="${test.answer3ImgUrl}" class="w-100 img-fluid rounded"><br><br>
+                                                        <span th:text="${test.question}"></span>
+                                                        <img th:if="${test.questionImgUrl!=null}" th:src="${test.questionImgUrl}" class="w-100 img-fluid rounded d-block">
+                                                        <strong class="text-primary d-block" style="font-size: 18px!important;">1-variant: </strong>
+                                                        <span th:text="${test.answer1}"></span>
+                                                        <img th:if="${test.answer1ImgUrl!=null}" th:src="${test.answer1ImgUrl}" class="w-100 img-fluid rounded d-block">
+                                                        <strong class="text-primary d-block" style="font-size: 18px!important;">2-variant: </strong>
+                                                        <span th:text="${test.answer2}"></span>
+                                                        <img th:if="${test.answer2ImgUrl!=null}" th:src="${test.answer2ImgUrl}" class="w-100 img-fluid rounded d-block">
+                                                        <strong class="text-primary d-block" style="font-size: 18px!important;">3-variant: </strong>
+                                                        <span th:text="${test.answer3}"></span>
+                                                        <img th:if="${test.answer3ImgUrl!=null}" th:src="${test.answer3ImgUrl}" class="w-100 img-fluid rounded d-block">
                                                     </li>
                                                 </ul>
                                             </div>

@@ -47,4 +47,8 @@ public interface AdminService {
     void setPermissionToCourse(Long studentId, Integer courseId);
 
     ControllerResponse addStudent(String fullName, String phone, String grade, String gender, String password);
+
+    ControllerResponse editTest(Integer testId, String question, MultipartFile questionImg, String ans1, MultipartFile ans1Img, String ans2, MultipartFile ans2Img, String ans3, MultipartFile ans3Img);
+
+    void deleteTestById(Integer testId);
 }

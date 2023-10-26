@@ -4,6 +4,7 @@ import com.example.president_school.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -32,6 +33,11 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private Role entryStatus;
+
+    private int iq;
+
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @OneToOne
     @JoinColumn(name = "person_image_id")
     private PersonImage image;

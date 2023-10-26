@@ -101,13 +101,13 @@
       <a th:if="${lesson1 != null}" class="box" th:href="'/api/user/watch/' + ${lesson1.id}">
          <span class="lesson-type" th:text="${lesson1.type}"></span>
          <span class="lesson-order-number" th:text="${'#' + lesson1.orderNumber}"></span>
-         <span class="score">
-            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
-            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
-            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
-            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
-            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>
-         </span>
+<!--         <span class="score">-->
+<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
+<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
+<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
+<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
+<!--            <i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i>-->
+<!--         </span>-->
          <i class="fas fa-play"></i>
          <img src="/user/images/post-1-1.png" alt="">
          <h3 th:text="${lesson1.title}"></h3>

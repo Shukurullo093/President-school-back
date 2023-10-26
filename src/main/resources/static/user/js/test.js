@@ -41,13 +41,8 @@ function checkTest(){
             success: function () {
                 $('#success-finish').css('display', 'block');
                 $('#ul').css('display', 'none');
-                if (trueAns >= 2){
-                    $('.m1').css('display', 'block');
-                    $('.m2').css('display', 'none');
-                } else {
-                    $('.m1').css('display', 'none');
-                    $('.m2').css('display', 'block');
-                }
+                $('.m1').css('display', 'block');
+                $('.m2').css('display', 'none');
             },
             error: function (e) {
                 console.log(e);

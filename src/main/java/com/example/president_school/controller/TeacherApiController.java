@@ -261,13 +261,23 @@ public class TeacherApiController {
         for(Test test : testList){
             TestDto testDto = new TestDto();
             testDto.setQuestion(test.getQuestionTxt());
-            testDto.setQuestionImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            if (test.getQuestionImg()!=null){
+                testDto.setQuestionImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            } else {
+//                testDto.setQuestionImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
+            }
+            if (test.getAnswer1Img()!=null){
+                testDto.setAnswer1ImgUrl("/api/teacher/rest/view-test-image/" + test.getAnswer1Img().getHashId());
+            }
+            if (test.getAnswer2Img()!=null){
+                testDto.setAnswer2ImgUrl("/api/teacher/rest/view-test-image/" + test.getAnswer2Img().getHashId());
+            }
+            if (test.getAnswer3Img()!=null){
+                testDto.setAnswer3ImgUrl("/api/teacher/rest/view-test-image/" + test.getAnswer3Img().getHashId());
+            }
             testDto.setAnswer1(test.getAnswer1());
-            testDto.setAnswer1ImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
             testDto.setAnswer2(test.getAnswer2());
-            testDto.setAnswer2ImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
             testDto.setAnswer3(test.getAnswer3());
-            testDto.setAnswer3ImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
             testDtoList.add(testDto);
         }
         lessonDto.setTestDtoList(testDtoList);
@@ -282,7 +292,7 @@ public class TeacherApiController {
             map.addAttribute("img", employeeOptional.get().getImage().getHashId());
         }
         else {
-            map.addAttribute("img", null);
+            map.addAttribute("img", defaultPersonImgPath);
         }
 
         Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(id));

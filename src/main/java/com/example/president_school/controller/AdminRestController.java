@@ -159,6 +159,24 @@ public class AdminRestController {
         return ResponseEntity.ok(adminService.addTest(question, questionImg, ans1, ans1Img, ans2, ans2Img, ans3, ans3Img));
     }
 
+    @PutMapping("/edit-iq-test/{testId}")
+    public ResponseEntity<ControllerResponse> editTest(@PathVariable Integer testId,
+                                                       @RequestParam("questionTxt")String question,
+                                                       @RequestParam("questionImg")MultipartFile questionImg,
+                                                       @RequestParam("v1")String ans1,
+                                                       @RequestParam("v1img")MultipartFile ans1Img,
+                                                       @RequestParam("v2")String ans2,
+                                                       @RequestParam("v2img")MultipartFile ans2Img,
+                                                       @RequestParam("v3")String ans3,
+                                                       @RequestParam("v3img")MultipartFile ans3Img){
+        return ResponseEntity.ok(adminService.editTest(testId, question, questionImg, ans1, ans1Img, ans2, ans2Img, ans3, ans3Img));
+    }
+
+    @DeleteMapping("/delete-test/{testId}")
+    public void deleteTestById(@PathVariable Integer testId){
+        adminService.deleteTestById(testId);
+    }
+
     @GetMapping("/get/student/{studentId}")
     public StudentDto getStudent(@PathVariable Long studentId){
         return adminService.getStudent(studentId);

@@ -526,16 +526,16 @@ public class AdminApiController {
             testDto.setAnswer2(test.getAnswer2());
             testDto.setAnswer3(test.getAnswer3());
             if (test.getQuestionImg() != null){
-                testDto.setQuestionImgUrl("/api/teacher/rest/viewImage/" + test.getQuestionImg().getHashId());
+                testDto.setQuestionImgUrl("/api/teacher/rest/view-test-image/" + test.getQuestionImg().getHashId());
             }
             if (test.getAnswer1Img() != null){
-                testDto.setAnswer1ImgUrl("/api/teacher/rest/viewImage/" + test.getAnswer1Img().getHashId());
+                testDto.setAnswer1ImgUrl("/api/teacher/rest/view-test-image/" + test.getAnswer1Img().getHashId());
             }
             if (test.getAnswer2Img() != null){
-                testDto.setAnswer2ImgUrl("/api/teacher/rest/viewImage/" + test.getAnswer2Img().getHashId());
+                testDto.setAnswer2ImgUrl("/api/teacher/rest/view-test-image/" + test.getAnswer2Img().getHashId());
             }
             if (test.getAnswer3Img() != null){
-                testDto.setAnswer3ImgUrl("/api/teacher/rest/viewImage/" + test.getAnswer3Img().getHashId());
+                testDto.setAnswer3ImgUrl("/api/teacher/rest/view-test-image/" + test.getAnswer3Img().getHashId());
             }
             testDtoList.add(testDto);
             i++;

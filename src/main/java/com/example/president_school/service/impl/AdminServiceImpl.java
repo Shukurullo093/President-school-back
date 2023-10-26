@@ -435,6 +435,144 @@ public class AdminServiceImpl implements AdminService {
         return new ControllerResponse("Test ma'lumotlari topilmadi", 208);
     }
 
+    private TestImageSource getSource(MultipartFile file) {
+        File uploadFolder = new File(String.format("%s/IQ/", this.uploadFolder));
+        if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+            System.out.println(uploadFolder + " path created for test");
+        }
+        TestImageSource testImageSource = new TestImageSource();
+        testImageSource.setContentType(file.getContentType());
+        testImageSource.setName(file.getOriginalFilename());
+        testImageSource.setExtension(generalService.getExtension(file.getOriginalFilename()));
+        testImageSource.setFileSize(file.getSize());
+        testImageSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
+        testImageSource.setUploadPath(String.format("IQ/%s.%s", testImageSource.getHashId(), testImageSource.getExtension()));
+        TestImageSource save = testImgSourceRepository.save(testImageSource);
+
+        uploadFolder = uploadFolder.getAbsoluteFile();
+        File file1 = new File(uploadFolder, String.format("%s.%s", testImageSource.getHashId(), testImageSource.getExtension()));
+        try {
+            file.transferTo(file1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return save;
+    }
+
+    @Override
+    public ControllerResponse editTest(Integer testId, String question, MultipartFile questionImg, String ans1, MultipartFile ans1Img,
+                                       String ans2, MultipartFile ans2Img, String ans3, MultipartFile ans3Img) {
+        final Optional<Test> testOptional = testRepository.findById(testId);
+        if (testOptional.isPresent()) {
+            final Test test = testOptional.get();
+            test.setQuestionTxt(question);
+            test.setAnswer1(ans1);
+            test.setAnswer2(ans2);
+            test.setAnswer3(ans3);
+            if (!questionImg.isEmpty()){
+                if (test.getQuestionImg()!=null){
+                    test.setQuestionImg(updateTestImage(questionImg, test.getQuestionImg().getId()));
+                }else {
+                    test.setQuestionImg(getSource(questionImg));
+                }
+            }
+            if (!ans1Img.isEmpty()){
+                if (test.getAnswer1Img()!=null){
+                    test.setAnswer1Img(updateTestImage(questionImg, test.getAnswer1Img().getId()));
+                }else {
+                    test.setAnswer1Img(getSource(ans1Img));
+                }
+            }
+            if (!ans2Img.isEmpty()){
+                if (test.getAnswer2Img()!=null){
+                    test.setAnswer2Img(updateTestImage(ans2Img, test.getAnswer2Img().getId()));
+                }else {
+                    test.setAnswer2Img(getSource(ans2Img));
+                }
+            }
+            if (!ans3Img.isEmpty()){
+                if (test.getAnswer3()!=null){
+                    test.setAnswer3Img(updateTestImage(ans3Img, test.getAnswer3Img().getId()));
+                }else {
+                    test.setAnswer3Img(getSource(ans3Img));
+                }
+            }
+            testRepository.save(test);
+            return new ControllerResponse("Test tahrirlandi", 200);
+        }
+        return new ControllerResponse("", 208);
+    }
+
+    @Override
+    public void deleteTestById(Integer testId) {
+        final Optional<Test> testOptional = testRepository.findById(testId);
+        if (testOptional.isPresent()) {
+            final Test test = testOptional.get();
+            if (test.getAnswer1Img()!=null){
+                File file12 = new File(String.format("%s/%s",
+                        this.uploadFolder,
+                        test.getAnswer1Img().getUploadPath()));
+                file12.delete();
+//                testImgSourceRepository.delete(test.getAnswer1Img());
+            }
+            if (test.getAnswer2Img()!=null){
+                File file12 = new File(String.format("%s/%s",
+                        this.uploadFolder,
+                        test.getAnswer2Img().getUploadPath()));
+                file12.delete();
+//                testImgSourceRepository.delete(test.getAnswer2Img());
+            }
+            if (test.getAnswer3Img()!=null){
+                File file12 = new File(String.format("%s/%s",
+                        this.uploadFolder,
+                        test.getAnswer3Img().getUploadPath()));
+                file12.delete();
+//                testImgSourceRepository.delete(test.getAnswer3Img());
+            }
+            if (test.getQuestionImg()!=null){
+                File file12 = new File(String.format("%s/%s",
+                        this.uploadFolder,
+                        test.getQuestionImg().getUploadPath()));
+                file12.delete();
+//                testImgSourceRepository.delete(test.getQuestionImg());
+            }
+            testRepository.deleteById(testId);
+        }
+    }
+
+    private TestImageSource updateTestImage(MultipartFile file, Integer id) {
+        final Optional<TestImageSource> byId = testImgSourceRepository.findById(id);
+        if (byId.isPresent()){
+            final TestImageSource testImageSource = byId.get();
+            File uploadFolder = new File(String.format("%s/IQ/", this.uploadFolder));
+            if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
+                System.out.println(uploadFolder + " path created for test");
+            }
+//            TestImageSource testImageSource = new TestImageSource();
+            testImageSource.setContentType(file.getContentType());
+            testImageSource.setName(file.getOriginalFilename());
+            testImageSource.setExtension(generalService.getExtension(file.getOriginalFilename()));
+            testImageSource.setFileSize(file.getSize());
+            testImageSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
+            testImageSource.setUploadPath(String.format("IQ/%s.%s", testImageSource.getHashId(), testImageSource.getExtension()));
+            TestImageSource save = testImgSourceRepository.save(testImageSource);
+
+            uploadFolder = uploadFolder.getAbsoluteFile();
+            File file12 = new File(String.format("%s/%s",
+                    this.uploadFolder,
+                    testImageSource.getUploadPath()));
+            file12.delete();
+            File file1 = new File(uploadFolder, String.format("%s.%s", testImageSource.getHashId(), testImageSource.getExtension()));
+            try {
+                file.transferTo(file1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return save;
+        }
+        return null;
+    }
+
     @Override
     public StudentDto getStudent(Long studentId) {
         StudentDto studentDto = new StudentDto();
@@ -490,34 +628,11 @@ public class AdminServiceImpl implements AdminService {
             student.setGrade(Integer.parseInt(grade));
             student.setGender(gender);
             student.setPassword(password);
+            student.setEntryStatus(Role.ADMIN);
             studentRepository.save(student);
             return new ControllerResponse("Ro'yhatdan o'tkazildi", 200);
         }
         return new ControllerResponse("Telefon raqam ro'yhatdan o'tkazilgan", 208);
-    }
-
-    private TestImageSource getSource(MultipartFile file) {
-        File uploadFolder = new File(String.format("%s/IQ/", this.uploadFolder));
-        if (!uploadFolder.exists() && uploadFolder.mkdirs()) {
-            System.out.println(uploadFolder + " path created for test");
-        }
-        TestImageSource testImageSource = new TestImageSource();
-        testImageSource.setContentType(file.getContentType());
-        testImageSource.setName(file.getOriginalFilename());
-        testImageSource.setExtension(generalService.getExtension(file.getOriginalFilename()));
-        testImageSource.setFileSize(file.getSize());
-        testImageSource.setHashId(UUID.randomUUID().toString().substring(0, 10));
-        testImageSource.setUploadPath(String.format("IQ/%s.%s", testImageSource.getHashId(), testImageSource.getExtension()));
-        TestImageSource save = testImgSourceRepository.save(testImageSource);
-
-        uploadFolder = uploadFolder.getAbsoluteFile();
-        File file1 = new File(uploadFolder, String.format("%s.%s", testImageSource.getHashId(), testImageSource.getExtension()));
-        try {
-            file.transferTo(file1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return save;
     }
 
     @Override
@@ -636,5 +751,3 @@ public class AdminServiceImpl implements AdminService {
         return personImageRepository.findByHashId(hashId);
     }
 }
-
-// bixag79159@czilou.com
