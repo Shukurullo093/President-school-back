@@ -15,5 +15,5 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     Integer countAllByLesson(Lesson lesson);
     List<Task> findByLessonIdOrderByOrderNumber(UUID id);
     int countAllByLessonCourseId(Integer id);
-
+    List<Task> findAllByLessonIdOrderByOrderNumberAsc(UUID lessonId);
 }

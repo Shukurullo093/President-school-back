@@ -98,6 +98,14 @@ public class StudentApiController {
         return "student/myCourses";
     }
 
+    @GetMapping("/activity-history")
+    public String getActivity(Model map){
+        map.addAttribute("profile", generalService.getProfile("+998901234568"));
+
+
+        return "student/activity";
+    }
+
     @GetMapping("/demo/{science}/{grade}")
     public String playlist(@PathVariable String science, @PathVariable String grade, Model map){
         map.addAttribute("profile", generalService.getProfile("+998901234568"));

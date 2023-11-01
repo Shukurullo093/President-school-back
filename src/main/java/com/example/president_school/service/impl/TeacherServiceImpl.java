@@ -154,8 +154,8 @@ public class TeacherServiceImpl implements TeacherService {
                             .append("</td>");
                     result.append("<td class='text-justify'>").append(task.getAnswer()).append("</td>");
                     result.append("<td class='text-justify'>")
-                            .append("<img src='/api/teacher/rest/view-task-img/" + task.getTaskImg().getHashId() + "' style='height: 200px;' onclick='scaleImg(this)'>").append("<br>")
-                            .append("<span>").append(task.getTaskBody()).append("</span>")
+                            .append("<img src='/api/teacher/rest/view-task-img/" + task.getExampleImg().getHashId() + "' style='height: 200px;' onclick='scaleImg(this)'>").append("<br>")
+                            .append("<span>").append(task.getExampleBody()).append("</span>")
                             .append("</td>");
                 result.append("</tr>");
             }

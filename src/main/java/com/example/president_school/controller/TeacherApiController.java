@@ -9,6 +9,7 @@ import com.example.president_school.payload.TestDto;
 import com.example.president_school.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -298,6 +299,12 @@ public class TeacherApiController {
         Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(id));
         Lesson lesson = lessonOptional.get();
         map.addAttribute("lesson", lesson);
+
+        final List<Task> allByLessonId = taskRepository.findAllByLessonIdOrderByOrderNumberAsc(lesson.getId());
+        map.addAttribute("lessonTasks", allByLessonId);
+        final List<Test> allByLesson = testRepository.findAllByLesson(lesson);
+        map.addAttribute("testLesson", allByLesson);
+
         return "teacher/edit-lesson";
     }
 

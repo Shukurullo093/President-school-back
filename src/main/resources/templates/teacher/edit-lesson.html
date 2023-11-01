@@ -248,31 +248,31 @@
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label">Topshiriq matni:</label>
-                                                <textarea name="task-description" class="form-control" rows="5" disabled></textarea>
+                                                <textarea name="task-description" class="form-control" rows="5"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label">Topshiriq rasmi:</label>
-                                                <input type="file" name="task-img-source" accept="image/*" class="form-control" disabled>
+                                                <input type="file" name="task-img-source" accept="image/*" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label">Topshiriq javobi:</label>
-                                                <input type="text" name="task-answer" class="form-control" disabled>
+                                                <input type="text" name="task-answer" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label">Topshiriqni yechish uchun ko'rsatma:</label>
-                                                <textarea name="task-example-description" class="form-control" rows="5" disabled></textarea>
+                                                <textarea name="task-example-description" class="form-control" rows="5"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label">Topshiriqni yechish uchun ko'rsatma rasmi:</label>
-                                                <input type="file" name="task-example-img-source" accept="image/*" class="form-control" disabled>
+                                                <input type="file" name="task-example-img-source" accept="image/*" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-lg-11 col-md-11 col-sm-11 alert alert-danger alert-dismissible fade show mx-2" role="alert">
@@ -282,7 +282,7 @@
                                             </button>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12">
-                                            <button type="button" id="taskBtn" class="btn btn-primary" disabled>Saqlash</button>
+                                            <button type="button" id="taskBtn" class="btn btn-primary">Saqlash</button>
                                             <button type="reset" class="btn btn-light">Bekor qilish</button>
                                         </div>
                                     </div>
@@ -290,15 +290,28 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 mt-5" style="width: 100%; overflow-x: scroll;">
                                     <table id="task-table" class="table table-bordered table-striped rounded">
                                         <thead>
-                                        <tr class="text-capitalize text-center">
-                                            <th>No.</th>
-                                            <th>Topshiriq</th>
-                                            <th>Javob</th>
-                                            <th>Ko'rsatma</th>
-                                        </tr>
+                                            <tr class="text-capitalize text-center">
+                                                <th>No.</th>
+                                                <th></th>
+                                                <th>Topshiriq</th>
+                                                <th>Javob</th>
+                                                <th>Ko'rsatma</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-
+                                            <tr th:each="task : ${lessonTasks}">
+                                                <td th:text="${task.orderNumber}"></td>
+                                                <td></td>
+                                                <td class='text-justify'>
+                                                    <img th:if="${task.taskImg != null}" th:src="'/api/teacher/rest/view-task-img/' + ${task.taskImg.hashId}" style='height: 200px;' onclick='scaleImg(this)'><br>
+                                                    <span th:text="${task.taskBody}"></span>
+                                                </td>
+                                                <td th:text="${task.answer}" class="text-justify"></td>
+                                                <td class='text-justify'>
+                                                    <img th:if="${task.exampleImg != null}" th:src="'/api/teacher/rest/view-task-img/' + ${task.exampleImg.hashId}" style='height: 200px;' onclick='scaleImg(this)'><br>
+                                                    <span th:text="${task.exampleBody}"></span>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

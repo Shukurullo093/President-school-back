@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>user activity</title>
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/user/css/style.css">
+
+</head>
+<body>
+
+<header class="header">
+   
+   <section class="flex">
+
+      <a href="#" class="logo">President school</a>
+
+      <!-- <form action="search.html" method="post" class="search-form">
+         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
+         <button type="submit" class="fas fa-search"></button>
+      </form> -->
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <!-- <div id="search-btn" class="fas fa-search"></div> -->
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+          <img th:src="${profile.imageHashId}" class="image" alt="">
+          <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
+         <!-- <p class="role">studen</p> -->
+         <a th:href="@{/api/user/update/profile}" class="btn">Profile</a>
+         <div class="flex-btn">
+            <a th:href="@{/api/user/login}" class="option-btn">chiqish</a>
+            <!-- <a href="register.html" class="option-btn">sign up</a> -->
+         </div>
+      </div>
+   </section>
+</header>   
+
+<div class="side-bar">
+
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+       <img th:src="${profile.imageHashId}" class="image" alt="">
+       <h3 class="name" th:text="${profile.fullName}" style="text-transform: capitalize;"></h3>
+<!--      <p class="role"><i class="fa-regular fa-star fa-beat" style="color: #ffd43b;"></i> 1220 / 36</p>-->
+      <!-- <a href="profile.html" class="btn">view profile</a> -->
+   </div>
+
+    <nav class="navbar">
+        <a th:href="@{/api/user/dashboard}"><i class="fas fa-home"></i><span>dashboard</span></a>
+        <!-- <a href="dashboard.html"><i class="fas fa-question"></i><span>kurslar</span></a> -->
+        <a th:href="@{/api/user/my/course}"><i class="fas fa-graduation-cap"></i><span>mening kurslarim</span></a>
+        <!--      <a href="top-students.html"><i class="fas fa-chalkboard-user"></i><span>reyting</span></a>-->
+        <!-- <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a> -->
+    </nav>
+
+</div>
+
+<section class="playlist-details">
+
+   <div class="row">
+       <div class="">
+           <div class="col-6">
+                <img src="/user/images/money.gif">
+                <button type="button" class="btn"><i class="fa-solid fa-circle-dollar-to-slot"></i> Hisobga pul o'tkazish</button>
+           </div>
+           <div class="col-6">
+               <img src="/user/images/money-icegif-1.gif">
+               <p class="btn"><i class="fa-solid fa-wallet"></i> Umumiy mablag': 200 000 so'm</p>
+           </div>
+       </div>
+
+       <table cellspacing="0">
+           <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Harakat</th>
+                    <th>Vaqt</th>
+                    <th>Mablag'(so'm)</th>
+                </tr>
+           </thead>
+           <tbody>
+                <tr>
+                    <td data-label="#">1</td>
+                    <td data-label="Harakat">Hisob raqamga pul o'tkazish</td>
+                    <td data-label="Vaqt">31-10-2023 10:10</td>
+                    <td data-label="Mablag'(so'm)"><span style="background-color: #58f558;">+500 000</span></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Matematika kursi xarid qilindi</td>
+                    <td>31-10-2023 10:10</td>
+                    <td><span style="background-color: crimson;">-250 000</span></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Hisob raqamga pul o'tkazish</td>
+                    <td>31-10-2023 10:10</td>
+                    <td><span style="background-color: #58f558;">+500 000</span></td>
+                </tr>
+           </tbody>
+       </table>
+   </div>
+
+</section>
+
+<!--<footer class="footer">-->
+<!--   &copy; copyright @ 2023 by <span></span> | all rights reserved!-->
+<!--</footer>-->
+
+<!-- custom js file link  -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="/user/js/demo.js"></script>
+<script src="/user/js/script.js"></script>
+
+</body>
+</html>
