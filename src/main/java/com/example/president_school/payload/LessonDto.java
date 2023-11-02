@@ -32,6 +32,7 @@ public class LessonDto {
     private String access;
     private boolean star;
     private boolean chat;
+    private int viewStatus;
 
     public LessonDto(UUID id, int orderNumber, String title, String type, String access, String link, boolean star) {
         this.id = id;

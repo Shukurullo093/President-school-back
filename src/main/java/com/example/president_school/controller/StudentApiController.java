@@ -173,15 +173,28 @@ public class StudentApiController {
     @GetMapping("/watch/{lessonId}")
     public String watch(@PathVariable String lessonId, Model map){
         map.addAttribute("profile", generalService.getProfile("+998901234568"));
+        final Optional<Student> studentOptional = studentRepository.findByPhone("+998901234568");
 
         Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(lessonId));
 
-        final List<Lesson> allByCourseOrderByOrderNumberAsc = lessonRepository.findAllByCourseOrderByOrderNumberAsc(lessonOptional.get().getCourse());
+        final List<Lesson> allByCourseOrderByOrderNumberAsc =
+                lessonRepository.findAllByCourseOrderByOrderNumberAsc(lessonOptional.get().getCourse());
         List<LessonDto> lessonDtoList = new ArrayList<>();
         for (Lesson lesson : allByCourseOrderByOrderNumberAsc){
             LessonDto lessonDto = new LessonDto();
-            lessonDto.setLessonName(lesson.getName());
+            lessonDto.setLessonName(lesson.getTitle());
             lessonDto.setOrderNumber(lesson.getOrderNumber());
+            final boolean b = accessLessonRepository.existsByLessonAndStudent(lesson, studentOptional.get());
+            if (b){
+                lessonDto.setViewStatus(0);
+                lessonDto.setLessonInfoLink("/api/user/watch/" + lesson.getId());
+            } else {
+                lessonDto.setViewStatus(2);
+                lessonDto.setLessonInfoLink("javascript:void(0);");
+            }
+            if (lessonId.equals(lesson.getId().toString())){
+                lessonDto.setViewStatus(1);
+            }
             lessonDtoList.add(lessonDto);
         }
         map.addAttribute("lessonList", lessonDtoList);

@@ -59,17 +59,18 @@
    <nav class="navbar">
       <a th:href="@{/api/user/dashboard}"><i class="fas fa-home"></i><span>dashboard</span></a>
       <a th:href="@{/api/user/my/course}"><i class="fas fa-graduation-cap"></i><span>mening kurslarim</span></a>
+      <a th:href="@{/api/user/activity-history}"><i class="fa-solid fa-calendar-days"></i><span>harakatlar tarixi</span></a>
    </nav>
 
    <nav class="navbar">
-      <a th:href="@{/api/user/dashboard}">
+      <a href="javascript:void(0);">
          <i class="fas fa-list"></i>
          <span>Darslar ro'yhati</span>
       </a>
-         <a th:href="@{/api/user/dashboard}" th:each="lesson : ${lessonList}">
-            <i class="fas fa-circle"></i>
-            <i class="fa-sharp fa-regular fa-circle"></i>
-            <i class="fa-solid fa-circle-half-stroke"></i>
+         <a th:each="lesson : ${lessonList}" th:href="${lesson.lessonInfoLink}">
+            <i th:if="${lesson.viewStatus == 2}" class="fas fa-circle"></i>
+            <i th:if="${lesson.viewStatus == 0}" class="fa-sharp fa-regular fa-circle"></i>
+            <i th:if="${lesson.viewStatus == 1}" class="fa-solid fa-circle-half-stroke"></i>
             <span th:text="${lesson.lessonName}"></span>
          </a>
    </nav>

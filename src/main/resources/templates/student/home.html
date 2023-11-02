@@ -62,11 +62,9 @@
    </div>
 
    <nav class="navbar">
-      <a href="home.html"><i class="fas fa-home"></i><span>dashboard</span></a>
-      <!-- <a href="dashboard.html"><i class="fas fa-question"></i><span>kurslar</span></a> -->
-      <a href="dashboard.html"><i class="fas fa-graduation-cap"></i><span>kurslar</span></a>
-      <a href="top-students.html"><i class="fas fa-chalkboard-user"></i><span>reyting</span></a>
-      <!-- <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a> -->
+      <a th:href="@{/api/user/dashboard}"><i class="fas fa-home"></i><span>dashboard</span></a>
+      <a th:href="@{/api/user/my/course}"><i class="fas fa-graduation-cap"></i><span>mening kurslarim</span></a>
+      <a th:href="@{/api/user/activity-history}"><i class="fa-solid fa-calendar-days"></i><span>harakatlar tarixi</span></a>
    </nav>
 
 </div>
