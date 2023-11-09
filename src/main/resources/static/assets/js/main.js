@@ -309,14 +309,25 @@ $('#register').click(function (){
       processData: false,
       contentType: false,
       cache: false,
-      success: function () {
-        $('#error').css('display', 'block');
-        $('#error').text("Ro'yhatdan muvaffaqqiyatli o'tdingiz.")
-        setTimeout(function () {
-          $('#error').css('display', 'none');
-          $('#error').text('')
-          form.reset();
-        }, 4000);
+      success: function (data) {
+        if(data.statusCode === 201){
+          $('#register-form .error-div').css('display', 'block');
+          $('#register-form .error-div .error').text(data['message']);
+          setTimeout(function () {
+            $('#register-form .error-div').css('display', 'none');
+            $('#register-form .error-div .error').text('')
+            form.reset();
+          }, 4000);
+        } else {
+          $('.error-div').css('display', 'block');
+          $('#register-form .error-div .error').text(data.message)
+          setTimeout(function () {
+            $('.error-div').css('display', 'none');
+            $('#register-form .error-div .error').text('')
+            form.reset();
+          }, 4000);
+        }
+
       },
       error: function (e) {
         console.log(e);

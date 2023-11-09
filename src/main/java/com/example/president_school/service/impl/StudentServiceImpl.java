@@ -78,7 +78,7 @@ public class StudentServiceImpl implements StudentService {
             student.setImage(personImage1);
         }
         studentRepository.save(student);
-        return new ControllerResponse("Muvaffaqqiyatli ro'yhatdan o'tdingiz. Tizimga kiritshingiz mumkin.", 201);
+        return new ControllerResponse("Muvaffaqqiyatli ro'yhatdan o'tdingiz. Tizimga kirishingiz mumkin.", 201);
     }
 
     @Override

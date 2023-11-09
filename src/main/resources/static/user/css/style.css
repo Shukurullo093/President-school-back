@@ -246,7 +246,8 @@ section{
 
 .side-bar{
    position: fixed;
-   top: 0; left: 0;
+   top: 0;
+   left: 0;
    width: 30rem;
    background-color: var(--white);
    height: 100vh;
@@ -797,17 +798,68 @@ section{
    position: relative;
    margin-bottom: 1.5rem;
 }
-
-.watch-video .video-container .video span{
+.watch-video .video-container .video video{
+   /*position: relative;*/
+}
+.watch-video .video-container .video #phone-number{
+   /*content: attr(data-label);*/
    position: absolute;
    top: 1rem;
    left: 1rem;
-   background-color: rgba(0, 0, 0, .3);
-   padding: .5rem 1rem;
-   border-radius: 5px;
+   z-index: 999;
    font-size: 18px;
+   background-color: blue;
    color: white;
+   padding: 1rem;
 }
+
+/*.watch-video .video-container .video span{*/
+/*   position: absolute;*/
+/*   top: 1rem;*/
+/*   left: 1rem;*/
+/*   background-color: rgba(0, 0, 0, .3);*/
+/*   padding: .5rem 1rem;*/
+/*   border-radius: 5px;*/
+/*   font-size: 18px;*/
+/*   color: white;*/
+/*}*/
+.video-container {
+   position: relative;
+}
+
+.video {
+   width: 100%;
+   height: 100%;
+}
+
+/*video::-webkit-media-controls-fullscreen-button*/
+/*{*/
+/*   display: none !important;*/
+/*}*/
+
+.fullscreen-button {
+   position: absolute;
+   top: 2%;
+   left: 90%;
+   z-index: 10;
+}
+
+.watermark {
+   position: absolute;
+   left: 30%;
+   top: 30%;
+   color: white;
+   animation: 15s moving-watermark infinite;
+}
+
+@keyframes moving-watermark {
+   0%   {left: 3%; top: 3%; display: none;}
+   25% {display: block;}
+   50% {left: 93%; top: 93%; display: none;}
+   75% {left: 3%; top: 93%; display: block;}
+   100% {left: 3%; top: 3%; display: none;}
+}
+/******/
 
 .watch-video .video-container .video video{
    border-radius: .5rem;

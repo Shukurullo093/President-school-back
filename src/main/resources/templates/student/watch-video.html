@@ -11,6 +11,15 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="/user/css/style.css">
+   <style>
+      .side-bar{
+         overflow-y: scroll;
+      }
+      #phone-number{
+         display: none;
+         z-index: 999;
+      }
+   </style>
 </head>
 <body oncontextmenu="return false;">
 
@@ -78,10 +87,25 @@
 
 <section id="watch" class="watch-video" th:if="${lesson != null}">
    <div class="video-container">
-      <div class="video">
-         <span>+998901234567</span>
-         <video th:src="${lesson.videoLink}" controls controlsList="nodownload" poster="/user/images/post-1-1.png" id="video"></video>
+      <div class="video" data-label="998901234567">
+         <span id="phone-number">+998901234567</span>
+<!--         <marquee-->
+<!--                 direction="down"-->
+<!--                 width="250"-->
+<!--                 height="200"-->
+<!--                 behavior="alternate"-->
+<!--                 style="border:solid">-->
+<!--            <marquee behavior="alternate"> This text will bounce </marquee>-->
+            <video th:src="${lesson.videoLink}" controls controlsList="nodownload" poster="/user/images/post-1-1.png" id="video"></video>
       </div>
+<!--      <div id="vid-cont" class="video-container">-->
+<!--         <video class="video" controls>-->
+<!--            <source src="http://media.w3.org/2010/05/sintel/trailer.mp4" type='video/mp4' id='mp4'>-->
+<!--         </video>-->
+
+<!--         <p class="watermark">Student 141</P>-->
+<!--         <button class="fullscreen-button" onclick="activateFullscreen()">toggle fullscreen</button>-->
+<!--      </div>-->
       <h3 class="title" th:text="${lesson.title}"></h3>
       <p class="description" th:text="'&emsp;&emsp;' + ${lesson.description}"></p>
       <div class="flex">
@@ -89,7 +113,25 @@
       </div>
    </div>
 </section>
-
+<script>
+   let phone=document.getElementById('phone-number');
+   function view(){
+      phone.style.display='block';
+      setTimeout(function (){
+         phone.style.display='none';
+      }, 2000);
+   }
+   setInterval(function (){
+      view();
+   }, 5000);
+   // function activateFullscreen() {
+   //    if (!document.fullscreenElement) {
+   //       document.getElementById('vid-cont').requestFullscreen();
+   //    } else if (document.exitFullscreen) {
+   //       document.exitFullscreen();
+   //    }
+   // }
+</script>
 <!--<footer class="footer">-->
 <!--   &copy; copyright @ 2023 by <span></span> | all rights reserved!-->
 <!--</footer>-->
